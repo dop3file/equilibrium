@@ -17,7 +17,7 @@ class lexer:
         for line in self.all_code: #итерирование по строкам
 
             try:
-                if line[0] == '>':
+                if line[0] == '>': #комментарии
                     continue
                 elif line.split(' ')[2] == ':=': #переменные
                     self.stack += [{'v_' + line.split(' ')[0] + '_' + line.split(' ')[1] : ''.join(line.split(':=')[1::])[1::]}]
