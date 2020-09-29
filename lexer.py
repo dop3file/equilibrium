@@ -15,14 +15,16 @@ class lexer:
     def lexer(self):
         ''' Разбиваем на лексемы '''
         for line in self.all_code: #итерирование по строкам
-        
+
             try:
-                if line.split(' ')[2] == ':=': #переменные 
+                if line[0] == '>':
+                    continue
+                elif line.split(' ')[2] == ':=': #переменные
                     self.stack += [{'v_' + line.split(' ')[0] + '_' + line.split(' ')[1] : ''.join(line.split(':=')[1::])[1::]}]
-     
+
                 elif line.split(' ')[1] == '=>': #функции
                     self.stack += [{'f_' + line.split(' ')[0] : ''.join(line.split('=>')[1::])[1::]}]
-                    
+
                 else:
                     excp.lexer_error('Строка не понятна интерпритатору',line)
 
@@ -34,4 +36,3 @@ class lexer:
 
 lex = lexer('code.eq')
 #print(lex.lexer())
-
