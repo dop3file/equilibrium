@@ -4,7 +4,7 @@ import exceptions
 class Int:
 	def __init__(self,value):
 		try:
-			self.value = eval(value)
+			self.value = eval(str(value))
 			x = int(self.value)
 		except Exception as e:
 			print(e)
@@ -16,7 +16,7 @@ class Int:
 class String:
 	def __init__(self,value):
 		try:
-			self.value = value
+			self.value = eval(str(value))
 		except Exception as e:
 			print(e)
 			exceptions.type_string_error('Объект не является строкой')
