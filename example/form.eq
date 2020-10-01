@@ -1,7 +1,6 @@
 write => 'Привет\nЭто программа калькулятор на equilibrium'
 
-int x1 := scan('Привет')
-int x2 := scan()
-int sum := x1 + x2
+string x1 := scan()
+string x2 := scan()
 
-write => sum
+write => x1 + ' ' + x2
