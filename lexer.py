@@ -25,6 +25,9 @@ class lexer:
                 elif line.split(' ')[1] == '=>': #функции
                     self.stack += [{'f_' + line.split(' ')[0] : ''.join(line.split('=>')[1::])[1::]}]
 
+                elif line.startswith('if'):
+                    self.stack += [{'if' : ''.join(line.split(' ')[1::])}]
+
                 else:
                     excp.lexer_error('Строка не понятна интерпритатору',line)
 
@@ -35,4 +38,4 @@ class lexer:
 
 
 lex = lexer('code.eq')
-#print(lex.lexer())
+print(lex.lexer())

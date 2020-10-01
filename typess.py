@@ -1,10 +1,11 @@
 import exceptions
+import parser
 
 
 class Int:
-	def __init__(self,value):
+	def __init__(self,value,variables):
 		try:
-			self.value = eval(str(value))
+			self.value = eval(str(value),variables)
 			x = int(self.value)
 		except Exception as e:
 			print(e)
@@ -14,9 +15,9 @@ class Int:
 		return self.value
 
 class String:
-	def __init__(self,value):
+	def __init__(self,value,variables):
 		try:
-			self.value = eval(str(value))
+			self.value = eval(str(value),variables)
 		except Exception as e:
 			print(e)
 			exceptions.type_string_error('Объект не является строкой')
