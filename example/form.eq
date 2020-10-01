@@ -1,4 +1,4 @@
-write => 'Привет\nЭто программа калькулятор на equilibrium'
+write => 'Привет\nЭто программа анкетирования на equilibrium'
 
 string x1 := scan()
 string x2 := scan()
