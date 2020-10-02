@@ -31,6 +31,8 @@ class Parser:
 						else:
 							value = "'Орёл'"
 
+					if value.replace(' ','').startswith('random('): #рандом
+						value = random.randint(int(eval(str(value.split(',')[0].replace('random(','')),self.variables)),int(eval(str(value.split(',')[1][:-1]),self.variables)))
 
 					if key[0] == 'v': #если переменная
 
