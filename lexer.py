@@ -38,4 +38,4 @@ class lexer:
 
 
 lex = lexer('code.eq')
-print(lex.lexer())
+#print(lex.lexer())

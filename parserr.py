@@ -22,10 +22,15 @@ class Parser:
 						value = value[:-1]
 
 					if value == 'scan()': #ввод данных от пользователя
-						value = input()
+						value = "'" + input() + "'"
 
-					if value.startswith('random('): #рандом
-						value = random.randint(int(value.split(',')[0].replace('random(','')),int(value.split(',')[1].replace(')','')))
+					if value == 'coinflip()':
+						value = random.randint(1,2)
+						if value == 1:
+							value = "'Решка'"
+						else:
+							value = "'Орёл'"
+
 
 					if key[0] == 'v': #если переменная
 
