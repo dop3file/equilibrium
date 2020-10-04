@@ -5,6 +5,7 @@ import exceptions
 import locale
 import time
 import random
+import methods
 
 
 class Parser:
@@ -25,11 +26,7 @@ class Parser:
 						value = "'" + input() + "'"
 
 					if value == 'coinflip()':
-						value = random.randint(1,2)
-						if value == 1:
-							value = "'Решка'"
-						else:
-							value = "'Орёл'"
+						value = methods.coin_flip()
 
 					if value.replace(' ','').startswith('random('): #рандом
 						value = random.randint(int(eval(str(value.split(',')[0].replace('random(','')),self.variables)),int(eval(str(value.split(',')[1][:-1]),self.variables)))

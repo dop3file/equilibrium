@@ -9,13 +9,24 @@ class lexer:
         self.all_code = []
         with open(source,encoding="utf-8") as source:
             for el in source:
-                self.all_code.append(el[0:]) #с помощью шага убираем \n
+                if el[-1] == '\n':
+                    self.all_code.append(el[:-1]) #с помощью шага убираем \n
+                else:
+                    self.all_code.append(el)
         self.stack = []
+
+    def delete_space(self,line):
+        count = 0
+        for el in line:
+            if el == ' ':
+                count+=1
+            else:
+                return line[count::]
 
     def lexer(self):
         ''' Разбиваем на лексемы '''
         for line in self.all_code: #итерирование по строкам
-
+            line = self.delete_space(line)
             try:
                 if line[0] == '>': #комментарии
                     continue
@@ -26,8 +37,9 @@ class lexer:
                     self.stack += [{'f_' + line.split(' ')[0] : ''.join(line.split('=>')[1::])[1::]}]
 
                 elif line.startswith('if'):
-                    self.stack += [{'if' : ''.join(line.split(' ')[1::])}]
+                    index_end = self.all_code.index('}') - 1
 
+                    self.stack += [{'if' : {index_end : line[3:-2]}}]
                 else:
                     excp.lexer_error('Строка не понятна интерпритатору',line)
 
@@ -38,4 +50,4 @@ class lexer:
 
 
 lex = lexer('code.eq')
-#print(lex.lexer())
+print(lex.lexer())
