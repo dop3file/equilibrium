@@ -22,3 +22,6 @@ class ValueError(Excp):
 
 class Parser_Error(Excp):
 	pass
+
+class Type_Error(Excp):
+	pass
