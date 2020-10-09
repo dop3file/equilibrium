@@ -15,10 +15,11 @@ class Parser:
 		self.variables = dict()
 
 	def parser(self):
+		line_count = 1
 		try:
 			for el in self.lexemes:
 				for key,value in el.items():
-
+					value = str(value)
 					if value[-1] == '\n':
 						value = value[:-1]
 
@@ -41,10 +42,29 @@ class Parser:
 					elif key[0] == 'f':
 
 						if key.split('_')[1] == 'write': # функция вывода в консоль
-							print(eval(str(value),self.variables))
+							print(eval(str(value),self.variables),end='')
 
 						elif key.split('_')[1] == 'sleep': #ожидания
 							time.sleep(int(value))
+
+					elif key.startswith('if'):
+						try:
+							if eval(key[3:],self.variables) == False:
+								for elem in range(line_count - 1,len(self.lexemes) - 1):
+									if self.lexemes[elem] == {'end_if': 0}:
+										break
+									else:
+										del self.lexemes[elem]
+						except Exception as e:
+							pass
+
+
+					line_count += 1
+
+
+
+
+
 
 
 		except Exception as e:
