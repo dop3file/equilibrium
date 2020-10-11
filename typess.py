@@ -20,8 +20,6 @@ class Int:
 class String:
 	def __init__(self,value,variables):
 		try:
-			if value[0] != "'":
-				exceptions.type_string_error('Объект не является строкой')
 			self.value = eval(str(value),variables)
 			if type(self.value) is not str:
 				exceptions.Type_Error('Объект не является строкой')

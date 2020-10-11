@@ -25,3 +25,4 @@ class Parser_Error(Excp):
 
 class Type_Error(Excp):
 	pass
+

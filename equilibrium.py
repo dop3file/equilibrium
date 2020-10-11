@@ -5,18 +5,24 @@ import argparse
 cli = argparse.ArgumentParser(description='Equilibrium')
 cli.add_argument("--source", default='code.eq', type=str)
 
-class Equilibrium:
-	''' Основной класс '''
+try:
 
-	def __init__(self,source):
-		self.source = source
+	class Equilibrium:
+		''' Основной класс '''
 
-	def run_code(self):
-		lex = lexer(self.source)
-		pars = parserr.Parser(lex.lexer())
-		pars.parser()
+		def __init__(self,source):
+			self.source = source
 
-args = cli.parse_args()
+		def run_code(self):
+			lex = lexer(self.source)
+			pars = parserr.Parser(lex.lexer())
+			pars.parser()
 
-Eq = Equilibrium(args.source)
-Eq.run_code()
+	args = cli.parse_args()
+
+	Eq = Equilibrium(args.source)
+	Eq.run_code()
+
+except KeyboardInterrupt:
+	print('\n\nПрограмма завершена!')
+	exit()
