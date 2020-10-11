@@ -49,18 +49,36 @@ class Parser:
 
 					elif key.startswith('if'):
 						try:
-							if eval(key[3:],self.variables) == False:
+
+							if eval(value,self.variables) == False:
 								for elem in range(line_count - 1,len(self.lexemes) - 1):
 									if self.lexemes[elem] == {'end_if': 0}:
 										break
 									else:
 										del self.lexemes[elem]
+
+							if eval(value,self.variables):
+								line_end = line_count - 1
+								for elem in range(line_end,len(self.lexemes) - 1):
+									if self.lexemes[elem] == {'end_if': 0}:
+										break
+									else:
+										line_end += 1
+
+								if self.lexemes[line_end + 1] == {'else' : 'else'}:
+									for elem in range(line_end + 2,len(self.lexemes) - 1):
+										if self.lexemes[elem] == {'end_if': 0}:
+											break
+										else:
+											del self.lexemes[elem]
+
 						except Exception as e:
 							pass
 
+					elif key.startswith('else'):
+						pass
 
 					line_count += 1
-
 
 
 
