@@ -2,6 +2,7 @@ from lexer import lexer
 import parserr
 import argparse
 
+
 cli = argparse.ArgumentParser(description='Equilibrium')
 cli.add_argument("--source", default='code.eq', type=str)
 

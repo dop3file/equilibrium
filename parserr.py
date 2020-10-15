@@ -33,9 +33,10 @@ class Parser:
 						value = methods.random_int(value,self.variables)
 
 					if key[0] == 'v': #если переменная
-
 						if key.split('_')[1] == 'string': # тип данных
-							self.variables[key.split('_')[2]] = typess.String("'" + value + "'",self.variables).return_value()
+							if value[0] != "'" and value[-1] != "'":
+								value = "'" + str(value) + "'"
+							self.variables[key.split('_')[2]] = typess.String(value,self.variables).return_value()
 						elif key.split('_')[1] == 'int':
 							self.variables[key.split('_')[2]] = typess.Int(value,self.variables).return_value()
 
@@ -47,11 +48,8 @@ class Parser:
 						elif key.split('_')[1] == 'sleep': #ожидания
 							methods.sleep(value)
 
-
-
 					elif key.startswith('if'):
 						try:
-
 							if eval(value,self.variables) == False: #если условия неверно
 								for elem in range(line_count - 1,len(self.lexemes) - 1): #проходимся по ифу
 									if self.lexemes[elem] == {'end_if': 0}: #если закончился останавливаем цикл
@@ -69,7 +67,7 @@ class Parser:
 
 								if self.lexemes[line_end + 1] == {'else' : 'else'}: # если после if идёт else
 									for elem in range(line_end + 2,len(self.lexemes) - 1):
-										if self.lexemes[elem] == {'end_if': 0}:
+										if self.lexemes[elem] == {'end_if': 0}: 
 											break
 										else:
 											del self.lexemes[elem]
@@ -81,10 +79,6 @@ class Parser:
 						pass
 
 					line_count += 1
-
-
-
-
 
 
 		except Exception as e:

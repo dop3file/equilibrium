@@ -21,7 +21,6 @@ class lexer:
         line_count = 0
         for line in self.all_code: #итерирование по строкам
             try:
-
                 line = line.lstrip(' ')
                 if line[0] == '>': #комментарии
                     continue
@@ -29,7 +28,7 @@ class lexer:
                 elif line.startswith('else'):
                     self.stack += [{'else' : 'else'}]
 
-                elif line.replace(' ','') == '}':
+                elif line.replace(' ','') == '}': 
                     self.stack += [{'end_if' : 0}]
 
                 elif line.split(' ')[2] == ':=': #переменные
@@ -40,6 +39,10 @@ class lexer:
 
                 elif line.startswith('if'):
                     self.stack += [{'if' : line[3:-2]}]
+
+                elif line.startswith('for'):
+                    parametrs = f'{line.split(',')}' #дописать
+                    self.stack += [{'for' : parametrs}]
 
 
                 else:
