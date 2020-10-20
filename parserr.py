@@ -20,6 +20,7 @@ class Parser:
 			for el in self.lexemes:
 				for key,value in el.items():
 					value = str(value)
+
 					if value[-1] == '\n':
 						value = value[:-1]
 
@@ -47,6 +48,10 @@ class Parser:
 
 						elif key.split('_')[1] == 'sleep': #ожидания
 							methods.sleep(value)
+
+					if key.startswith('for'): #циклы
+						name_variable = key.split(' ')[0][3::]
+						print(name_variable)
 
 					elif key.startswith('if'):
 						try:

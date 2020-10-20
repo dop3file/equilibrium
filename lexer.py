@@ -22,6 +22,7 @@ class lexer:
         for line in self.all_code: #итерирование по строкам
             try:
                 line = line.lstrip(' ')
+                line = line.rstrip(' ')
                 if line[0] == '>': #комментарии
                     continue
 
@@ -38,12 +39,14 @@ class lexer:
                     self.stack += [{'f_' + line.split(' ')[0] : ''.join(line.split('=>')[1::])[1::]}]
 
                 elif line.startswith('if'):
-                    self.stack += [{'if' : line[3:-2]}]
+                    self.stack += [{'if' : line[3:-1]}]
+
+                elif line.startswith('range'):
+                    self.stack += [{'range' : line[6:-2]}]
 
                 elif line.startswith('for'):
-                    parametrs = f'{line.split(',')}' #дописать
-                    self.stack += [{'for' : parametrs}]
-
+                    parametrs = line.split(',')[0] + ' ' + line.split(',')[1] + ' ' + line.split(',')[2]
+                    self.stack += [{'for_' + line.split(',')[0][5::] + ' ' + line.split(',')[1] : line.split(',')[2]}]
 
                 else:
                     excp.lexer_error('Строка не понятна интерпритатору',line)
