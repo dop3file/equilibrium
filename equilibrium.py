@@ -16,8 +16,8 @@ try:
 
 		def run_code(self):
 			lex = lexer(self.source)
-			pars = parserr.Parser(lex.lexer())
-			pars.parser()
+			pars = parserr.Parser()
+			pars.parser(lex.lexer())
 
 	args = cli.parse_args()
 
