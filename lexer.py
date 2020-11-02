@@ -46,7 +46,7 @@ class lexer:
 
                 elif line.startswith('for'):
                     parametrs = line.split(',')[0] + ' ' + line.split(',')[1] + ' ' + line.split(',')[2]
-                    self.stack += [{'for_' + line.split(',')[0][5::] + ' ' + line.split(',')[1] : line.split(',')[2]}]
+                    self.stack += [{'for_' + line.split(',')[0][5::] + ' ' + line.split(',')[1] : line.split(',')[2][:-3]}]
 
                 else:
                     excp.lexer_error('Строка не понятна интерпритатору',line)

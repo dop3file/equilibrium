@@ -50,10 +50,30 @@ class Parser:
 							elif key.split('_')[1] == 'sleep': #ожидания
 								methods.sleep(value)
 
-						# TODO
 						if key.startswith('for'): #циклы
-							name_variable = key.split(' ')[0][3::]
-							print(name_variable)
+							name_variable = key.split(' ')[0][4::].split('=')[0]
+							value_variable = key.split(' ')[0][4::].split('=')[1]
+							condition = ''.join(key.split(' ')[1::])
+							step = value
+
+							line_start,line_end = line_count,line_count
+							for line in range(line_start,len(lexemes) - 1):
+								if lexemes[line] == {'end_if' : 0}:
+									break
+								line_end += 1
+
+							mas = []
+
+							for line in range(line_start,line_end):
+								mas.append(lexemes[line])
+							self.variables[name_variable] = int(value_variable)
+							while eval(condition,self.variables) == False:
+								self.parser(mas)
+								if step[0] == '+':
+									self.variables[name_variable] -= int(step)
+								else:
+									self.variables[name_variable] += int(step)
+
 
 						if key.startswith('range'):
 							line_start,line_end = line_count,line_count
