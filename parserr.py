@@ -79,11 +79,12 @@ class Parser:
 
 							self.variables[name_variable] = int(value_variable)
 							while eval(condition,self.variables):
-								self.parser(list_executable_code)
 								if step[0] == '+':
 									self.variables[name_variable] += int(step)
 								elif step[0] == '-':
 									self.variables[name_variable] -= int(step)
+								self.parser(list_executable_code)
+
 
 
 						if key.startswith('range'):
@@ -93,27 +94,21 @@ class Parser:
 
 						elif key.startswith('if'):
 							try:
-								if eval(value,self.variables) == False: #если условия неверно
-									for elem in range(line_count - 1,len(lexemes) - 1): #проходимся по ифу
-										if self.lexemes[elem] == {'end_if': 0}: #если закончился останавливаем цикл
+								if not eval(value,self.variables): #если условия неверно
+									for elem in range(line_count - 1,len(lexemes)): #проходимся по ифу
+										if lexemes[elem] == {'end_if': 0}: #если закончился останавливаем цикл
 											break
 										else:
-											del self.lexemes[elem] #иначе удаляем из лексем
+											del lexemes[elem] #иначе удаляем из лексем
 
-								if eval(value,self.variables):
+								elif eval(value,self.variables):
 									line_end = line_count - 1
 									for elem in range(line_end,len(lexemes) - 1): #находим лайн конца цикла
-										if self.lexemes[elem] == {'end_if': 0}:
+										if lexemes[elem] == {'end_if': 0}:
 											break
 										else:
 											line_end += 1 
 
-									if lexemes[line_end + 1] == {'else' : 'else'}: # если после if идёт else
-										for elem in range(line_end + 2,len(lexemes) - 1):
-											if self.lexemes[elem] == {'end_if': 0}: 
-												break
-											else:
-												del lexemes[elem]
 
 							except Exception as e:
 								pass
