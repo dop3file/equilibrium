@@ -13,6 +13,25 @@ class Parser:
 	def __init__(self):
 		self.variables = dict()
 
+
+	def add_queue(self,lexemes,line_start):
+		'''
+		Принимает список лексем и формирует список для выполнения команд
+		'''
+		line_start,line_end = line_start,line_start
+ 		
+		for line in range(line_start,len(lexemes) - 1):
+			if lexemes[line] == {'end_if' : 0}:
+				break
+			line_end += 1
+		list_executable_code = []
+		for line in range(line_start,line_end):
+			list_executable_code.append(lexemes[line])
+
+		return list_executable_code
+
+
+
 	def parser(self,lexemes,tick=1):
 		line_count = 1
 		lexemes = lexemes
@@ -56,19 +75,11 @@ class Parser:
 							condition = ''.join(key.split(' ')[1::])
 							step = value
 
-							line_start,line_end = line_count,line_count
-							for line in range(line_start,len(lexemes) - 1):
-								if lexemes[line] == {'end_if' : 0}:
-									break
-								line_end += 1
+							list_executable_code = self.add_queue(lexemes,line_count)
 
-							mas = []
-
-							for line in range(line_start,line_end):
-								mas.append(lexemes[line])
 							self.variables[name_variable] = int(value_variable)
 							while eval(condition,self.variables) == False:
-								self.parser(mas)
+								self.parser(list_executable_code)
 								if step[0] == '+':
 									self.variables[name_variable] -= int(step)
 								else:
@@ -76,15 +87,9 @@ class Parser:
 
 
 						if key.startswith('range'):
-							line_start,line_end = line_count,line_count
-							for line in range(line_start,len(lexemes) - 1):
-								if lexemes[line] == {'end_if' : 0}:
-									break
-								line_end += 1
-							mas = []
-							for line in range(line_start,line_end):
-								mas.append(lexemes[line])
-							Parser.parser(self,lexemes=mas,tick=int(value))
+							list_executable_code = self.add_queue(lexemes,line_count)
+							
+							parser.parser(self,lexemes=list_executable_code,tick=int(value))
 
 						elif key.startswith('if'):
 							try:
