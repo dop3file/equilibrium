@@ -20,6 +20,7 @@ try:
 			pars.parser(lex.lexer())
 
 	args = cli.parse_args()
+
 	Eq = Equilibrium(args.source)
 	Eq.run_code()
 
