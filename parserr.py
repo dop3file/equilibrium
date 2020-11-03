@@ -79,18 +79,18 @@ class Parser:
 
 							self.variables[name_variable] = int(value_variable)
 							while eval(condition,self.variables):
+								self.parser(list_executable_code)
 								if step[0] == '+':
 									self.variables[name_variable] += int(step)
 								elif step[0] == '-':
 									self.variables[name_variable] -= int(step)
-								self.parser(list_executable_code)
 
 
 
 						if key.startswith('range'):
 							list_executable_code = self.add_queue(lexemes,line_count)
 							
-							parser.parser(self,lexemes=list_executable_code,tick=int(value))
+							self.parser(list_executable_code,int(value))
 
 						elif key.startswith('if'):
 							try:

@@ -36,17 +36,17 @@ class lexer:
                     self.stack += [{'v_' + line.split(' ')[0] + '_' + line.split(' ')[1] : ''.join(line.split(':=')[1::])[1::]}]
 
                 elif line.split(' ')[1] == '=>': #функции
-                    self.stack += [{'f_' + line.split(' ')[0] : ''.join(line.split('=>')[1::])[1::]}]
+                    self.stack += [{'f_' + line.split('=>')[0].replace(' ','')  : ''.join(line.split('=>')[1::])[1::]}]
 
                 elif line.startswith('if'):
                     self.stack += [{'if' : line[3:-1]}]
 
                 elif line.startswith('range'):
-                    self.stack += [{'range' : line[6:-2]}]
+                    self.stack += [{'range' : line.split('range')[1].replace('{','').replace(' ','')}]
 
                 elif line.startswith('for'):
-                    parametrs = line.split(',')[0] + ' ' + line.split(',')[1] + ' ' + line.split(',')[2]
-                    self.stack += [{'for_' + line.split(',')[0][5::] + ' ' + line.split(',')[1] : line.split(',')[2][:-3]}]
+                    self.stack += [{'for_' + line.split('for')[1].split(',')[0].replace('(','').replace(' ','') + ' ' + line.split(',')[1] : line.split(',')[2].split(')')[0]}]
+
 
                 else:
                     excp.lexer_error('Строка не понятна интерпритатору',line)
@@ -59,4 +59,4 @@ class lexer:
         return self.stack
 
 lex = lexer('code.eq')
-#print(lex.lexer())
+print(lex.lexer())
