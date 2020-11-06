@@ -68,8 +68,21 @@ class Parser:
 
 							elif key.split('_')[1] == 'sleep': #ожидания
 								methods.sleep(value)
+						elif key.startswith('def_'):
+							self.parser(self.variables[value])
 
-						if key.startswith('for'): #циклы
+						elif key.startswith('def'):
+							list_executable_code = self.add_queue(lexemes,line_count)
+
+							self.variables[value] = list_executable_code
+
+							for elem in range(line_count - 1,len(lexemes)): #проходимся по ифу
+								if lexemes[elem] == {'end_if': 0}: #если закончился останавливаем цикл
+									break
+								else:
+									del lexemes[elem] #иначе удаляем из лексем
+
+						elif key.startswith('for'): #циклы
 							name_variable = key.split(' ')[0][4::].split('=')[0]
 							value_variable = key.split(' ')[0][4::].split('=')[1]
 							condition = ''.join(key.split(' ')[1::])
@@ -80,28 +93,22 @@ class Parser:
 							self.variables[name_variable] = int(value_variable)
 							while eval(condition,self.variables):
 								self.parser(list_executable_code)
-								if step[0] == '+':
-									self.variables[name_variable] += int(step)
-								elif step[0] == '-':
-									self.variables[name_variable] -= int(step)
-
-
-
-						if key.startswith('range'):
+								self.variables[name_variable] += int(step)
+								 
+						elif key.startswith('range'):
 							list_executable_code = self.add_queue(lexemes,line_count)
 							
 							self.parser(list_executable_code,int(value))
 
 						elif key.startswith('if'):
-							try:
-								if not eval(value,self.variables): #если условия неверно
-									for elem in range(line_count - 1,len(lexemes)): #проходимся по ифу
-										if lexemes[elem] == {'end_if': 0}: #если закончился останавливаем цикл
-											break
-										else:
-											del lexemes[elem] #иначе удаляем из лексем
+							if not eval(value,self.variables): #если условия неверно
+								for elem in range(line_count - 1,len(lexemes)): #проходимся по ифу
+									if lexemes[elem] == {'end_if': 0}: #если закончился останавливаем цикл
+										break
+									else:
+										del lexemes[elem] #иначе удаляем из лексем
 
-								elif eval(value,self.variables):
+							elif eval(value,self.variables):
 									line_end = line_count - 1
 									for elem in range(line_end,len(lexemes) - 1): #находим лайн конца цикла
 										if lexemes[elem] == {'end_if': 0}:
@@ -109,9 +116,15 @@ class Parser:
 										else:
 											line_end += 1 
 
+									if lexemes[line_end + 1] == {'else' : 'else'}: # если после if идёт else
+										for elem in range(line_end + 2,len(lexemes) - 1):
+											if lexemes[elem] == {'end_if': 0}: 
+												break
+											else:
+												del lexemes[elem]
 
-							except Exception as e:
-								pass
+
+
 
 						elif key.startswith('else'):
 							pass

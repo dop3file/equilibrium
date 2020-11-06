@@ -18,7 +18,6 @@ class lexer:
 
     def lexer(self):
         ''' Разбиваем на лексемы '''
-        line_count = 0
         for line in self.all_code: #итерирование по строкам
             try:
                 line = line.lstrip(' ')
@@ -31,6 +30,9 @@ class lexer:
 
                 elif line.replace(' ','') == '}': 
                     self.stack += [{'end_if' : 0}]
+
+                elif line.startswith('def_'):
+                    self.stack += [{'def_' : line[4:].replace(' ','')}]
 
                 elif line.split(' ')[2] == ':=': #переменные
                     self.stack += [{'v_' + line.split(' ')[0] + '_' + line.split(' ')[1] : ''.join(line.split(':=')[1::])[1::]}]
@@ -47,11 +49,11 @@ class lexer:
                 elif line.startswith('for'):
                     self.stack += [{'for_' + line.split('for')[1].split(',')[0].replace('(','').replace(' ','') + ' ' + line.split(',')[1] : line.split(',')[2].split(')')[0]}]
 
+                elif line.startswith('def'):
+                    self.stack += [{'def' : line.split(' ')[1].replace('{','')}]
 
                 else:
                     excp.lexer_error('Строка не понятна интерпритатору',line)
-
-                line_count += 1
 
             except IndexError:
                 pass
@@ -59,4 +61,4 @@ class lexer:
         return self.stack
 
 lex = lexer('code.eq')
-print(lex.lexer())
+#print(lex.lexer()) #FOR DEBUG
