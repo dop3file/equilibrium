@@ -26,3 +26,17 @@ class String:
 
 	def return_value(self):
 		return str(self.value)
+
+
+class Array:
+	def __init__(self,value,variables):
+		try:
+
+			self.value = eval(value,variables)
+
+		except Exception as e:
+			print(e)
+			exceptions.type_error('Объект не является массивом')
+
+	def return_value(self):
+		return self.value

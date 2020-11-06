@@ -61,6 +61,9 @@ class Parser:
 							elif key.split('_')[1] == 'int':
 								self.variables[key.split('_')[2]] = typess.Int(value,self.variables).return_value()
 
+							elif key.split('_')[1] == 'array':
+								self.variables[key.split('_')[2]] = typess.Array(value,self.variables).return_value()
+
 						elif key[0] == 'f':
 
 							if key.split('_')[1] == 'write': # функция вывода в консоль
