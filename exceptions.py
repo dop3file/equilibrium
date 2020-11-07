@@ -17,7 +17,7 @@ class type_string_error(Excp):
 class type_error(Excp):
 	pass
 
-class ValueError(Excp):
+class Value_Error(Excp):
 	pass
 
 class Parser_Error(Excp):
@@ -25,4 +25,5 @@ class Parser_Error(Excp):
 
 class Type_Error(Excp):
 	pass
-
+class Index_Error(Excp):
+	pass

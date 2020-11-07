@@ -20,15 +20,15 @@ class lexer:
         ''' Разбиваем на лексемы '''
         for line in self.all_code: #итерирование по строкам
             try:
-                line = line.lstrip(' ')
-                line = line.rstrip(' ')
+                line = line.lstrip(' ').rstrip(' ')
+
                 if line[0] == '>': #комментарии
                     continue
 
                 elif line.startswith('else'):
                     self.stack += [{'else' : 'else'}]
 
-                elif line.replace(' ','') == '}': 
+                elif line.replace(' ','') == '}':
                     self.stack += [{'end_if' : 0}]
 
                 elif line.startswith('def_'):

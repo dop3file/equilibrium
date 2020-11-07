@@ -7,7 +7,7 @@ def coin_flip():
 
     if value == 1:
         return "'Решка'"
-    
+
     return "'Орёл'"
 
 
@@ -20,4 +20,4 @@ def sleep(value):
 
 
 def random_int(value,variables):
-	return random.randint(int(eval(str(value.split(',')[0].replace('random(','')),variables)),int(eval(str(value.split(',')[1][:-1]),variables)))
+	return random.randint(int(eval(str(value.split(',')[0].replace('random','').replace('(','')),variables)),int(eval(str(value.split(',')[1][:-1]),variables)))

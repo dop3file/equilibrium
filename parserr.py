@@ -19,7 +19,7 @@ class Parser:
 		Принимает список лексем и формирует список для выполнения команд
 		'''
 		line_start,line_end = line_start,line_start
- 		
+
 		for line in range(line_start,len(lexemes) - 1):
 			if lexemes[line] == {'end_if' : 0}:
 				break
@@ -44,13 +44,13 @@ class Parser:
 						if value[-1] == '\n':
 							value = value[:-1]
 
-						if value == 'scan()': #ввод данных от пользователя
+						if value.startswith('scan'): #ввод данных от пользователя
 							value = input()
 
 						if value == 'coinflip()':
 							value = methods.coin_flip()
 
-						if value.replace(' ','').startswith('random('): #рандом
+						if value.replace(' ','').startswith('random'): #рандом
 							value = methods.random_int(value,self.variables)
 
 						if key[0] == 'v': #если переменная
@@ -97,10 +97,10 @@ class Parser:
 							while eval(condition,self.variables):
 								self.parser(list_executable_code)
 								self.variables[name_variable] += int(step)
-								 
+
 						elif key.startswith('range'):
 							list_executable_code = self.add_queue(lexemes,line_count)
-							
+
 							self.parser(list_executable_code,int(value))
 
 						elif key.startswith('if'):
@@ -117,11 +117,11 @@ class Parser:
 										if lexemes[elem] == {'end_if': 0}:
 											break
 										else:
-											line_end += 1 
+											line_end += 1
 
 									if lexemes[line_end + 1] == {'else' : 'else'}: # если после if идёт else
 										for elem in range(line_end + 2,len(lexemes) - 1):
-											if lexemes[elem] == {'end_if': 0}: 
+											if lexemes[elem] == {'end_if': 0}:
 												break
 											else:
 												del lexemes[elem]
@@ -135,6 +135,12 @@ class Parser:
 						line_count += 1
 
 
+		except ValueError as e:
+			exceptions.Value_Error('Ошибка значения')
+		except TypeError as e:
+			exceptions.Type_Error('Ошибка типа данных')
+		except IndexError as e:
+			exceptions.Index_Error('Ошибка индекса')
 		except Exception as e:
 			print(e)
 			exceptions.Parser_Error('Ошибка парсера')
