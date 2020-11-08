@@ -32,7 +32,7 @@ class lexer:
                     self.stack += [{'end_if' : 0}]
 
                 elif line.startswith('def_'):
-                    self.stack += [{'def_' : line[4:].replace(' ','')}]
+                    self.stack += [{'def_' : line[4:].replace(' ','').replace('{','')}]
 
                 elif line.split(' ')[2] == ':=': #переменные
                     self.stack += [{'v_' + line.split(' ')[0] + '_' + line.split(' ')[1] : ''.join(line.split(':=')[1::])[1::]}]
@@ -50,7 +50,7 @@ class lexer:
                     self.stack += [{'for_' + line.split('for')[1].split(',')[0].replace('(','').replace(' ','') + ' ' + line.split(',')[1] : line.split(',')[2].split(')')[0]}]
 
                 elif line.startswith('def'):
-                    self.stack += [{'def' : line.split(' ')[1].replace('{','')}]
+                    self.stack += [{'def' : line.split(' ')[1]}]
 
                 else:
                     excp.lexer_error('Строка не понятна интерпритатору',line)
@@ -61,4 +61,4 @@ class lexer:
         return self.stack
 
 lex = lexer('code.eq')
-#print(lex.lexer()) #FOR DEBUG
+print(lex.lexer()) #FOR DEBUG
