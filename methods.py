@@ -5,10 +5,7 @@ import time
 def coin_flip():
     value = random.randint(1,2)
 
-    if value == 1:
-        return "'Решка'"
-
-    return "'Орёл'"
+    return 'Решка' if value == 1 else 'Орёл'
 
 
 def write(value,variables):
@@ -20,4 +17,5 @@ def sleep(value):
 
 
 def random_int(value,variables):
-	return random.randint(int(eval(str(value.split(',')[0].replace('random','').replace('(','')),variables)),int(eval(str(value.split(',')[1][:-1]),variables)))
+	return random.randint(int(eval(str(value.split(',')[0].replace('random','').replace('(','')),variables)),
+                          int(eval(str(value.split(',')[1][:-1]),variables)))

@@ -1,4 +1,4 @@
-from lexer import lexer
+from lexer import Lexer
 import parserr
 import argparse
 
@@ -9,13 +9,13 @@ cli.add_argument("--source", default='code.eq', type=str)
 try:
 
 	class Equilibrium:
-		''' Основной класс '''
+		""" Основной класс """
 
 		def __init__(self,source):
 			self.source = source
 
 		def run_code(self):
-			lex = lexer(self.source)
+			lex = Lexer(self.source)
 			pars = parserr.Parser()
 			pars.parser(lex.lexer())
 
@@ -25,5 +25,5 @@ try:
 	Eq.run_code()
 
 except KeyboardInterrupt:
-	print('\n\nПрограмма завершена!')
+	print('\nПрограмма завершена!')
 	exit()

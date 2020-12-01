@@ -1,17 +1,14 @@
-from lexer import lexer
-import time
 import typess
 import exceptions
-import locale
-import time
-import random
 import methods
+
 
 
 class Parser:
 
 	def __init__(self):
 		self.variables = dict()
+
 
 	def _for(self, lexemes, key, value, line_count):
 		name_variable = key.split(' ')[0][4::].split('=')[0]
@@ -25,6 +22,7 @@ class Parser:
 		while eval(condition, self.variables):
 			self.parser(list_executable_code)
 			self.variables[name_variable] += int(step)
+
 
 	def add_queue(self, lexemes, line_start):
 		'''
@@ -44,6 +42,7 @@ class Parser:
 			list_executable_code.append(lexemes[line])
 
 		return list_executable_code
+
 
 	def parser(self, lexemes, tick=1):
 		line_count = 1
@@ -141,6 +140,8 @@ class Parser:
 			exceptions.Type_Error('Ошибка типа данных')
 		except IndexError:
 			exceptions.Index_Error('Ошибка индекса')
+		except SyntaxError:
+			exceptions.Syntax_Error('Ошибка синтаксиса')
 		except Exception as e:
 			print(e)
 			exceptions.Parser_Error('Ошибка парсера')
