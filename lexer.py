@@ -35,7 +35,7 @@ class Lexer:
                     self.stack += [{'def_' : line[4:].replace(' ','').replace('{','')}]
 
                 elif line.split(' ')[2] == ':=': # переменные
-                    if line.split(' ')[1].find('+'):
+                    if line.split(' ')[1].find('+') != -1:
                         self.stack += [
                             {'v_' + line.split(' ')[0] + '_' + line.split(' ')[1].split('+')[1]: ''.join(line.split(':=')[1::])[1::]}]
                     else:
