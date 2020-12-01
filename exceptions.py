@@ -16,8 +16,12 @@ class Parser_Error(Excp):
 
 class Type_Error(Excp):
 	pass
+
 class Index_Error(Excp):
 	pass
 
 class Syntax_Error(Excp):
+	pass
+
+class Key_Error(Excp):
 	pass

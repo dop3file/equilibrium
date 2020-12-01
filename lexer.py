@@ -20,7 +20,7 @@ class Lexer:
         """ Разбиваем на лексемы """
         for line in self.all_code: # итерирование по строкам
             try:
-                line = line.lstrip(' ').rstrip(' ')
+                line = line.lstrip(' ').rstrip(' ').lstrip('\t').rstrip('\t')
 
                 if line[0] == '>': # комментарии
                     continue
