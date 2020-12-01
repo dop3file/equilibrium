@@ -2,6 +2,32 @@ import random
 import time
 
 
+def choose_func(value, variables):
+    if value.startswith('scan'):  # ввод данных от пользователя
+        value = input()
+
+    if value == 'coinflip()':
+        value = coin_flip()
+
+    if value == 'time_day()':
+        value = get_time_minutes()
+
+    if value == 'time_month()':
+        value = get_time_date()
+
+    if value == 'time_unix()':
+        value = get_time_unix()
+
+    if value.replace(' ', '').startswith('random'):  # рандом
+        value = random_int(value, variables)
+
+    else:
+        return value
+
+    return value
+
+
+
 def coin_flip():
     value = random.randint(1,2)
 

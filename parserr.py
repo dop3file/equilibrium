@@ -51,28 +51,8 @@ class Parser:
 			for tick in range(tick):
 				for el in lexemes:
 					for key, value in el.items():
-						value = str(value)
 
-						if value[-1] == '\n':
-							value = value[:-1]
-
-						if value.startswith('scan'):  # ввод данных от пользователя
-							value = input()
-
-						if value == 'coinflip()':
-							value = methods.coin_flip()
-
-						if value == 'time_day()':
-							value = methods.get_time_minutes()
-
-						if value == 'time_month()':
-							value = methods.get_time_date()
-
-						if value == 'time_unix()':
-							value = methods.get_time_unix()
-
-						if value.replace(' ', '').startswith('random'):  # рандом
-							value = methods.random_int(value, self.variables)
+						value = methods.choose_func(value, self.variables)
 
 						if key[0] == 'v':  # если переменная
 							if key.split('_')[1] == 'string':  # тип данных
