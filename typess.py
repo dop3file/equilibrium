@@ -1,5 +1,4 @@
 import exceptions
-import parser
 
 
 class Int:
@@ -29,8 +28,7 @@ class String:
 class Array:
 	def __init__(self,value,variables):
 		try:
-
-			self.value = eval(value,variables)
+			self.value = eval(str(value),variables)
 
 		except Exception as e:
 			print(e)

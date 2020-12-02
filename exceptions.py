@@ -25,3 +25,6 @@ class Syntax_Error(Excp):
 
 class Key_Error(Excp):
 	pass
+
+class File_Exists(Excp):
+	pass

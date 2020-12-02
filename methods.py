@@ -1,25 +1,39 @@
 import random
-import time
+import library.time as time
+from library.files import Files
+import typess
+
+
+files = Files()
+variables = 0
+
+def get_arguments(value):
+    value = value.rstrip().lstrip()[1:-1]
+    return value.split(",")
 
 
 def choose_func(value, variables):
     if value.startswith('scan'):  # ввод данных от пользователя
         value = input()
 
-    if value == 'coinflip()':
+    elif value == 'coinflip()':
         value = coin_flip()
 
-    if value == 'time_day()':
-        value = get_time_minutes()
+    elif value == 'time_day()':
+        value = time.get_time_minutes()
 
-    if value == 'time_month()':
-        value = get_time_date()
+    elif value == 'time_month()':
+        value = time.get_time_date()
 
-    if value == 'time_unix()':
-        value = get_time_unix()
+    elif value == 'time_unix()':
+        value = time.get_time_unix()
 
-    if value.replace(' ', '').startswith('random'):  # рандом
+    elif value.replace(' ', '').startswith('random'):  # рандом
         value = random_int(value, variables)
+
+    elif value.startswith('rfile()'):
+        return typess.Array(files.read_file(), variables).return_value()
+
 
     else:
         return value
@@ -46,14 +60,13 @@ def random_int(value,variables):
     return random.randint(int(eval(str(value.split(',')[0].replace('random','').replace('(','')),variables)),
                           int(eval(str(value.split(',')[1][:-1]),variables)))
 
-def get_time_minutes():
-    return "'" + time.strftime("%H:%M", time.localtime()) + "'"
 
-def get_time_date():
-    return "'" + time.strftime("%x", time.localtime()) + "'"
+def cfile(value):
+    files.create_file(value)
 
-def get_time_unix():
-    return "'" + str(round(time.time())) + "'"
+def wfile(value):
+    files.write_file(value)
+
 
 
 

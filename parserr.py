@@ -51,7 +51,7 @@ class Parser:
 			for tick in range(tick):
 				for el in lexemes:
 					for key, value in el.items():
-
+						methods.variables = self.variables
 						value = methods.choose_func(value, self.variables)
 
 						if key[0] == 'v':  # если переменная
@@ -72,6 +72,12 @@ class Parser:
 
 							elif key.split('_')[1] == 'sleep':  # ожидания
 								methods.sleep(value)
+
+							elif key.split('_')[1] == 'cfile':
+								methods.cfile(value)
+
+							elif key.split('_')[1] == 'wfile':
+								methods.wfile(value)
 						
 						if key.startswith('def_'):
 							self.parser(self.variables[value])
@@ -125,12 +131,11 @@ class Parser:
 
 		except ValueError:
 			exceptions.Value_Error('Ошибка значения')
-		except TypeError:
+		except TypeError as e:
 			exceptions.Type_Error('Ошибка типа данных')
 		except IndexError:
 			exceptions.Index_Error('Ошибка индекса')
-		except SyntaxError as e:
-			print(e)
+		except SyntaxError:
 			exceptions.Syntax_Error('Ошибка синтаксиса')
 		except KeyError:
 			exceptions.Key_Error('Ошибка key -> value')
