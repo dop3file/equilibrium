@@ -67,6 +67,12 @@ def cfile(value):
 def wfile(value):
     files.write_file(value)
 
+def dfile(value):
+    files.delete_file(value)
+
+def ufile(value):
+    files.update_file(line=get_arguments(value)[0],value_for_edit=get_arguments(value)[1])
+
 
 
 

@@ -28,3 +28,12 @@ class Key_Error(Excp):
 
 class File_Exists(Excp):
 	pass
+
+class OS_Error(Excp):
+	pass
+
+class Zero_Error(Excp):
+	pass
+
+class File_Connection(Excp):
+	pass

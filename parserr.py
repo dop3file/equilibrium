@@ -78,6 +78,12 @@ class Parser:
 
 							elif key.split('_')[1] == 'wfile':
 								methods.wfile(value)
+
+							elif key.split('_')[1] == 'dfile':
+								methods.dfile(value)
+
+							elif key.split('_')[1] == 'ufile':
+								methods.ufile(value)
 						
 						if key.startswith('def_'):
 							self.parser(self.variables[value])
@@ -132,13 +138,21 @@ class Parser:
 		except ValueError:
 			exceptions.Value_Error('Ошибка значения')
 		except TypeError as e:
+			print(e)
 			exceptions.Type_Error('Ошибка типа данных')
-		except IndexError:
+		except IndexError as e:
+			print(e)
 			exceptions.Index_Error('Ошибка индекса')
 		except SyntaxError:
 			exceptions.Syntax_Error('Ошибка синтаксиса')
 		except KeyError:
 			exceptions.Key_Error('Ошибка key -> value')
+		except FileExistsError or FileNotFoundError:
+			exceptions.File_Exists('Ошибка отсуствия файла')
+		except OSError:
+			exceptions.OS_Error('Ошибка ОС')
+		except ZeroDivisionError:
+			exceptions.Zero_Error('Ай ай ай, на 0 делить нельзя')
 		except Exception as e:
 			print(e)
 			exceptions.Parser_Error('Ошибка парсера')
