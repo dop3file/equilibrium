@@ -1,13 +1,13 @@
 import exceptions
 
 
-def choose_type(value, vars, typess):
-	if typess == 'string' and value[0] == "'" and value[-1] == "'":
-		return String(value, vars).return_value()
-	elif typess == 'int' and isinstance(value, int):
-		return Int(value, vars).return_value()
-	elif typess == 'array' and isinstance(list(value), list):
-		return Array(value, vars).return_value()
+def choose_type(value, variables, types):
+	if types == 'string':
+		return String(value, variables).return_value()
+	elif types == 'int':
+		return Int(value, variables).return_value()
+	elif types == 'array':
+		return Array(value, variables).return_value()
 	else:
 		return value
 
@@ -15,11 +15,8 @@ def choose_type(value, vars, typess):
 class Int:
 	def __init__(self,value,variables):
 		try:
-
-			self.value = eval(str(value),variables)
-			x = int(self.value)
-
-		except Exception as e:
+			self.value = int(eval(value,variables))
+		except TypeError as e:
 			exceptions.Type_Error('Объект не является числом')
 
 	def return_value(self):
@@ -28,8 +25,8 @@ class Int:
 class String:
 	def __init__(self,value,variables):
 		try:
-			self.value = eval(str(value),variables)
-		except Exception as e:
+			self.value = str(eval(value,variables))
+		except TypeError as e:
 			exceptions.Type_Error('Объект не является строкой')
 
 	def return_value(self):
@@ -41,8 +38,7 @@ class Array:
 		try:
 			self.value = eval(str(value),variables)
 
-		except Exception as e:
-			print(e)
+		except TypeError as e:
 			exceptions.Type_Error('Объект не является массивом')
 
 	def return_value(self):

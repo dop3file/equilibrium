@@ -37,3 +37,6 @@ class Zero_Error(Excp):
 
 class File_Connection(Excp):
 	pass
+
+class Name_Error(Excp):
+	pass

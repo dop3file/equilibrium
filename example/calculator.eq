@@ -2,10 +2,10 @@ write => 'Привет!\nЭто программа калькулятор на e
 
 write => 'Напишите первое число '
 
-string x1 := scan()
+int x1 := scan()
 
 write => 'Напишите второе число '
 
-string x2 := scan()
+int x2 := scan()
 
 write => x1 + x2

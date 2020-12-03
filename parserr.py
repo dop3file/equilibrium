@@ -51,6 +51,7 @@ class Parser:
 			for tick in range(tick):
 				for el in lexemes:
 					for key, value in el.items():
+						value = str(value)
 						methods.variables = self._variables
 						value = methods.choose_func(value, self._variables)
 
@@ -158,6 +159,8 @@ class Parser:
 			exceptions.OS_Error('Ошибка ОС')
 		except ZeroDivisionError:
 			exceptions.Zero_Error('Ай ай ай, на 0 делить нельзя')
+		except NameError as e:
+			exceptions.Name_Error('Переменной с таким именем не найдено')
 		except Exception as e:
 			print(e)
 			exceptions.Parser_Error('Ошибка парсера')
