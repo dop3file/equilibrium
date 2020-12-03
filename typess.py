@@ -1,6 +1,17 @@
 import exceptions
 
 
+def choose_type(value, vars, typess):
+	if typess == 'string' and value[0] == "'" and value[-1] == "'":
+		return String(value, vars).return_value()
+	elif typess == 'int' and isinstance(value, int):
+		return Int(value, vars).return_value()
+	elif typess == 'array' and isinstance(list(value), list):
+		return Array(value, vars).return_value()
+	else:
+		return value
+
+
 class Int:
 	def __init__(self,value,variables):
 		try:

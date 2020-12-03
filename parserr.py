@@ -7,7 +7,7 @@ import methods
 class Parser:
 
 	def __init__(self):
-		self.variables = dict()
+		self._variables = dict()
 
 
 	def _for(self, lexemes, key, value, line_count):
@@ -18,10 +18,10 @@ class Parser:
 
 		list_executable_code = self.add_queue(lexemes, line_count)
 
-		self.variables[name_variable] = int(value_variable)
-		while eval(condition, self.variables):
+		self._variables[name_variable] = int(value_variable)
+		while eval(condition, self._variables):
 			self.parser(list_executable_code)
-			self.variables[name_variable] += int(step)
+			self._variables[name_variable] += int(step)
 
 
 	def add_queue(self, lexemes, line_start):
@@ -51,24 +51,29 @@ class Parser:
 			for tick in range(tick):
 				for el in lexemes:
 					for key, value in el.items():
-						methods.variables = self.variables
-						value = methods.choose_func(value, self.variables)
+						methods.variables = self._variables
+						value = methods.choose_func(value, self._variables)
 
 						if key[0] == 'v':  # если переменная
 							if key.split('_')[1] == 'string':  # тип данных
 								if value[0] != "'" and value[-1] != "'":
 									value = "'" + str(value) + "'"
-								self.variables[key.split('_')[2]] = typess.String(value, self.variables).return_value()
+								self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'string')
+
 							elif key.split('_')[1] == 'int':
-								self.variables[key.split('_')[2]] = typess.Int(value, self.variables).return_value()
+								self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'int')
 
 							elif key.split('_')[1] == 'array':
-								self.variables[key.split('_')[2]] = typess.Array(value, self.variables).return_value()
+								self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'array')
+
+							elif typess.choose_type(value, self._variables, 'array') == value:
+								self._variables[key.split('_')[2]] = self._variables[value]
+
 
 						if key[0] == 'f':
 
 							if key.split('_')[1] == 'write':  # функция вывода в консоль
-								methods.write(value, self.variables)
+								methods.write(value, self._variables)
 
 							elif key.split('_')[1] == 'sleep':  # ожидания
 								methods.sleep(value)
@@ -86,7 +91,7 @@ class Parser:
 								methods.ufile(value)
 						
 						if key.startswith('def_'):
-							self.parser(self.variables[value])
+							self.parser(self._variables[value])
 
 						if key.startswith('for'):  # циклы
 							self._for(lexemes, key, value, line_count)
@@ -94,7 +99,7 @@ class Parser:
 						if key.startswith('def'):
 							list_executable_code = self.add_queue(lexemes, line_count)
 
-							self.variables[value] = list_executable_code
+							self._variables[value] = list_executable_code
 
 							for elem in range(line_count - 1, len(lexemes)):  # проходимся по ифу
 								if lexemes[elem] == {'end_if': 0}:  # если закончился останавливаем цикл
@@ -108,14 +113,14 @@ class Parser:
 							self.parser(list_executable_code, int(value))
 
 						if key.startswith('if'):
-							if not eval(value, self.variables):  # если условия неверно
+							if not eval(value, self._variables):  # если условия неверно
 								for elem in range(line_count - 1, len(lexemes)):  # проходимся по ифу
 									if lexemes[elem] == {'end_if': 0}:  # если закончился останавливаем цикл
 										break
 									else:
 										del lexemes[elem]  # иначе удаляем из лексем
 
-							elif eval(value, self.variables):
+							elif eval(value, self._variables):
 								line_end = line_count - 1
 								for elem in range(line_end, len(lexemes) - 1):  # находим лайн конца цикла
 									if lexemes[elem] == {'end_if': 0}:

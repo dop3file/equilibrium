@@ -1,7 +1,6 @@
 import exceptions as excp
 
 
-
 class Lexer:
 
     def __init__(self, source):
