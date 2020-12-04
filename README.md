@@ -13,6 +13,12 @@
   - string(строка)
   
   - array(список)
+  
+  Пример :
+  
+  `int n := 10`
+  `string name := 'Renat'`
+  `array random := ['Gosha','Equilibrium fck all world',17]`
 
 # Функции
 
