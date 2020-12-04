@@ -33,12 +33,28 @@ def choose_func(value, variables):
 
     elif value.startswith('rfile()'):
         return typess.Array(files.read_file(), variables).return_value()
-
-
-    else:
-        return value
-
+    
     return value
+
+
+def choose_methods(name_func, value, variables):
+    if name_func == 'write':  # функция вывода в консоль
+        write(value, variables)
+
+    elif name_func == 'sleep':  # ожидания
+        sleep(value)
+
+    elif name_func == 'cfile':
+        cfile(value)
+
+    elif name_func == 'wfile':
+        wfile(value)
+
+    elif name_func == 'dfile':
+        dfile(value)
+
+    elif key.split('_')[1] == 'ufile':
+        ufile(value)
 
 
 

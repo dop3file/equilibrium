@@ -72,24 +72,7 @@ class Parser:
 
 
 						if key[0] == 'f':
-
-							if key.split('_')[1] == 'write':  # функция вывода в консоль
-								methods.write(value, self._variables)
-
-							elif key.split('_')[1] == 'sleep':  # ожидания
-								methods.sleep(value)
-
-							elif key.split('_')[1] == 'cfile':
-								methods.cfile(value)
-
-							elif key.split('_')[1] == 'wfile':
-								methods.wfile(value)
-
-							elif key.split('_')[1] == 'dfile':
-								methods.dfile(value)
-
-							elif key.split('_')[1] == 'ufile':
-								methods.ufile(value)
+							methods.choose_methods(key.split('_')[1], value, self._variables)
 						
 						if key.startswith('def_'):
 							self.parser(self._variables[value])
