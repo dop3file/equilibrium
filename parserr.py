@@ -7,10 +7,19 @@ import methods
 class Parser:
 
 	def __init__(self):
-		self._variables = dict()
+		self._variables = dict() # переменные
 
 
 	def _for(self, lexemes, key, value, line_count):
+		"""
+		Функция которая итерируется по списку лексем и выполняет их
+		пока условия condition не будет False
+		:param lexemes: лексемы до }
+		:param key: ключ из главных лексем
+		:param value: значения из главных лексем
+		:param line_count: лайн, где распологается for
+		:return: None
+		"""
 		name_variable = key.split(' ')[0][4::].split('=')[0]
 		value_variable = key.split(' ')[0][4::].split('=')[1]
 		condition = ''.join(key.split(' ')[1::])
@@ -45,6 +54,14 @@ class Parser:
 
 
 	def parser(self, lexemes, tick=1):
+		"""
+		Функция, где проходит основный цикл выполнения
+		key - ключ из лексемы
+		value - значения из лексемы
+		:param lexemes: лексемы, для выполнения
+		:param tick: количество проходов по лексем, по дефолту 1(так как нет цикла for или range)
+		:return: None
+		"""
 		line_count = 1
 		lexemes = lexemes
 		try:
@@ -74,7 +91,7 @@ class Parser:
 						if key[0] == 'f':
 							methods.choose_methods(key.split('_')[1], value, self._variables)
 						
-						if key.startswith('def_'):
+						if key.startswith('def_'): # вызов функций
 							self.parser(self._variables[value])
 
 						if key.startswith('for'):  # циклы

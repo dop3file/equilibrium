@@ -2,14 +2,29 @@ import random
 import library.time as time
 from library.files import Files
 import typess
+import time as _time
 
 
 files = Files()
 variables = 0
 
-def get_arguments(value):
-    value = value.rstrip().lstrip()[1:-1]
+def stop_iteration():
+    raise StopIteration
+
+def get_arguments_without_key(value):
+    value = value.rstrip(' ').lstrip(' ')[1:-1]
     return value.split(",")
+
+def get_arguments_with_key(value):
+    value = value.rstrip(' ').lstrip(' ')
+    value_prefix = ''
+    for char in value:
+        if char == '(':
+            break
+        else:
+            value_prefix += char
+    value = value[len(value_prefix):]
+    return get_arguments_without_key(value)
 
 
 def choose_func(value, variables):
@@ -33,7 +48,7 @@ def choose_func(value, variables):
 
     elif value.startswith('rfile()'):
         return typess.Array(files.read_file(), variables).return_value()
-    
+
     return value
 
 
@@ -45,16 +60,16 @@ def choose_methods(name_func, value, variables):
         sleep(value)
 
     elif name_func == 'cfile':
-        cfile(value)
+        create_file(value)
 
     elif name_func == 'wfile':
-        wfile(value)
+        write_file(value)
 
     elif name_func == 'dfile':
-        dfile(value)
+        delete_file(value)
 
-    elif key.split('_')[1] == 'ufile':
-        ufile(value)
+    elif name_func == 'ufile':
+        update_file(value)
 
 
 
@@ -69,25 +84,30 @@ def write(value,variables):
 
 
 def sleep(value):
-    time.sleep(int(value))
+    _time.sleep(int(value))
 
 
 def random_int(value,variables):
-    return random.randint(int(eval(str(value.split(',')[0].replace('random','').replace('(','')),variables)),
-                          int(eval(str(value.split(',')[1][:-1]),variables)))
+    first_num = get_arguments_without_key(value)[0][6:]
+    second_num = get_arguments_without_key(value)[1]
+    return random.randint(int(eval(first_num,variables)),int(eval(second_num,variables)))
 
 
-def cfile(value):
+
+def create_file(value):
     files.create_file(value)
 
-def wfile(value):
+def write_file(value):
     files.write_file(value)
 
-def dfile(value):
+def delete_file(value):
     files.delete_file(value)
 
-def ufile(value):
-    files.update_file(line=get_arguments(value)[0],value_for_edit=get_arguments(value)[1])
+def update_file(value):
+    files.update_file(line=get_arguments_without_key(value)[0], value_for_edit=get_arguments_without_key(value)[1])
+
+
+
 
 
 
