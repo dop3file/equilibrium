@@ -1,10 +1,14 @@
+"""
+Файл библиотеки files
+"""
 import os
 import exceptions
 
 
 class Files:
     def __init__(self):
-        pass
+        self.name_file = ''
+        self.name_file_prev = ''
 
     def create_file(self, name_file):
         """
@@ -12,9 +16,8 @@ class Files:
         :param name_file: названия файла с расширением
         :return: возвращает название файла
         """
-        self.name_file_prev = name_file.replace("'","")
-        self.name_file = open(name_file.replace("'",""),'a',encoding='utf-8')
-        return self.name_file
+        self.name_file_prev = name_file.replace("'", "")
+        self.name_file = open(name_file.replace("'", ""), 'a', encoding='utf-8')
 
     def write_file(self, text):
         """
@@ -22,7 +25,7 @@ class Files:
         :param text: текст для записи
         :return: None
         """
-        self.name_file.write(text.replace("'",""))
+        self.name_file.write(text.replace("'", ""))
 
     def read_file(self):
         """
@@ -31,8 +34,9 @@ class Files:
         """
         self.name_file.close()
         with open(self.name_file_prev, 'r', encoding='utf-8') as file:
-            yield [line.strip() for line in file]
+            all_lines = [line.strip() for line in file]
         self.name_file = open(self.name_file_prev, 'a', encoding='utf-8')
+        return all_lines
 
     def delete_file(self, name_file):
         """
@@ -44,7 +48,7 @@ class Files:
             self.name_file.close()
         except AttributeError:
             exceptions.File_Connection('Файл не подключён')
-        os.remove(name_file.replace("'",""))
+        os.remove(name_file.replace("'", ""))
 
     def update_file(self, line, value_for_edit):
         """
@@ -57,17 +61,10 @@ class Files:
             self.name_file.close()
         except AttributeError:
             exceptions.File_Connection('Файл не подключён')
-        with open(self.name_file_prev,'r', encoding='utf-8') as file:
+        with open(self.name_file_prev, 'r', encoding='utf-8') as file:
             all_files = [line.strip() for line in file]
             all_files[int(line)] = value_for_edit.replace("'","")
 
-        with open(self.name_file_prev,'w', encoding='utf-8') as file:
+        with open(self.name_file_prev, 'w', encoding='utf-8') as file:
             file.write('\n'.join(all_files))
         self.name_file = open(self.name_file_prev,'a',encoding='utf-8')
-
-
-
-
-
-
-

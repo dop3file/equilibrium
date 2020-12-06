@@ -1,3 +1,6 @@
+"""
+Файл библиотеки time
+"""
 import time
 
 
@@ -5,16 +8,18 @@ def get_time_minutes():
     """
     Возвращает время в формате часы:минуты
     """
-    return "'" + time.strftime("%H:%M", time.localtime()) + "'"
+    return f"'{time.strftime('%H:%M')}'"
+
 
 def get_time_date():
     """
     Возвращает дату в формате месяц/число/2 последних цифры года
     """
-    return "'" + time.strftime("%x", time.localtime()) + "'"
+    return f"'{time.strftime('%x')}'"
+
 
 def get_time_unix():
     """
-
+    Возращает время в формате unix(отсчёт с 1970 по секундам)
     """
-    return "'" + str(round(time.time())) + "'"
+    return f"'{str(round(time.time()))}'"
