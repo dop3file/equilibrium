@@ -70,7 +70,11 @@ def choose_func(name_func, variables):
         name_func = typess.Array(files.read_file(), variables).return_value()
 
     elif name_func.startswith('rparser(all)'):
-        name_func = parser.read_all_html()
+        name_func = parser.get_all_html()
+
+    elif name_func == 'get_title()':
+        name_func = parser.title_page()
+    
 
     return name_func
 
@@ -152,5 +156,7 @@ def create_connection(value):
     global parser
     parser = Parser()
     parser.create_connection(value)
+
+
 
 

@@ -1,3 +1,8 @@
+"""
+Файл Exceptions
+Обработка ошибок
+"""
+
 class Lexer_Error():
 	def __init__(self, msg, line_warning):
 		print(f'{msg}\n{line_warning}')

@@ -86,7 +86,7 @@ class Parser:
                         if key[0] == 'f':  # если функция
                             methods.choose_methods(key.split('_')[1], value, self._variables)
 
-                        if key.startswith('def_'): # вызов функций
+                        if key.startswith('def_'):  # вызов функций
                             self.parser(self._variables[value])
 
                         if key.startswith('for'):  # циклы
