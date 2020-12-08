@@ -3,6 +3,8 @@
 """
 import requests
 from bs4 import BeautifulSoup
+from lxml import html
+
 
 
 class Parser:
@@ -10,19 +12,34 @@ class Parser:
         self.response = None
         self.all_html = None
         self.parser = None
+        self.link = None
 
     def create_connection(self, link: str) -> None:
+        """
+        Инициализация класса Parser
+        :param link: ссылка на сайт
+        :return: None
+        """
+        self.link = link.replace("'", '')
         self.response = requests.get(link.replace("'", ''))
         self.all_html = self.response.text
         self.parser = BeautifulSoup(self.all_html, 'html.parser')
 
     def title_page(self):
-        return f'"""{self.parser.title}"""'
+        """
+        :return: возвращает заголовок сайта
+        """
+        return self.parser.title.string
 
-    def get_all_html(self):
-        return f'"""{self.all_html}"""'
+    def get_xpath(self, xpath):
+        """
+        :param xpath: путь к элементу в DOM дереве
+        :return: функция возвращает текст элемента
+        """
+        page = requests.get(self.link)
+        tree = html.fromstring(page.content)
 
-
+        return tree.xpath(xpath.replace("'", ''))[0]
 
 
 

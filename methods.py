@@ -69,12 +69,14 @@ def choose_func(name_func, variables):
         global files
         name_func = typess.Array(files.read_file(), variables).return_value()
 
-    elif name_func.startswith('rparser(all)'):
-        name_func = parser.get_all_html()
-
     elif name_func == 'get_title()':
         name_func = parser.title_page()
-    
+
+    elif name_func.startswith('get_xpath'):
+        value = get_arguments_without_key(name_func[9:])
+
+        name_func = parser.get_xpath(value[0])
+
 
     return name_func
 
@@ -89,6 +91,7 @@ def choose_methods(name_method, value, variables):
     :return: None
     """
     if name_method == 'write':  # функция вывода в консоль
+
         write(value, variables)
 
     elif name_method == 'sleep':  # ожидания
@@ -116,9 +119,11 @@ def coin_flip():
     return "'Решка'" if value == 1 else "'Орёл'"
 
 
-def write(value,variables):
-    print(eval(str(value),variables),end='')
-
+def write(value, variables):
+    try:
+        print(eval(str(value), variables), end='')
+    except SyntaxError:
+        print(value)
 
 def sleep(value):
     _time.sleep(int(value))
@@ -137,17 +142,14 @@ def create_file(value):
 
 
 def write_file(value):
-    global files
     files.write_file(value)
 
 
 def delete_file(value):
-    global files
     files.delete_file(value)
 
 
 def update_file(value):
-    global files
     files.update_file(line=get_arguments_without_key(value)[0],
                       value_for_edit=get_arguments_without_key(value)[1])
 

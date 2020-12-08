@@ -17,24 +17,25 @@ def choose_type(value, variables, types):
 
 
 class Int:
-    def __init__(self,value,variables):
+    def __init__(self, value, variables):
         try:
-            self.value = int(eval(value,variables))
+            self.value = int(eval(value, variables))
         except TypeError as e:
             exceptions.Type_Error('Объект не является числом')
 
     def return_value(self):
         return int(self.value)
 
+
 class String:
-    def __init__(self,value,variables):
+    def __init__(self, value, variables):
         try:
-            self.value = str(eval(value,variables))
+            self.value = str(eval(value, variables))
         except TypeError as e:
             exceptions.Type_Error('Объект не является строкой')
 
     def return_value(self):
-        return str(self.value)
+        return self.value
 
 
 class Array:
