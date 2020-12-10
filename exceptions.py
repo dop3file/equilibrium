@@ -10,7 +10,7 @@ class Lexer_Error():
 
 
 class Excp:
-	def __init__(self,msg):
+	def __init__(self, msg):
 		print(f'Ошибка - {msg}')
 		exit()
 
@@ -60,4 +60,7 @@ class Name_Error(Excp):
 
 
 class FileNoEquilibrium(Excp):
+	pass
+
+class LibraryClassNoImport(Excp):
 	pass

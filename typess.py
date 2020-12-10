@@ -39,9 +39,9 @@ class String:
 
 
 class Array:
-    def __init__(self,value,variables):
+    def __init__(self, value, variables):
         try:
-            self.value = eval(str(value),variables)
+            self.value = eval(str(value), variables)
 
         except TypeError as e:
             exceptions.Type_Error('Объект не является массивом')

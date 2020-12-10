@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup
 from lxml import html
 
 
-
 class Parser:
     def __init__(self):
         self.response = None
@@ -40,6 +39,14 @@ class Parser:
         tree = html.fromstring(page.content)
 
         return tree.xpath(xpath.replace("'", ''))[0]
+
+    def get_link(self):
+        """
+        :return: функция возвращает ссылку на сайт, инициализированный в классе
+        """
+        return f"'{self.link}'"
+
+
 
 
 
