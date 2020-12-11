@@ -12,6 +12,8 @@ def choose_type(value, variables, types):
         return Int(value, variables).return_value()
     elif types == 'array':
         return Array(value, variables).return_value()
+    elif types == 'float':
+        return Float(value, variables).return_value()
     else:
         return value
 
@@ -45,6 +47,18 @@ class Array:
 
         except TypeError as e:
             exceptions.Type_Error('Объект не является массивом')
+
+    def return_value(self):
+        return self.value
+
+
+class Float:
+    def __init__(self, value, variables):
+        try:
+            self.value = float((value, variables))
+
+        except TypeError as e:
+            exceptions.Type_Error('Объект не является дробью')
 
     def return_value(self):
         return self.value

@@ -83,6 +83,9 @@ class Parser:
                             elif typess.choose_type(value, self._variables, 'array') == value:
                                 self._variables[key.split('_')[2]] = self._variables[value]
 
+                            elif key.split('_')[1] == 'float':
+                                self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'float')
+
                         if key[0] == 'f':  # если функция
                             methods.choose_methods(key.split('_')[1], value, self._variables)
 

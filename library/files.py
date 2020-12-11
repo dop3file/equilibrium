@@ -68,3 +68,4 @@ class Files:
         with open(self.name_file_prev, 'w', encoding='utf-8') as file:
             file.write('\n'.join(all_files))
         self.name_file = open(self.name_file_prev,'a',encoding='utf-8')
+

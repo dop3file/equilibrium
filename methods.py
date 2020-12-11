@@ -3,6 +3,7 @@
 Все функции и методы языка
 """
 import random
+import os
 import time as _time
 import library.time as time
 from library.files import Files
@@ -119,6 +120,11 @@ def choose_methods(name_method, value, variables):
 
         elif name_method == 'cparser':
             create_connection(value)
+
+        elif name_method == 'mkdir':
+            mkdir(value)
+
+
     except AttributeError:
         exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')
 
@@ -169,3 +175,12 @@ def create_connection(value):
     global parser
     parser = Parser()
     parser.create_connection(value)
+
+
+def mkdir(name_dir):
+    """
+    Создаёт папку с названием name_dir, путь указывается от файла скрипта
+    :param name_dir: названия файла
+    :return: None
+    """
+    os.mkdir(name_dir.replace("'", ''))
