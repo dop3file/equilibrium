@@ -46,9 +46,3 @@ class Parser:
         """
         return f"'{self.link}'"
 
-
-
-
-
-
-

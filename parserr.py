@@ -86,6 +86,9 @@ class Parser:
                             elif key.split('_')[1] == 'float':
                                 self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'float')
 
+                            elif key.split('_')[1] == 'char':
+                                self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'char')
+
                         if key[0] == 'f':  # если функция
                             methods.choose_methods(key.split('_')[1], value, self._variables)
 
@@ -127,7 +130,7 @@ class Parser:
 
                                 # если есть else
                                 if line_end != len(lexemes):
-                                    for line in range(line_end,len(lexemes) - 1):
+                                    for line in range(line_end, len(lexemes) - 1):
                                         if lexemes[line] == {'end_if': 0}:
                                             break
                                         else:

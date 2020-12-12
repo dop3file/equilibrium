@@ -14,6 +14,8 @@ def choose_type(value, variables, types):
         return Array(value, variables).return_value()
     elif types == 'float':
         return Float(value, variables).return_value()
+    elif types == 'char':
+        return Char(value, variables).return_value()
     else:
         return value
 
@@ -55,10 +57,24 @@ class Array:
 class Float:
     def __init__(self, value, variables):
         try:
-            self.value = float((value, variables))
+            self.value = float(eval(value, variables))
 
         except TypeError as e:
             exceptions.Type_Error('Объект не является дробью')
+
+    def return_value(self):
+        return self.value
+
+
+class Char:
+    def __init__(self, value, variables):
+        try:
+            if len(value.replace("'", "")) > 1:
+                exceptions.Type_Error('Объект не является символом')
+            else:
+                self.value = eval(str(value), variables)
+        except TypeError:
+            exceptions.Type_Error('Объект не является символом')
 
     def return_value(self):
         return self.value
