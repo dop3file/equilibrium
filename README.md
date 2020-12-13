@@ -25,6 +25,10 @@
   `string name := 'Renat'`
   
   `array random := ['Gosha','Equilibrium fck all world',17]`
+  
+  `float pi := 3.14`
+  
+  `char symvol := 'b'`
 
 # Функции
 
