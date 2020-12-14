@@ -5,10 +5,6 @@
 import random
 import os
 import time as _time
-import library.time as time
-from library.files import Files
-from library.parser import Parser
-from library.sheets import Sheets
 import typess
 import exceptions
 
@@ -16,6 +12,32 @@ import exceptions
 files = None
 parser = None
 sheet = None
+time = None
+
+
+def import_library(name_library):
+    """
+    Импортирует библиотеки
+    :param name_library: имя библиотеки
+    :return: None
+    """
+    if name_library == 'files':
+        from library.files import Files
+        global files
+        files = Files()
+    elif name_library == 'parser':
+        from library.parser import Parser
+        global parser
+        parser = Parser()
+    elif name_library == 'sheets':
+        from library.sheets import Sheets
+        global sheet
+        parser = Sheets()
+    elif name_library == 'time':
+        from library.time import Time
+        global time
+        time = Time()
+
 
 
 def get_arguments_without_key(value):
@@ -181,8 +203,6 @@ def random_int(value, variables):
 
 
 def create_file(value, variables):
-    global files
-    files = Files()
     files.create_file(eval(value, variables))
 
 

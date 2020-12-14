@@ -7,5 +7,6 @@ if password == '123' {
 }
 
 else {
-  write => 'Пароль неверный!'
+    write => 'wrong'
 }
+

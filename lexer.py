@@ -27,7 +27,10 @@ class Lexer:
                     continue
 
                 elif line.startswith('ufather?'):
-                    self.stack += [{'ufather?': 'Renat Yakublevich'}]
+                    print('Renat Yakublevich')
+
+                elif line.startswith('include'):
+                    self.stack += [{'include' : line.split(' ')[1]}]
 
                 elif line.startswith('else'):
                     self.stack += [{'else': 'else'}]
@@ -58,8 +61,6 @@ class Lexer:
                             {'v_' + line.split(' ')[0] + '_' + line.split(' ')[1].split('+')[1]: ''.join(line.split(':=')[1::])[1::]}]
                     else:
                         self.stack += [{'v_' + line.split(' ')[0] + '_' + line.split(' ')[1]: ''.join(line.split(':=')[1::])[1::]}]
-
-
 
                 else:
                     excp.Lexer_Error('Строка не понятна интерпритатору',line)
