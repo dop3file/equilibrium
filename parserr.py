@@ -88,6 +88,9 @@ class Parser:
                             elif key.split('_')[1] == 'char':
                                 self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'char')
 
+                            elif key.split('_')[1] == 'bool':
+                                self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'bool')
+
                         if key[0] == 'f':  # если функция
                             methods.choose_methods(key.split('_')[1], value, self._variables)
 
@@ -113,7 +116,7 @@ class Parser:
 
                         if key.startswith('if'):
                             if not eval(value, self._variables):  # если условия неверно
-                                for elem in range(line_count - 1, len(lexemes)):  # проходимся по ифу
+                                for elem in range(line_count - 1, len(lexemes) - 1):  # проходимся по ифу
                                     if lexemes[elem] == {'end_if': 0}:  # если закончился останавливаем цикл
                                         break
                                     else:
@@ -121,18 +124,22 @@ class Parser:
 
                             elif eval(value, self._variables):
                                 line_end = line_count - 1
-                                for elem in range(line_end, len(lexemes) - 1):  # находим лайн конца цикла
+
+                                for elem in range(line_count - 1, len(lexemes) - 1):  # находим лайн конца цикла
                                     if lexemes[elem] == {'end_if': 0}:
                                         break
                                     else:
                                         line_end += 1
 
-                                if lexemes[line_end + 1] == {'else': 'else'}:  # если после if идёт else
-                                    for elem in range(line_end + 2, len(lexemes) - 1):
-                                        if lexemes[elem] == {'end_if': 0}:
-                                            break
-                                        else:
-                                            del lexemes[elem]
+                                try:
+                                    if lexemes[line_end + 1] == {'else': 'else'}:  # если после if идёт else
+                                        for elem in range(line_end + 2, len(lexemes) - 1):
+                                            if lexemes[elem] == {'end_if': 0}:
+                                                break
+                                            else:
+                                                del lexemes[elem]
+                                except IndexError:
+                                    pass
 
                         elif key == 'include':
                             methods.import_library(value)

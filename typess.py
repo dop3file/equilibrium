@@ -16,6 +16,8 @@ def choose_type(value, variables, types):
         return Float(value, variables).return_value()
     elif types == 'char':
         return Char(value, variables).return_value()
+    elif types == 'bool':
+        return Bool(value,variables).return_value()
     else:
         return value
 
@@ -73,6 +75,17 @@ class Char:
                 exceptions.Type_Error('Объект не является символом')
             else:
                 self.value = eval(str(value), variables)
+        except TypeError:
+            exceptions.Type_Error('Объект не является символом')
+
+    def return_value(self):
+        return self.value
+
+
+class Bool:
+    def __init__(self, value, variables):
+        try:
+            self.value = eval(value, variables)
         except TypeError:
             exceptions.Type_Error('Объект не является символом')
 

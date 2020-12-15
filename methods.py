@@ -90,7 +90,7 @@ def choose_func(name_func, variables):
         elif name_func == 'time_unix()':
             name_func = time.get_time_unix()
 
-        elif name_func.replace(' ', '').startswith('random'):  # рандом
+        elif name_func.startswith('random'):  # рандом
             name_func = random_int(name_func, variables)
 
         elif name_func.startswith('rfile()'):
@@ -114,6 +114,7 @@ def choose_func(name_func, variables):
             name_func = sheet.read_cell(eval(value[0], variables))
 
         return name_func
+
     except AttributeError:
         exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')
 
@@ -182,13 +183,13 @@ def write(value, variables):
         print(value)
 
 
-def sleep(value):
+def sleep(value, variables):
     """
     Программа "спит" указанное время
     :param value: количество времени для сна
     :return: None
     """
-    _time.sleep(float(value))
+    _time.sleep(float(eval(value, variables)))
 
 
 def random_int(value, variables):
@@ -220,8 +221,6 @@ def update_file(value, variables):
 
 
 def create_connection(value, variables):
-    global parser
-    parser = Parser()
     parser.create_connection(eval(value, variables))
 
 
@@ -242,6 +241,4 @@ def import_sheet(name_sheet, variables):
     :param variables: переменные
     :return: None
     """
-    global sheet
-    sheet = Sheets()
     sheet.import_sheets_file(eval(name_sheet, variables))

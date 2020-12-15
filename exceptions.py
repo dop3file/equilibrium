@@ -11,7 +11,7 @@ class Lexer_Error():
 
 class Excp:
 	def __init__(self, msg):
-		print(f'Ошибка - {msg}')
+		print(f'\nОшибка - {msg}')
 		exit()
 
 
