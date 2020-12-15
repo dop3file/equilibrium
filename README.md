@@ -18,6 +18,8 @@
   
   - char(символ)
   
+  - bool(булево значения)
+  
   Пример :
   
   `int n := 10`
@@ -29,6 +31,8 @@
   `float pi := 3.14`
   
   `char symvol := 'b'`
+  
+  `bool step := False`
 
 # Функции
 
