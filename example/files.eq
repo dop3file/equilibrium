@@ -2,7 +2,7 @@ include files
 
 cfile => 'test_case.txt'
 
-range 10 {
+range 10 1{
     wfile => 'Hello World!'
 }
 

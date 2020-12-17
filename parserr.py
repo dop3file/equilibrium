@@ -111,37 +111,26 @@ class Parser:
                                     del lexemes[elem]  # иначе удаляем из лексем
 
                         if key.startswith('range'):
-                            list_executable_code = self.add_queue(lexemes, line_count)
-                            self.parser(list_executable_code, int(eval(value, self._variables)) + 1)
+                            count_execution = value.split(' ')[0]
+                            count_lines = int(value.split(' ')[1])
+                            self.parser(lexemes=lexemes[line_count: count_lines + line_count], tick=int(eval(count_execution, self._variables)) + 1)
 
                         if key.startswith('if'):
+                            count_executions = int(value.split(' ')[-1])
+                            value = ' '.join(value.split(' ')[0:-1])
+
                             if not eval(value, self._variables):  # если условия неверно
-                                for elem in range(line_count - 1, len(lexemes) - 1):  # проходимся по ифу
-                                    if lexemes[elem] == {'end_if': 0}:  # если закончился останавливаем цикл
-                                        break
-                                    else:
-                                        del lexemes[elem]  # иначе удаляем из лексем
+                                del lexemes[line_count - 1 : line_count - 1 + count_executions]
 
-                            elif eval(value, self._variables):
-                                line_end = line_count - 1
+                            try:
+                                if eval(value, self._variables):
+                                    for key_else, value_else in lexemes[line_count + 1 + count_executions].items():
+                                        if key_else == 'else':
+                                            del lexemes[line_count + 1 + count_executions : int(value_else) + line_count + count_executions + 2]
+                            except IndexError:
+                                pass
 
-                                for elem in range(line_count - 1, len(lexemes) - 1):  # находим лайн конца цикла
-                                    if lexemes[elem] == {'end_if': 0}:
-                                        break
-                                    else:
-                                        line_end += 1
-
-                                try:
-                                    if lexemes[line_end + 1] == {'else': 'else'}:  # если после if идёт else
-                                        for elem in range(line_end + 2, len(lexemes) - 1):
-                                            if lexemes[elem] == {'end_if': 0}:
-                                                break
-                                            else:
-                                                del lexemes[elem]
-                                except IndexError:
-                                    pass
-
-                        elif key == 'include':
+                        if key == 'include':
                             methods.import_library(value)
 
                         if key.startswith('else'):
