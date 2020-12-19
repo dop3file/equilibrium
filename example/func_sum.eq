@@ -1,13 +1,8 @@
-int a := 10
-int b := 20
+int a := 1
+int b := 2
 
-def sum {
-    write => str(a + b) + '\n'
+def suming() 1{
+    write => a + b
 }
 
-def_sum
-
-int a := 21
-int b := 10
-
-def_sum
+def_suming()

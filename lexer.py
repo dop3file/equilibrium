@@ -29,6 +29,9 @@ class Lexer:
                 elif line.startswith('ufather?'):
                     print('Renat Yakublevich')
 
+                elif line.startswith('def_'):
+                    self.stack += [{'def_': line[4:].replace(' ','')}]
+
                 elif line.startswith('include'):
                     self.stack += [{'include': line.split(' ')[1]}]
 
@@ -37,8 +40,6 @@ class Lexer:
 
                 elif line == '}':
                     self.stack += [{'end_if': 0}]
-                elif line.startswith('def_'):
-                    self.stack += [{'def_': line[4:].replace(' ','').replace('{','')}]
 
                 elif line.split(' ')[1] == '=>':  # функции
                     self.stack += [{'f_' + line.split('=>')[0].replace(' ',''): ''.join(line.split('=>')[1::])[1::]}]
@@ -50,10 +51,10 @@ class Lexer:
                     self.stack += [{'range': line[6:-1]}]
 
                 elif line.startswith('for'):
-                    self.stack += [{'for_' + line.split('for')[1].split(',')[0].replace('(','').replace(' ','') + ' ' + line.split(',')[1] : line.split(',')[2].split(')')[0]}]
+                    self.stack += [{'for_' + line.split('for')[1].split(',')[0].replace('(','').replace(' ','') + ' ' + line.split(',')[1] : line.split(',')[2].split(')')[0] + ' ' + line.split(')')[1][:-1].replace(' ','')}]
 
                 elif line.startswith('def'):
-                    self.stack += [{'def': line.split(' ')[1]}]
+                    self.stack += [{'def': line.split(' ')[1] + ' ' + line.split(' ')[2][:-1]}]
 
                 elif line.split(' ')[2] == ':=':  # переменные
                     if line.split(' ')[1].find('+') != -1:

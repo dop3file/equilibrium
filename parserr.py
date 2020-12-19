@@ -13,9 +13,8 @@ class Parser:
 
     def _for(self, lexemes, key, value, line_count):
         """
-        Функция которая итерируется по списку лексем и выполняет их
-        пока условия condition не будет False
-        :param lexemes: лексемы до }
+        Пока condition == True, исполняется код от позиции for до count executions
+        :param lexemes: лексемы
         :param key: ключ из главных лексем
         :param value: значения из главных лексем
         :param line_count: лайн, где распологается for
@@ -24,30 +23,13 @@ class Parser:
         name_variable = key.split(' ')[0][4::].split('=')[0]
         value_variable = key.split(' ')[0][4::].split('=')[1]
         condition = ''.join(key.split(' ')[1::])
-        step = value
-
-        list_executable_code = self.add_queue(lexemes, line_count)
+        step = value.split(' ')[0]
+        count_executions = int(value.split(' ')[1])
 
         self._variables[name_variable] = int(value_variable)
         while eval(condition, self._variables):
-            self.parser(list_executable_code)
+            self.parser(lexemes[line_count: line_count + count_executions + 1])
             self._variables[name_variable] += int(step)
-
-    def add_queue(self, lexemes, line_start):
-        """
-        Принимает список лексем и формирует список для выполнения команд
-        :param lexemes: лексемы
-        :param line_start: лайн на котором остановились
-        :return: None
-        """
-        line_start, line_end = line_start, line_start
-        list_executable_code = []
-
-        for line in range(line_start, len(lexemes)):
-            if lexemes[line] == {'end_if': 0}:
-                break
-            list_executable_code.append(lexemes[line])
-        return list_executable_code
 
     def parser(self, lexemes, tick=1):
         """
@@ -94,33 +76,31 @@ class Parser:
                         if key[0] == 'f':  # если функция
                             methods.choose_methods(key.split('_')[1], value, self._variables)
 
-                        if key.startswith('def_'):  # вызов функций
+                        if key == 'def_':  # вызов функций
                             self.parser(self._variables[value])
 
                         if key.startswith('for'):  # циклы
                             self._for(lexemes, key, value, line_count)
 
                         if key == 'def':  # функции
-                            list_executable_code = self.add_queue(lexemes, line_count)
+                            count_executions = int(value.split(' ')[1])
+                            name_def = value.split(' ')[0]
 
-                            self._variables[value] = list_executable_code
-                            for elem in range(line_count - 1, len(lexemes)):  # проходимся по ифу
-                                if lexemes[elem] == {'end_if': 0}:  # если закончился останавливаем цикл
-                                    break
-                                else:
-                                    del lexemes[elem]  # иначе удаляем из лексем
+                            list_executable_code = lexemes[line_count: line_count + count_executions + 1]
+                            self._variables[name_def] = list_executable_code
+                            del lexemes[line_count - 1: line_count + count_executions]
 
                         if key.startswith('range'):
                             count_execution = value.split(' ')[0]
                             count_lines = int(value.split(' ')[1])
-                            self.parser(lexemes=lexemes[line_count: count_lines + line_count], tick=int(eval(count_execution, self._variables)) + 1)
+                            self.parser(lexemes=lexemes[line_count: count_lines + line_count + 1], tick=int(eval(count_execution, self._variables)) - 1)
 
                         if key.startswith('if'):
                             count_executions = int(value.split(' ')[-1])
                             value = ' '.join(value.split(' ')[0:-1])
 
                             if not eval(value, self._variables):  # если условия неверно
-                                del lexemes[line_count - 1 : line_count - 1 + count_executions]
+                                del lexemes[line_count - 1 : line_count + count_executions + 1]
 
                             try:
                                 if eval(value, self._variables):
@@ -139,23 +119,18 @@ class Parser:
                         line_count += 1
 
         except ValueError as e:
-            print(e)
             exceptions.Value_Error('Ошибка значения')
         except TypeError as e:
-            print(e)
             exceptions.Type_Error('Ошибка типа данных')
         except IndexError as e:
-            print(e)
             exceptions.Index_Error('Ошибка индекса')
         except SyntaxError as e:
-            print(e)
             exceptions.Syntax_Error('Ошибка синтаксиса')
         except KeyError:
             exceptions.Key_Error('Ошибка key -> value')
         except FileExistsError or FileNotFoundError:
             exceptions.File_Exists('Ошибка отсуствия файла')
         except OSError as e:
-            print(e)
             exceptions.OS_Error('Ошибка ОС')
         except ZeroDivisionError:
             exceptions.Zero_Error('Ай ай ай, на 0 делить нельзя')
