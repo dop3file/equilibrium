@@ -22,14 +22,16 @@ class Parser:
         """
         name_variable = key.split(' ')[0][4::].split('=')[0]
         value_variable = key.split(' ')[0][4::].split('=')[1]
-        condition = ''.join(key.split(' ')[1::])
-        step = value.split(' ')[0]
-        count_executions = int(value.split(' ')[1])
+        condition = ' '.join(key.split(' ')[1::])
+
+        step = int(value.lstrip(' ').split(' ')[0].replace(' ',''))
+        count_executions = int(value.rstrip(' ').split(' ')[1].replace(' ',''))
+        print(step)
 
         self._variables[name_variable] = int(value_variable)
         while eval(condition, self._variables):
             self.parser(lexemes[line_count: line_count + count_executions + 1])
-            self._variables[name_variable] += int(step)
+            self._variables[name_variable] += step
 
     def parser(self, lexemes, tick=1):
         """
@@ -95,7 +97,7 @@ class Parser:
                             count_lines = int(value.split(' ')[1])
                             self.parser(lexemes=lexemes[line_count: count_lines + line_count + 1], tick=int(eval(count_execution, self._variables)) - 1)
 
-                        if key.startswith('if'):
+                        if key.startswith('if') or key.startswith('elif'):
                             count_executions = int(value.split(' ')[-1])
                             value = ' '.join(value.split(' ')[0:-1])
 
@@ -106,8 +108,11 @@ class Parser:
                                 if eval(value, self._variables):
                                     for key_else, value_else in lexemes[line_count + 1 + count_executions].items():
                                         if key_else == 'else':
-                                            del lexemes[line_count + 1 + count_executions : int(value_else) + line_count + count_executions + 2]
-
+                                            del lexemes[line_count + 1 + count_executions: int(
+                                                value_else) + line_count + count_executions + 2]
+                                        elif key_else.startswith('elif'):
+                                            del lexemes[line_count + 1 + count_executions: int(
+                                                value_else.split(' ')[-1]) + line_count + count_executions + 2]
                             except IndexError:
                                 pass
 
