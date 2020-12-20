@@ -32,7 +32,7 @@
   
   `char symvol := 'b'`
   
-  `bool step := False`
+  `bool step := bad`
 
 # Функции
 
@@ -63,11 +63,13 @@
 
 Пример : 
 
-`if x > 3 {`
+`if x > 3 1{`
 
   `write => 'x > 3'`
+
+`}`
   
-`else {`
+`else 1{`
 
   `write => 'Fizz'`
   
@@ -77,14 +79,14 @@
 
 Примеры :
 
-`for (i=1,i < 10, +1) {`
+`for (i=1,i < 10, +1) 1{`
 
 `write => i`
 
 `}`
 
 
-`range 10 {`
+`range 10 1{`
 
 `write => 'Привет, мир!'`
 
@@ -94,7 +96,7 @@
 
 Пример создания функции :
 
-`def abc() {`
+`def abc() 1{`
 
 `write => 'abc'`
 
