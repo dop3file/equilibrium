@@ -32,7 +32,7 @@
   
   `char symvol := 'b'`
   
-  `bool step := False`
+  `bool step := bad`
 
 # Функции
 
