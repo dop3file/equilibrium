@@ -20,13 +20,12 @@ class Parser:
         :param line_count: лайн, где распологается for
         :return: None
         """
-        name_variable = key.split(' ')[0][4::].split('=')[0]
-        value_variable = key.split(' ')[0][4::].split('=')[1]
-        condition = ' '.join(key.split(' ')[1::])
+        name_variable = key.split(' ')[0][4::].split('=')[0].lstrip(' ').rstrip(' ')
+        value_variable = key.split(' ')[0][4::].split('=')[1].lstrip(' ').rstrip(' ')
+        condition = ' '.join(key.split(' ')[1::]).lstrip(' ').rstrip(' ')
 
         step = int(value.lstrip(' ').split(' ')[0].replace(' ',''))
-        count_executions = int(value.rstrip(' ').split(' ')[1].replace(' ',''))
-        print(step)
+        count_executions = int(value.split(' ')[1])
 
         self._variables[name_variable] = int(value_variable)
         while eval(condition, self._variables):
@@ -51,7 +50,7 @@ class Parser:
                         methods.variables = self._variables
                         value = methods.choose_func(value, self._variables)
 
-                        if key[0] == 'v':  # если переменная
+                        if key[0] == 'v':  # переменные
                             if key.split('_')[1] == 'string':  # тип данных
                                 if value[0] != "'" and value[-1] != "'":
                                     value = "'" + str(value) + "'"
@@ -85,27 +84,27 @@ class Parser:
                             self._for(lexemes, key, value, line_count)
 
                         if key == 'def':  # функции
-                            count_executions = int(value.split(' ')[1])
+                            count_lines = int(value.split(' ')[1]) # количество команд в функции
                             name_def = value.split(' ')[0]
 
-                            list_executable_code = lexemes[line_count: line_count + count_executions + 1]
+                            list_executable_code = lexemes[line_count: line_count + count_lines + 1] # исполняемый код
                             self._variables[name_def] = list_executable_code
-                            del lexemes[line_count - 1: line_count + count_executions]
+                            del lexemes[line_count - 1: line_count + count_lines] # удаляем строки функции
 
                         if key.startswith('range'):
-                            count_execution = value.split(' ')[0]
-                            count_lines = int(value.split(' ')[1])
+                            count_execution = value.split(' ')[0] # кол-во выполнений кода
+                            count_lines = int(value.split(' ')[1]) # количество команд в цикле
                             self.parser(lexemes=lexemes[line_count: count_lines + line_count + 1], tick=int(eval(count_execution, self._variables)) - 1)
 
                         if key.startswith('if') or key.startswith('elif'):
-                            count_executions = int(value.split(' ')[-1])
-                            value = ' '.join(value.split(' ')[0:-1])
+                            count_executions = int(value.split(' ')[-1]) # количество команд в ветвлении
+                            value = ' '.join(value.split(' ')[0:-1]) # значения
 
                             if not eval(value, self._variables):  # если условия неверно
                                 del lexemes[line_count: line_count + count_executions + 1]
 
                             try:
-                                if eval(value, self._variables):
+                                if eval(value, self._variables): # если условия верно
                                     for key_else, value_else in lexemes[line_count + 1 + count_executions].items():
                                         if key_else == 'else':
                                             del lexemes[line_count + 1 + count_executions: int(
@@ -116,7 +115,7 @@ class Parser:
                             except IndexError:
                                 pass
 
-                        if key == 'include':
+                        if key == 'include': # импортирования библиотек
                             methods.import_library(value)
 
                         if key.startswith('else'):
