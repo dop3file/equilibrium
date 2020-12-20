@@ -66,8 +66,10 @@
 `if x > 3 1{`
 
   `write => 'x > 3'`
+
+`}`
   
-`else {`
+`else 1{`
 
   `write => 'Fizz'`
   
