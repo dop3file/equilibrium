@@ -9,7 +9,7 @@ import methods
 
 class Parser:
     def __init__(self):
-        self._variables = dict()  # переменные
+        self._variables = {'ok' : True, 'bad' : False}  # переменные
 
     def _for(self, lexemes, key, value, line_count):
         """
@@ -100,13 +100,14 @@ class Parser:
                             value = ' '.join(value.split(' ')[0:-1])
 
                             if not eval(value, self._variables):  # если условия неверно
-                                del lexemes[line_count - 1 : line_count + count_executions + 1]
+                                del lexemes[line_count: line_count + count_executions + 1]
 
                             try:
                                 if eval(value, self._variables):
                                     for key_else, value_else in lexemes[line_count + 1 + count_executions].items():
                                         if key_else == 'else':
                                             del lexemes[line_count + 1 + count_executions : int(value_else) + line_count + count_executions + 2]
+
                             except IndexError:
                                 pass
 
@@ -119,6 +120,7 @@ class Parser:
                         line_count += 1
 
         except ValueError as e:
+            print(e)
             exceptions.Value_Error('Ошибка значения')
         except TypeError as e:
             exceptions.Type_Error('Ошибка типа данных')

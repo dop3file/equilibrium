@@ -71,5 +71,5 @@ class Lexer:
 
         return self.stack
 
-lex = Lexer('code.eq')
+# lex = Lexer('code.eq')
 # print(lex.lexer()) # FOR DEBUG

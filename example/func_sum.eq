@@ -1,8 +1,8 @@
-int a := 1
-int b := 2
+int a := scan()
+int b := scan()
 
-def suming() 1{
-    write => a + b
+def sum() 1{
+	write => a + b
 }
 
-def_suming()
+def_sum()
