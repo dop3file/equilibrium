@@ -9,13 +9,7 @@ class Lexer:
     """ Класс лексера """
     def __init__(self, source):
         """ Получаем полайново код """
-        self.all_code = []
-        with open(source,encoding="utf-8") as source:
-            for line in source:
-                if line[-1] == '\n':
-                    self.all_code.append(line[:-1]) # с помощью шага убираем \n
-                else:
-                    self.all_code.append(line)
+        self.all_code = source
         self.stack = []
 
     def lexer(self):
@@ -73,6 +67,3 @@ class Lexer:
                 pass
 
         return self.stack
-
-# lex = Lexer('code.eq')
-# print(lex.lexer()) # FOR DEBUG

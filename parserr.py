@@ -131,6 +131,7 @@ class Parser:
         except IndexError as e:
             exceptions.Index_Error('Ошибка индекса')
         except SyntaxError as e:
+            print(e)
             exceptions.Syntax_Error('Ошибка синтаксиса')
         except KeyError:
             exceptions.Key_Error('Ошибка key -> value')

@@ -1,5 +1,5 @@
 """
-Файл библиотеки files
+Файл библиотеки files для работы с файлами
 """
 import os
 import exceptions

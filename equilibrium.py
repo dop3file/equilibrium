@@ -9,6 +9,22 @@ import exceptions
 cli = argparse.ArgumentParser(description='Equilibrium')
 cli.add_argument("--source", default='code.eq', type=str)
 
+class CodeReader:
+    def __init__(self, source, level):
+        if level == 'PROD':
+            self.all_code = []
+            with open(source,encoding="utf-8") as source:
+                for line in source:
+                    if line[-1] == '\n':
+                        self.all_code.append(line[:-1]) # с помощью шага убираем \n
+                    else:
+                        self.all_code.append(line)
+        elif level == 'DEBUG':
+            self.all_code = source
+
+    def get_code(self):
+        return self.all_code
+
 try:
     class Equilibrium:
         """ Основной класс """
@@ -17,7 +33,8 @@ try:
 
         def run_code(self):
             """ Функция для запуска кода """
-            lex = Lexer(self.source)
+            code_read = CodeReader(self.source, 'PROD').get_code()
+            lex = Lexer(code_read)
             pars = parserr.Parser()
             pars.parser(lex.lexer())
 

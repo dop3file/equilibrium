@@ -1,5 +1,5 @@
 """
-Файл библиотеки Parser
+Файл библиотеки Parser для парсинга информации с вебсайтов
 """
 import requests
 from bs4 import BeautifulSoup

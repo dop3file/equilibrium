@@ -32,7 +32,7 @@ def import_library(name_library):
     elif name_library == 'sheets':
         from library.sheets import Sheets
         global sheet
-        parser = Sheets()
+        sheet = Sheets()
     elif name_library == 'time':
         from library.time import Time
         global time
@@ -156,8 +156,12 @@ def choose_methods(name_method, value, variables):
         elif name_method == 'csheet':
             import_sheet(value, variables)
 
+        elif name_method == 'editcell':
+            arguments = get_arguments_without_key(value)
+            sheet.edit_cell(eval(arguments[0], variables),eval(arguments[1], variables))
 
-    except AttributeError:
+
+    except AttributeError as e:
         exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')
 
 

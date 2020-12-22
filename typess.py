@@ -85,9 +85,12 @@ class Char:
 class Bool:
     def __init__(self, value, variables):
         try:
-            self.value = eval(value, variables)
+            if value == 'ok' or value == 'bad':
+                self.value = eval(value, variables)
+            else:
+                exceptions.Type_Error('Объект не является булевым значением')
         except TypeError:
-            exceptions.Type_Error('Объект не является символом')
+            exceptions.Type_Error('Объект не является булевым значением')
 
     def return_value(self):
         return self.value
