@@ -49,24 +49,6 @@ def get_arguments_without_key(value):
     value = value.rstrip(' ').lstrip(' ')[1:-1]
     return value.split(",")
 
-
-def get_arguments_with_key(value):
-    """
-    :param value: функция
-    :return: Функция возвращает аргументы, если в
-    переданном значении есть ключевые слова
-    """
-    value = value.rstrip(' ').lstrip(' ')
-    value_prefix = ''
-    for char in value:
-        if char == '(':
-            break
-        else:
-            value_prefix += char
-    value = value[len(value_prefix):]
-    return get_arguments_without_key(value)
-
-
 def choose_func(name_func, variables):
     """
     Функция агрегирует функции языка
@@ -161,7 +143,7 @@ def choose_methods(name_method, value, variables):
             sheet.edit_cell(eval(arguments[0], variables),eval(arguments[1], variables))
 
 
-    except AttributeError as e:
+    except AttributeError:
         exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')
 
 
@@ -191,6 +173,7 @@ def sleep(value, variables):
     """
     Программа "спит" указанное время
     :param value: количество времени для сна
+    :param variables: переменные для eval
     :return: None
     """
     _time.sleep(float(eval(value, variables)))

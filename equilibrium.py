@@ -28,12 +28,13 @@ class CodeReader:
 try:
     class Equilibrium:
         """ Основной класс """
-        def __init__(self, source):
+        def __init__(self, source, level):
             self.source = source
+            self.level = level
 
         def run_code(self):
             """ Функция для запуска кода """
-            code_read = CodeReader(self.source, 'PROD').get_code()
+            code_read = CodeReader(self.source, self.level).get_code()
             lex = Lexer(code_read)
             pars = parserr.Parser()
             pars.parser(lex.lexer())
@@ -45,7 +46,7 @@ try:
     except IndexError:
         exceptions.FileNoEquilibrium('Файл не имеет расширение .eq')
 
-    Eq = Equilibrium(args.source)
+    Eq = Equilibrium(args.source,'PROD')
     Eq.run_code()
 
 except KeyboardInterrupt:

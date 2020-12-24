@@ -2,7 +2,6 @@
 Файл библиотеки Parser для парсинга информации с вебсайтов
 """
 import requests
-from bs4 import BeautifulSoup
 from lxml import html
 
 
@@ -22,7 +21,6 @@ class Parser:
         self.link = link.replace("'", '')
         self.response = requests.get(link.replace("'", ''))
         self.all_html = self.response.text
-        self.parser = BeautifulSoup(self.all_html, 'html.parser')
 
     def title_page(self):
         """
@@ -35,10 +33,11 @@ class Parser:
         :param xpath: путь к элементу в DOM дереве
         :return: функция возвращает текст элемента
         """
-        page = requests.get(self.link)
-        tree = html.fromstring(page.content)
-
-        return tree.xpath(xpath.replace("'", ''))[0]
+        try:
+            tree = html.fromstring(self.all_html)
+            print(tree.xpath(xpath)[0].text_content())
+        except IndexError:
+            pass
 
     def get_link(self):
         """
@@ -46,3 +45,7 @@ class Parser:
         """
         return f"'{self.link}'"
 
+
+parser = Parser()
+parser.create_connection('https://www.rbc.ru/crypto/currency/btcusd')
+parser.get_xpath('/html/body/div[4]/div/div[2]/div[2]/div/div[2]/div/div[1]/div/div[1]/div/div[1]/div[2]')
