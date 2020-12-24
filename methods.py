@@ -169,6 +169,19 @@ def write(value, variables):
         print(value)
 
 
+def echo(value, variables):
+    """
+    Функция выводит на экран текст
+    :param value: значения на вывод
+    :param variables: переменные
+    :return: None
+    """
+    try:
+        return eval(str(value), variables)
+    except SyntaxError:
+        return value
+
+
 def sleep(value, variables):
     """
     Программа "спит" указанное время

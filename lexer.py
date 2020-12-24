@@ -41,6 +41,9 @@ class Lexer:
                 elif line.startswith('if'):
                     self.stack += [{'if': line[3:-1]}]
 
+                elif line.startswith('run'):
+                    self.stack += [{'run' : line[4::]}]
+
                 elif line.startswith('elif'):
                     self.stack += [{'elif': line[5:-1]}]
 

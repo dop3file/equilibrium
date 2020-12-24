@@ -10,6 +10,7 @@ import methods
 class Parser:
     def __init__(self):
         self._variables = {'ok' : True, 'bad' : False}  # переменные
+        self.web_output = []
 
     def _for(self, lexemes, key, value, line_count):
         """
@@ -80,6 +81,9 @@ class Parser:
                         if key == 'def_':  # вызов функций
                             self.parser(self._variables[value])
 
+                        if key == 'run':
+                            self.web_output.append(methods.echo(value, self._variables))
+
                         if key.startswith('for'):  # циклы
                             self._for(lexemes, key, value, line_count)
 
@@ -141,7 +145,8 @@ class Parser:
             exceptions.OS_Error('Ошибка ОС')
         except ZeroDivisionError:
             exceptions.Zero_Error('Ай ай ай, на 0 делить нельзя')
-        except NameError:
+        except NameError as e:
+            print(e)
             exceptions.Name_Error('Переменной с таким именем не найдено')
         except Exception as error:
             exceptions.Parser_Error(f'Ошибка парсера\n{error}')
