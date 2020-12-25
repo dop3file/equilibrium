@@ -13,6 +13,7 @@ files = None
 parser = None
 sheet = None
 time = None
+query = None
 
 
 def import_library(name_library):
@@ -37,6 +38,10 @@ def import_library(name_library):
         from library.time import Time
         global time
         time = Time()
+    elif name_library == 'query':
+        from library.query import Query
+        global query
+        query = Query()
 
 
 
@@ -76,7 +81,6 @@ def choose_func(name_func, variables):
             name_func = random_int(name_func, variables)
 
         elif name_func.startswith('rfile()'):
-            global files
             name_func = typess.Array(files.read_file(), variables).return_value()
 
         elif name_func == 'get_title()':
@@ -84,7 +88,6 @@ def choose_func(name_func, variables):
 
         elif name_func.startswith('get_xpath'):
             value = get_arguments_without_key(name_func[9:])
-
             name_func = parser.get_xpath(eval(value[0], variables))
 
         elif name_func == 'get_link()':
@@ -97,7 +100,8 @@ def choose_func(name_func, variables):
 
         return name_func
 
-    except AttributeError:
+    except AttributeError as e:
+        print(e)
         exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')
 
 
