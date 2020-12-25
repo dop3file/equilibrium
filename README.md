@@ -134,6 +134,16 @@
  
  - get_xpath -> функция, которая возвращает по пути xpath элемент на сайте
 
+# Equilibrium Web
+
+![Equilibrium](https://sun9-69.userapi.com/GQHmrgb8vyYYbotSiohG2at_St8YzyOhUPSfRA/1WeUFCvXaC8.jpg "Equilibrium :)")
+
+Для вывода данных в web версии используется функция run
+
+Пример :
+
+  run 'Hello, World!'
+
 # Варнинги
 
 **IndexWarning** - ошибки с индексом списков
