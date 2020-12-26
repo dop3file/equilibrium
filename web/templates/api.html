@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="shortcut icon" href="plug.ico" type="image/x-icon">
+  <script  type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <title>API</title>
+</head>
+<body>
+  <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+  <h2 class="h-2 mr-md-auto" href="/about" title='Всё про твой любимый город!'><a href="../" style="text-decoration: none;color: #000 !important;">Equilibrium</a></h2>
+  <nav class="my-2 my-md-0 mr-md-3">
+
+  </nav>
+  <a class="btn btn-outline-success" href="/api"><b>API</b></a>
+</div>
+
+<div class="container">
+  <div class = "container mt-5">
+      <form action="{{ url_for('index') }}" method="POST">
+          <div class="circle"></div>
+          <h1>API</h1>
+          <p>Для того что бы получить ответ от сервера, нужно сделать get запрос на /api/ и в params указать JSON с ключём code и значением в виде твоего кода,сервер вернёт ответ в виде JSON</p>
+          <p>Пример : params = {'code': "run 3 > 2",}</p>
+          <p>r = requests.get(url=url, params=params)</p>
+          <p>print(r.text)</p>
+
+          </div>
+      </form>
+  </div>
+<div class="container">
+
+
+</body>
+</html>
