@@ -10,7 +10,10 @@ import methods
 class Parser:
     def __init__(self):
         self._variables = {'ok' : True, 'bad' : False}  # переменные
-        self.web_output = []
+        self.web_output = [] 
+
+    def get_web_output(self):
+        return self.web_output
 
     def _for(self, lexemes, key, value, line_count):
         """

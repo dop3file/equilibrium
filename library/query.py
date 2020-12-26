@@ -2,11 +2,21 @@ import requests
 
 
 class Query:
-    def __init__(self):
-        pass
+	@staticmethod
+	def get_request(url, params):
+		if params != 'bad':
+			response = requests.get(url=url.replace("'",''),params=eval(params))
+		else:
+			response = requests.get(url=url.replace("'",''))
+		return response.text
 
-    def get_request(self, link):
-        requests.get(link)
+	@staticmethod
+	def post_request(url, params):
+		if params != 'bad':
+			response = requests.post(url=url.replace("'",''),params=eval(params))
+		else:
+			response = requests.post(url=url.replace("'",''))
+		return response.text
 
-    def post_request(self, link):
-        requests.post(link)
+
+

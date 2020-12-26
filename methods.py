@@ -97,6 +97,14 @@ def choose_func(name_func, variables):
             value = get_arguments_without_key(name_func[8:])
 
             name_func = sheet.read_cell(eval(value[0], variables))
+        elif name_func.startswith('get'):
+        	value = get_arguments_without_key(name_func[4:])
+
+        	name_func = query.get_request(value[0],value[1])
+        elif name_func.startswith('post'):
+        	value = get_arguments_without_key(name_func[5:])
+
+        	name_func = query.post_request(value[0],value[1])
 
         return name_func
 
