@@ -143,6 +143,20 @@
 Пример :
 
   run 'Hello, World!'
+  
+# Equilibrium API
+
+![Equilibrium](https://sun9-74.userapi.com/impf/xQVEuf73dVqEQqWa8J5w5YPoZjTU6_U1MxIeZQ/3cDryq7aTAo.jpg?size=1559x578&quality=96&proxy=1&sign=43e3066a783670e9ada66de49fd61975&type=album "Eq :)")
+
+Для того что бы получить ответ от сервера, нужно сделать get запрос на /api/ и в params указать JSON с ключём code и значением в виде твоего кода,сервер вернёт ответ в виде JSON
+
+Пример :
+
+`params = {'code': "run 3 > 2",}`
+
+`r = requests.get(url=url, params=params)`
+
+`print(r.text)`
 
 # Варнинги
 
