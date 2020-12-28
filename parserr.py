@@ -23,17 +23,24 @@ class Parser:
         :param value: значения из главных лексем
         :param line_count: лайн, где распологается for
         :return: None
+
+        name_variable - имя переменной цикла
+        value_variable - значения переменной цикла
+        condition - значения, если True - цикл продолжает итерироваться, False - прекращает
+        step - значения, который прибавляется к переменной(может быть отрицательным)
+        count_lines - поле видимости цикла(сколько команд из лексем заключено в цикле)
+
         """
         name_variable = key.split(' ')[0][4::].split('=')[0].lstrip(' ').rstrip(' ')
         value_variable = key.split(' ')[0][4::].split('=')[1].lstrip(' ').rstrip(' ')
         condition = ' '.join(key.split(' ')[1::]).lstrip(' ').rstrip(' ')
 
         step = int(value.lstrip(' ').split(' ')[0].replace(' ',''))
-        count_executions = int(value.split(' ')[1])
+        count_lines = int(value.split(' ')[1])
 
         self._variables[name_variable] = int(value_variable)
         while eval(condition, self._variables):
-            self.parser(lexemes[line_count: line_count + count_executions + 1])
+            self.parser(lexemes[line_count: line_count + count_lines + 1])
             self._variables[name_variable] += step
 
     def parser(self, lexemes, tick=1):
@@ -55,6 +62,11 @@ class Parser:
                         value = methods.choose_func(value, self._variables)
 
                         if key[0] == 'v':  # переменные
+                            '''
+                            Типы данных
+                            Каждое из ветвлений записывает в переменную значения
+                            Тип значения определяет функция choose_type
+                            '''
                             if key.split('_')[1] == 'string':  # тип данных
                                 if value[0] != "'" and value[-1] != "'":
                                     value = "'" + str(value) + "'"
@@ -85,26 +97,30 @@ class Parser:
                             self.parser(self._variables[value])
 
                         if key == 'run':
+                            """
+                            Команда отвечает за вывод информации в веб версии
+                            """
                             self.web_output.append(methods.echo(value, self._variables))
 
                         if key.startswith('for'):  # циклы
                             self._for(lexemes, key, value, line_count)
 
                         if key == 'def':  # функции
-                            count_lines = int(value.split(' ')[1]) # количество команд в функции
-                            name_def = value.split(' ')[0]
+                            count_lines = int(value.split(' ')[1]) # поле видимости функции(сколько команд из лексем заключено в функции)
+                            name_def = value.split(' ')[0] # имя функции
 
                             list_executable_code = lexemes[line_count: line_count + count_lines + 1] # исполняемый код
                             self._variables[name_def] = list_executable_code
                             del lexemes[line_count - 1: line_count + count_lines] # удаляем строки функции
 
                         if key.startswith('range'):
-                            count_execution = value.split(' ')[0] # кол-во выполнений кода
-                            count_lines = int(value.split(' ')[1]) # количество команд в цикле
-                            self.parser(lexemes=lexemes[line_count: count_lines + line_count + 1], tick=int(eval(count_execution, self._variables)) - 1)
+                            count_execution = value.split(' ')[0] # количество выполнений кода(tick)
+                            count_lines = int(value.split(' ')[1]) # поле видимости цикла(сколько команд из лексем заключено в цикле)
+                            self.parser(lexemes=lexemes[line_count: count_lines + line_count + 1],
+                                        tick=int(eval(count_execution, self._variables)) - 1)
 
                         if key.startswith('if') or key.startswith('elif'):
-                            count_executions = int(value.split(' ')[-1]) # количество команд в ветвлении
+                            count_executions = int(value.split(' ')[-1]) # поле видимости ветвления(сколько команд из лексем заключено в ветвлении)
                             value = ' '.join(value.split(' ')[0:-1]) # значения
 
                             if not eval(value, self._variables):  # если условия неверно
@@ -131,7 +147,6 @@ class Parser:
                         line_count += 1
 
         except ValueError as e:
-            print(e)
             exceptions.Value_Error('Ошибка значения')
         except TypeError as e:
             exceptions.Type_Error('Ошибка типа данных')
@@ -149,7 +164,6 @@ class Parser:
         except ZeroDivisionError:
             exceptions.Zero_Error('Ай ай ай, на 0 делить нельзя')
         except NameError as e:
-            print(e)
             exceptions.Name_Error('Переменной с таким именем не найдено')
         except Exception as error:
             exceptions.Parser_Error(f'Ошибка парсера\n{error}')

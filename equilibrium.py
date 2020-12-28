@@ -14,11 +14,7 @@ class CodeReader:
         if level == 'PROD':
             self.all_code = []
             with open(source,encoding="utf-8") as source:
-                for line in source:
-                    if line[-1] == '\n':
-                        self.all_code.append(line[:-1]) # с помощью шага убираем \n
-                    else:
-                        self.all_code.append(line)
+                self.all_code = [line.strip() for line in source]
         elif level == 'DEBUG':
             self.all_code = source
 

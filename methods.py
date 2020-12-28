@@ -14,6 +14,8 @@ parser = None
 sheet = None
 time = None
 query = None
+db = None
+log = None
 
 
 def import_library(name_library):
@@ -42,6 +44,14 @@ def import_library(name_library):
         from library.query import Query
         global query
         query = Query()
+    elif name_library == 'db':
+        from library.txtdb import TxtDB
+        global db
+        db = TxtDB()
+    elif name_library == 'log':
+        from library.log import Logger
+        global log
+        log = Logger()
 
 
 
@@ -64,47 +74,34 @@ def choose_func(name_func, variables):
     try:
         if name_func.startswith('scan'):  # ввод данных от пользователя
             name_func = input()
-
         elif name_func == 'coinflip()':
             name_func = coin_flip()
-
         elif name_func == 'time_day()':
             name_func = time.get_time_minutes()
-
         elif name_func == 'time_month()':
             name_func = time.get_time_date()
-
         elif name_func == 'time_unix()':
             name_func = time.get_time_unix()
-
         elif name_func.startswith('random'):  # рандом
             name_func = random_int(name_func, variables)
-
         elif name_func.startswith('rfile()'):
             name_func = typess.Array(files.read_file(), variables).return_value()
-
         elif name_func == 'get_title()':
             name_func = parser.title_page()
-
         elif name_func.startswith('get_xpath'):
             value = get_arguments_without_key(name_func[9:])
             name_func = parser.get_xpath(eval(value[0], variables))
-
         elif name_func == 'get_link()':
             name_func = parser.get_link()
-
         elif name_func.startswith('get_cell'):
             value = get_arguments_without_key(name_func[8:])
-
             name_func = sheet.read_cell(eval(value[0], variables))
         elif name_func.startswith('get'):
-        	value = get_arguments_without_key(name_func[4:])
-
-        	name_func = query.get_request(value[0],value[1])
+            value = get_arguments_without_key(name_func[4:])
+            name_func = query.get_request(value[0],value[1])
         elif name_func.startswith('post'):
-        	value = get_arguments_without_key(name_func[5:])
-
-        	name_func = query.post_request(value[0],value[1])
+            value = get_arguments_without_key(name_func[5:])
+            name_func = query.post_request(value[0],value[1])
 
         return name_func
 
@@ -149,6 +146,9 @@ def choose_methods(name_method, value, variables):
 
         elif name_method == 'csheet':
             import_sheet(value, variables)
+
+        elif name_method == 'cdatabase':
+            pass
 
         elif name_method == 'editcell':
             arguments = get_arguments_without_key(value)
@@ -215,25 +215,51 @@ def random_int(value, variables):
     return random.randint(int(eval(first_num, variables)), int(eval(second_num, variables)))
 
 
-def create_file(value, variables):
-    files.create_file(eval(value, variables))
+def create_file(name_file, variables):
+    """
+    :param name_file: названия файла
+    :param variables: переменные
+    :return: None
+    """
+    files.create_file(eval(name_file, variables))
 
 
 def write_file(value, variables):
+    """
+    :param value: значения для записи в файл
+    :param variables: переменные
+    :return: None
+    """
     files.write_file(eval(value, variables))
 
 
-def delete_file(value, variables):
-    files.delete_file(eval(value, variables))
+def delete_file(name_file, variables):
+    """
+    :param name_file: названия файла
+    :param variables: переменные
+    :return: None
+    """
+    files.delete_file(eval(name_file, variables))
 
 
 def update_file(value, variables):
+    """
+    :param value: значения для обновления
+    :param variables: переменные
+    :return: None
+    """
     files.update_file(line=eval(get_arguments_without_key(value)[0], variables),
                       value_for_edit=eval(get_arguments_without_key(value)[1], variables))
 
 
-def create_connection(value, variables):
-    parser.create_connection(eval(value, variables))
+def create_connection(url, variables):
+    """
+    Функция создаёт подключения с сайтом
+    :param url: ссылка на сайт
+    :param variables: переменные
+    :return: None
+    """
+    parser.create_connection(eval(url, variables))
 
 
 def mkdir(name_dir, variables):
