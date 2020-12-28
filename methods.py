@@ -102,6 +102,14 @@ def choose_func(name_func, variables):
         elif name_func.startswith('post'):
             value = get_arguments_without_key(name_func[5:])
             name_func = query.post_request(value[0],value[1])
+        elif name_func.startswith('select_all'):
+            value = get_arguments_without_key(name_func[10:])
+            name_func = db.select_all(value[0].replace("'",''))
+        elif name_func.startswith('select_where'):
+            value = get_arguments_without_key(name_func[12:])
+            name_func = db.select_where(eval(value[0],variables),
+                                        eval(value[1],variables),
+                                        eval(value[2],variables))
 
         return name_func
 
@@ -148,12 +156,22 @@ def choose_methods(name_method, value, variables):
             import_sheet(value, variables)
 
         elif name_method == 'cdatabase':
-            pass
+            arguments = get_arguments_without_key(value)
+            db.create_table(eval(arguments[0], variables),eval(arguments[1], variables))
+
+        elif name_method == 'insertdatabase':
+            db.insert(list(eval(value[1:-1], variables)))
 
         elif name_method == 'editcell':
             arguments = get_arguments_without_key(value)
             sheet.edit_cell(eval(arguments[0], variables),eval(arguments[1], variables))
 
+        elif name_method == 'updatewhere':
+            arguments = get_arguments_without_key(value)
+            db.update_where(eval(arguments[0], variables),
+                            eval(arguments[1], variables),
+                            eval(arguments[2], variables),
+                            eval(arguments[3], variables))
 
     except AttributeError:
         exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')

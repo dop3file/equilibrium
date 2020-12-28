@@ -29,19 +29,18 @@ class Parser:
         condition - значения, если True - цикл продолжает итерироваться, False - прекращает
         step - значения, который прибавляется к переменной(может быть отрицательным)
         count_lines - поле видимости цикла(сколько команд из лексем заключено в цикле)
-
         """
         name_variable = key.split(' ')[0][4::].split('=')[0].lstrip(' ').rstrip(' ')
         value_variable = key.split(' ')[0][4::].split('=')[1].lstrip(' ').rstrip(' ')
         condition = ' '.join(key.split(' ')[1::]).lstrip(' ').rstrip(' ')
 
-        step = int(value.lstrip(' ').split(' ')[0].replace(' ',''))
+        step = value.lstrip(' ').split(' ')[0].replace(' ','')
         count_lines = int(value.split(' ')[1])
 
         self._variables[name_variable] = int(value_variable)
         while eval(condition, self._variables):
             self.parser(lexemes[line_count: line_count + count_lines + 1])
-            self._variables[name_variable] += step
+            self._variables[name_variable] += int(eval(step, self._variables))
 
     def parser(self, lexemes, tick=1):
         """
@@ -149,6 +148,7 @@ class Parser:
         except ValueError as e:
             exceptions.Value_Error('Ошибка значения')
         except TypeError as e:
+            print(e)
             exceptions.Type_Error('Ошибка типа данных')
         except IndexError as e:
             exceptions.Index_Error('Ошибка индекса')
@@ -164,6 +164,7 @@ class Parser:
         except ZeroDivisionError:
             exceptions.Zero_Error('Ай ай ай, на 0 делить нельзя')
         except NameError as e:
+            opr
             exceptions.Name_Error('Переменной с таким именем не найдено')
         except Exception as error:
             exceptions.Parser_Error(f'Ошибка парсера\n{error}')
