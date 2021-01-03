@@ -5,4 +5,3 @@ if z == 10 4{
 	if q == 5 1{
 		write => 'yeach!'
 	}
-}
