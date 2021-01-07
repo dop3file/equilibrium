@@ -39,8 +39,9 @@ class Parser:
 
         self._variables[name_variable] = int(value_variable)
         while eval(condition, self._variables):
-            self.parser(lexemes[line_count: line_count + count_lines + 1])
+            self.parser(lexemes[line_count: line_count + count_lines])
             self._variables[name_variable] += int(eval(step, self._variables))
+
 
     def parser(self, lexemes, tick=1):
         """
@@ -51,12 +52,14 @@ class Parser:
         :param tick: количество проходов по лексем, по дефолту 1(так как нет цикла for или range)
         :return: None
         """
+        # print(lexemes) # FOR DEBUG
         line_count = 1
         try:
             for tick in range(tick):
                 for el in lexemes:
                     for key, value in el.items():
                         value = str(value)
+                        key = str(key)
                         methods.variables = self._variables
                         value = methods.choose_func(value, self._variables)
 
@@ -140,6 +143,9 @@ class Parser:
                         if key == 'include': # импортирования библиотек
                             methods.import_library(value)
 
+                        if key == 'delete': # удаление из области видимости(_variables)
+                            del self._variables[value]
+
                         if key.startswith('else'):
                             pass
 
@@ -147,24 +153,21 @@ class Parser:
 
         except ValueError as e:
             exceptions.Value_Error('Ошибка значения')
-        except TypeError as e:
-            print(e)
+        except TypeError:
             exceptions.Type_Error('Ошибка типа данных')
-        except IndexError as e:
+        except IndexError:
             exceptions.Index_Error('Ошибка индекса')
-        except SyntaxError as e:
-            print(e)
+        except SyntaxError:
             exceptions.Syntax_Error('Ошибка синтаксиса')
         except KeyError:
             exceptions.Key_Error('Ошибка key -> value')
         except FileExistsError or FileNotFoundError:
             exceptions.File_Exists('Ошибка отсуствия файла')
-        except OSError as e:
+        except OSError:
             exceptions.OS_Error('Ошибка ОС')
         except ZeroDivisionError:
             exceptions.Zero_Error('Ай ай ай, на 0 делить нельзя')
-        except NameError as e:
-            opr
+        except NameError:
             exceptions.Name_Error('Переменной с таким именем не найдено')
         except Exception as error:
             exceptions.Parser_Error(f'Ошибка парсера\n{error}')

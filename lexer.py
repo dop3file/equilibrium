@@ -23,6 +23,9 @@ class Lexer:
                 elif line.startswith('ufather?'):
                     print('Renat Yakublevich')
 
+                elif line.startswith('delete'):
+                    self.stack += [{'delete' : line.split(' ')[1]}]
+
                 elif line.startswith('def_'):
                     self.stack += [{'def_': line[4:].replace(' ','')}]
 
@@ -54,7 +57,7 @@ class Lexer:
                     self.stack += [{'for_' + line.split('for')[1].split(',')[0].replace('(','').replace(' ','') + ' ' + line.split(',')[1] : line.split(',')[2].split(')')[0] + ' ' + line.split(')')[1][:-1].replace(' ','')}]
 
                 elif line.startswith('def'):
-                    self.stack += [{'def': line.split(' ')[1] + ' ' + line.split(' ')[2][:-1]}]
+                    self.stack += [{'def': line.split('(')[0].split(' ')[1] + ' ' + line.split(' ')[-1][:-1] + ' ' + line.split('(')[1].split(')')[0]}]
 
                 elif line.split(' ')[2] == ':=':  # переменные
                     if line.split(' ')[1].find('+') != -1:
