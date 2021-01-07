@@ -26,7 +26,7 @@
   
   `string name := 'Renat'`
   
-  `array random := ['Gosha','Equilibrium fck all world',17]`
+  `array random := ['Gosha','Equilibrium',17]`
   
   `float pi := 3.14`
   
