@@ -3,6 +3,7 @@
 не обрабатывая их логику
 """
 import exceptions as excp
+import re
 
 
 class Lexer:
@@ -38,7 +39,7 @@ class Lexer:
                 elif line == '}':
                     self.stack += [{'end_if': 0}]
 
-                elif line.split(' ')[1] == '=>':  # функции
+                elif re.findall(r'\S+ =>',line) or re.findall(r'\S+=>',line):  # функции
                     self.stack += [{'f_' + line.split('=>')[0].replace(' ',''): ''.join(line.split('=>')[1::])[1::]}]
 
                 elif line.startswith('if'):
@@ -59,7 +60,7 @@ class Lexer:
                 elif line.startswith('def'):
                     self.stack += [{'def': line.split('(')[0].split(' ')[1] + ' ' + line.split(' ')[-1][:-1] + ' ' + line.split('(')[1].split(')')[0]}]
 
-                elif line.split(' ')[2] == ':=':  # переменные
+                elif re.findall('\S+ \S+ :=',line) or re.findall('\S+ \S+:=',line):  # переменные
                     if line.split(' ')[1].find('+') != -1:
                         self.stack += [
                             {'v_' + line.split(' ')[0] + '_' + line.split(' ')[1].split('+')[1]: ''.join(line.split(':=')[1::])[1::]}]
