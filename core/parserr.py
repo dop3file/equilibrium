@@ -5,11 +5,18 @@
 import typess
 import exceptions
 import methods
+import math
 
 
 class Parser:
     def __init__(self):
-        self._variables = {'ok' : True, 'bad' : False}  # переменные
+        # переменные
+        self._variables = {
+            'ok' : True,
+            'bad' : False,
+            'pi' : math.pi,
+            'e' : math.e
+            }
         self.web_output = [] 
 
     def get_web_output(self):

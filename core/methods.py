@@ -16,6 +16,7 @@ time = None
 query = None
 db = None
 log = None
+math = None
 
 
 def import_library(name_library):
@@ -52,6 +53,10 @@ def import_library(name_library):
         from library.log import Logger
         global log
         log = Logger()
+    elif name_library == 'math':
+        from library.math import Math
+        global math
+        math = Math()
 
 
 
@@ -172,6 +177,10 @@ def choose_methods(name_method, value, variables):
                             eval(arguments[1], variables),
                             eval(arguments[2], variables),
                             eval(arguments[3], variables))
+
+        elif name_method == 'ceil':
+            arguments = get_arguments_without_key(value)
+            
 
     except AttributeError:
         exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')

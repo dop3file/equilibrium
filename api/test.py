@@ -1,18 +1,20 @@
-'''
-Для того что бы получить ответ от сервера, нужно сделать get запрос на /api/
-и в params указать JSON с ключём code и значением в виде твоего кода,сервер вернёт ответ в виде JSON
-'''
 import requests
 
 
-# URL, на который собираетесь отправлять запрос
 url = 'http://equilibriumweb.pythonanywhere.com/api'
 
 # Параметры запроса
 params = {
-    'code': "int a := 10\nrun a",
+    'code': """
+    include time
+    run 3 > 2
+    run time_month()
+    """
+
 }
 
-# Ответ
-r = requests.get(url=url, params=params)
-print(r.text)
+
+# Ответ : True, 29/12/2020
+response = requests.get(url=url, params=params)
+print(response.text)
+
