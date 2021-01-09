@@ -54,7 +54,7 @@ def import_library(name_library):
         global log
         log = Logger()
     elif name_library == 'math':
-        from library.math import Math
+        from library._math import Math
         global math
         math = Math()
 
@@ -112,9 +112,13 @@ def choose_func(name_func, variables):
             name_func = db.select_all(value[0].replace("'",''))
         elif name_func.startswith('select_where'):
             value = get_arguments_without_key(name_func[12:])
-            name_func = db.select_where(eval(value[0],variables),
-                                        eval(value[1],variables),
-                                        eval(value[2],variables))
+            name_func = db.select_where(eval(value[0], variables),
+                                        eval(value[1], variables),
+                                        eval(value[2], variables))
+        elif name_func.startswith('ceil'):
+            value = get_arguments_without_key(name_func[4:])
+            name_func = math.ceil(str(eval(value[0], variables)))
+
 
         return name_func
 
@@ -177,10 +181,6 @@ def choose_methods(name_method, value, variables):
                             eval(arguments[1], variables),
                             eval(arguments[2], variables),
                             eval(arguments[3], variables))
-
-        elif name_method == 'ceil':
-            arguments = get_arguments_without_key(value)
-            
 
     except AttributeError:
         exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')

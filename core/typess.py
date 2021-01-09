@@ -25,8 +25,9 @@ def choose_type(value, variables, types):
 class Int:
     def __init__(self, value, variables):
         try:
-            self.value = int(eval(value, variables))
+            self.value = int(eval(str(value), variables))
         except TypeError as e:
+            print(e)
             exceptions.Type_Error('Объект не является числом')
 
     def return_value(self):
@@ -36,7 +37,7 @@ class Int:
 class String:
     def __init__(self, value, variables):
         try:
-            self.value = str(eval(value, variables))
+            self.value = str(eval(str(value), variables))
         except TypeError as e:
             exceptions.Type_Error('Объект не является строкой')
 
@@ -59,7 +60,7 @@ class Array:
 class Float:
     def __init__(self, value, variables):
         try:
-            self.value = float(eval(value, variables))
+            self.value = float(eval(str(value), variables))
 
         except TypeError as e:
             exceptions.Type_Error('Объект не является дробью')
@@ -86,7 +87,7 @@ class Bool:
     def __init__(self, value, variables):
         try:
             if value == 'ok' or value == 'bad':
-                self.value = eval(value, variables)
+                self.value = eval(str(value), variables)
             else:
                 exceptions.Type_Error('Объект не является булевым значением')
         except TypeError:
