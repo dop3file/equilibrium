@@ -1,1 +1,2 @@
-write => pi
+include math
+write => module(+0)

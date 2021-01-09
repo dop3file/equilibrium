@@ -118,7 +118,9 @@ def choose_func(name_func, variables):
         elif name_func.startswith('ceil'):
             value = get_arguments_without_key(name_func[4:])
             name_func = math.ceil(str(eval(value[0], variables)))
-
+        elif name_func.startswith('module'):
+            value = get_arguments_without_key(name_func[6:])
+            name_func = math.math_module(str(eval(value[0], variables)))
 
         return name_func
 

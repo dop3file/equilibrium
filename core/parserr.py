@@ -159,6 +159,7 @@ class Parser:
                         line_count += 1
 
         except ValueError as e:
+            print(e)
             exceptions.Value_Error('Ошибка значения')
         except TypeError as e:
             print(e)
