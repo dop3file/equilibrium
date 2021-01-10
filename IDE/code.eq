@@ -1,2 +1,2 @@
-include math
-write => module(0)
+import code2
+write => a

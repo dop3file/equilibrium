@@ -67,6 +67,9 @@ class Lexer:
                     else:
                         self.stack += [{'v_' + line.split(' ')[0] + '_' + line.split(' ')[1]: ''.join(line.split(':=')[1::])[1::]}]
 
+                elif line.split(' ')[0] == 'import':
+                    self.stack += [{'import': line[7:]}]
+
                 else:
                     excp.Lexer_Error('Строка не понятна интерпритатору',line)
 
