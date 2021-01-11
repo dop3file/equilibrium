@@ -70,6 +70,9 @@ class Lexer:
                 elif line.split(' ')[0] == 'import':
                     self.stack += [{'import': line[7:]}]
 
+                elif line == 'quit':
+                    self.stack += [{'quit' : 'quit'}]
+
                 else:
                     excp.Lexer_Error('Строка не понятна интерпритатору',line)
 

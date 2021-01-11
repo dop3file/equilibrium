@@ -116,7 +116,7 @@ class Parser:
                         if key.startswith('for'):  # циклы
                             self._for(lexemes, key, value, line_count)
 
-                        if key == 'import':
+                        if key == 'import': # импортирования файлов .eq
                             with open(f'{value}.eq', encoding='utf-8') as file:
                                 all_code = [line.strip() for line in file]
                             all_code = Lexer(all_code).lexer()
@@ -161,6 +161,9 @@ class Parser:
                         if key == 'include': # импортирования библиотек
                             methods.import_library(value)
 
+                        if key == 'quit': # выход из программы
+                            raise KeyboardInterrupt
+
                         if key == 'delete': # удаление из области видимости(_variables)
                             del self._variables[value]
 
@@ -169,11 +172,9 @@ class Parser:
 
                         line_count += 1
 
-        except ValueError as e:
-            print(e)
+        except ValueError:
             exceptions.Value_Error('Ошибка значения')
-        except TypeError as e:
-            print(e)
+        except TypeError:
             exceptions.Type_Error('Ошибка типа данных')
         except IndexError:
             exceptions.Index_Error('Ошибка индекса')
@@ -187,8 +188,7 @@ class Parser:
             exceptions.OS_Error('Ошибка ОС')
         except ZeroDivisionError:
             exceptions.Zero_Error('Ай ай ай, на 0 делить нельзя')
-        except NameError as e:
-            print(e)
+        except NameError:
             exceptions.Name_Error('Переменной с таким именем не найдено')
-        except Exception as error:
+        except Exception:
             exceptions.Parser_Error(f'Ошибка парсера\n{error}')
