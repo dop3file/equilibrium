@@ -17,6 +17,7 @@ query = None
 db = None
 log = None
 math = None
+robot = None
 
 
 def import_library(name_library):
@@ -57,6 +58,10 @@ def import_library(name_library):
         from library._math import Math
         global math
         math = Math()
+    elif name_library == 'robot':
+        from library.robot import Robot
+        global robot
+        robot = Robot()
 
 
 
@@ -183,6 +188,9 @@ def choose_methods(name_method, value, variables):
                             eval(arguments[1], variables),
                             eval(arguments[2], variables),
                             eval(arguments[3], variables))
+
+        elif name_method == 'robot':
+            robot.route_move(value)
 
     except AttributeError:
         exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')

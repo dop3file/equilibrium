@@ -162,7 +162,7 @@ class Parser:
                             methods.import_library(value)
 
                         if key == 'quit': # выход из программы
-                            raise KeyboardInterrupt
+                            exit()
 
                         if key == 'delete': # удаление из области видимости(_variables)
                             del self._variables[value]

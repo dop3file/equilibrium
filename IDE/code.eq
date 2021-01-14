@@ -1,3 +1,5 @@
-import code2
-
-write => 'Hello!'
+include robot
+robot => Left
+robot => Right
+robot => Up
+robot => end
