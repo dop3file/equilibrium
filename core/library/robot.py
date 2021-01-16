@@ -10,48 +10,89 @@ class Robot:
             'Down': (0,+1),
             'Paint': 'p'
         }
+        self.tasks = {
+            'task1' : {
+                'pointPos': (600,0),
+                'countTiles' : (4,2),
+                'tilesSize': 200,
+                'bricksPos': [(2,1),[0,0]],
+                'playerPos': (0,200)
+            }
+        }
 
         self.moves = []
 
     def route_move(self, type_move):
-        if type_move == 'end':
+        if type_move.startswith('task'):
+            self.task = self.tasks[type_move]
+        elif type_move == 'end':
             self.run_app()
-        self.moves.append(self.move_items[type_move])
+        else:
+            self.moves.append(self.move_items[type_move])
+
+    def is_out_border(self, x_player, y_player, x_move, y_move, game_res, tile_size):
+        """
+        Функция возвращает, переходит ли игрок границу или стену
+        """
+        if x_player + x_move > game_res[0] or x_player + x_move < 0:
+            return False
+        elif y_player + y_move > game_res[1] or y_player + y_move < 0:
+            return False
+        for brickPos in self.task['bricksPos']:
+            if y_player + y_move == brickPos[1] * tile_size and x_player + x_move == brickPos[0] * tile_size:
+                return False
+        return True
 
     def run_app(self):
-        W, H = 10, 10
-        TILE = 75
-        GAME_RES = W * TILE, H * TILE
-        FPS = 5
+        WIDTH, HEIGHT = self.task['countTiles'] # количество плиток
+        TILE = self.task['tilesSize'] # размер плитки
+        GAME_RES = WIDTH * TILE, HEIGHT * TILE # разрешения экрана
+        FPS = 30
 
         pygame.init()
         screen = pygame.display.set_mode(GAME_RES)
         pygame.display.set_caption('EquilibriumRobot')
-        grid = [pygame.Rect(x * TILE , y * TILE, TILE, TILE ) for x in range(W) for y in range(H)]
+        # отрисовка фона
+        grid = [pygame.Rect(x * TILE , y * TILE, TILE, TILE ) for x in range(WIDTH) for y in range(HEIGHT)]
         clock = pygame.time.Clock()
-        x, y = 0, 675
+        # позиция игрока
+        x_player, y_player = self.task['playerPos']
+        count_moves = 0
 
         while True:
             pressed_keys = pygame.key.get_pressed()
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT or pressed_keys[pygame.K_ESCAPE]:
-                    exit()
-
+            # поля
             [pygame.draw.rect(screen, (40,40,40), i_rect, 1) for i_rect in grid]
-            pygame.draw.rect(screen,(0,255,0), pygame.Rect(x,y,75,75), 1)
+            # игрок
+            pygame.draw.rect(screen,(0,255,0), pygame.Rect(x_player,y_player,TILE, TILE), 0)
+            # цель
+            pygame.draw.rect(screen, (255,0,0), pygame.Rect(*self.task['pointPos'],TILE, TILE), 0)
+            # стены
+            for brickPos in self.task['bricksPos']:
+                pygame.draw.rect(screen, (128, 128, 128), pygame.Rect(brickPos[0] * TILE, brickPos[1] * TILE, TILE, TILE), 0)
 
             pygame.display.flip()
             clock.tick(FPS)
 
-            for count, move in enumerate(self.moves):
-                x += move[0] * TILE
-                y += move[1] * TILE
-                self.moves.pop(count)
+            # проверка на цель
+            if x_player == self.task['pointPos'][0] and y_player == self.task['pointPos'][1]:
+                print('Ты выиграл!')
+                exit()
 
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT or pressed_keys[pygame.K_ESCAPE]:
+                    exit()
+                if pressed_keys[pygame.K_w]:
+                    try:
+                        if not self.is_out_border(x_player, y_player, self.moves[count_moves][0] * TILE, self.moves[count_moves][1] * TILE, GAME_RES, TILE):
+                            print('Туда нельзя!')
+                        else:
+                            x_player += self.moves[count_moves][0] * TILE
+                            y_player += self.moves[count_moves][1] * TILE
+                    except IndexError:
+                        pass
+
+                    count_moves += 1
 
             screen.fill((0, 0, 0))
-
-
-
-

@@ -192,7 +192,7 @@ def choose_methods(name_method, value, variables):
         elif name_method == 'robot':
             robot.route_move(value)
 
-    except AttributeError:
+    except AttributeError as e:
         exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')
 
 

@@ -174,13 +174,15 @@ class Parser:
 
         except ValueError:
             exceptions.Value_Error('Ошибка значения')
-        except TypeError:
+        except TypeError as e:
+            print(e)
             exceptions.Type_Error('Ошибка типа данных')
         except IndexError as e:
             exceptions.Index_Error('Ошибка индекса')
         except SyntaxError:
             exceptions.Syntax_Error('Ошибка синтаксиса')
-        except KeyError:
+        except KeyError as e:
+            print(e)
             exceptions.Key_Error('Ошибка key -> value')
         except FileExistsError or FileNotFoundError:
             exceptions.File_Exists('Ошибка отсуствия файла')
