@@ -1,12 +1,20 @@
 include robot
 
-robot => task1
+robot => task2
 robot => Right
-robot => Paint
+robot => Right
+robot => Right
+robot => Right
 robot => Up
+robot => Up
+robot => Left
 robot => Paint
-robot => Right
+robot => Left
 robot => Paint
-robot => Right
+robot => Left
+robot => Paint
+robot => Left
+robot => Paint
+robot => Left
 
 robot => end

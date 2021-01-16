@@ -12,12 +12,20 @@ class Robot:
         }
         self.tasks = {
             'task1' : {
-                'pointPos': (600,0),
+                'pointPos': (3,0),
                 'countTiles' : (4,2),
                 'tilesSize': 200,
                 'bricksPos': [(2,1),[0,0]],
-                'playerPos': (0,200),
+                'playerPos': (0,1),
                 'paintPos': [(1,1),(1,0),(2,0)]
+            },
+            'task2' : {
+                'pointPos': (0, 0),
+                'countTiles': (7, 4),
+                'tilesSize': 100,
+                'bricksPos': [(0,1), (1, 1), [2, 1], [3, 1], [4, 1]],
+                'playerPos': (1, 2),
+                'paintPos': [(1, 0), (2, 0), (3, 0), (4,0)]
             }
         }
 
@@ -57,7 +65,7 @@ class Robot:
         grid = [pygame.Rect(x * TILE , y * TILE, TILE, TILE ) for x in range(WIDTH) for y in range(HEIGHT)]
         clock = pygame.time.Clock()
         # позиция игрока
-        x_player, y_player = self.task['playerPos']
+        x_player, y_player = self.task['playerPos'][0] * TILE, self.task['playerPos'][1] * TILE
         count_moves = 0
 
         len_paints = len(self.task['paintPos'])
@@ -71,7 +79,7 @@ class Robot:
             # игрок
             pygame.draw.rect(screen,(0,255,0), pygame.Rect(x_player,y_player,TILE, TILE), 0)
             # цель
-            pygame.draw.rect(screen, (255,0,0), pygame.Rect(*self.task['pointPos'],TILE, TILE), 0)
+            pygame.draw.rect(screen, (255,0,0), pygame.Rect(self.task['pointPos'][0] * TILE, self.task['pointPos'][1] * TILE,TILE, TILE), 0)
             # стены
             for brickPos in self.task['bricksPos']:
                 pygame.draw.rect(screen, (128, 128, 128),
