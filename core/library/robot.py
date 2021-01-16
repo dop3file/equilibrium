@@ -1,4 +1,5 @@
 import pygame
+import time
 
 
 class Robot:
@@ -20,12 +21,12 @@ class Robot:
                 'paintPos': [(1,1),(1,0),(2,0)]
             },
             'task2' : {
-                'pointPos': (0, 0),
-                'countTiles': (7, 4),
+                'pointPos': (0,0),
+                'countTiles': (7,4),
                 'tilesSize': 100,
-                'bricksPos': [(0,1), (1, 1), [2, 1], [3, 1], [4, 1]],
+                'bricksPos': [(0,1), (1,1), [2,1], [3,1], [4,1]],
                 'playerPos': (1, 2),
-                'paintPos': [(1, 0), (2, 0), (3, 0), (4,0)]
+                'paintPos': [(1,0), (2,0), (3,0), (4,0)]
             }
         }
 
@@ -70,10 +71,8 @@ class Robot:
 
         len_paints = len(self.task['paintPos'])
 
-
         while True:
             pressed_keys = pygame.key.get_pressed()
-
             # поля
             [pygame.draw.rect(screen, (40,40,40), i_rect, 1) for i_rect in grid]
             # игрок
@@ -86,19 +85,19 @@ class Robot:
                                  pygame.Rect(brickPos[0] * TILE, brickPos[1] * TILE, TILE, TILE), 0)
             # закраски
             for count, paint in enumerate(self.task['paintPos']):
-                pygame.draw.rect(screen, (250, 0, 0),
+                pygame.draw.rect(screen, (255, 255, 0),
                                  pygame.Rect(paint[0] * TILE + TILE / 4, paint[1] * TILE + TILE / 4, TILE / 2, TILE / 2), 0)
-                if y_player == paint[1] * TILE and x_player == paint[0] * TILE and self.moves[count_moves] == 'p':
+                if y_player == paint[1] * TILE and x_player == paint[0] * TILE:
                     self.task['paintPos'].pop(count)
                     len_paints -= 1
-                    print(f'Осталось закрасить {len_paints} ячеек') if len_paints > 0 else print('Ты закрасил последнюю!')
-
-
+                    print(f'Осталось закрасить {len_paints} ячеек') if len_paints > 0 else print('Ты закрасил последнюю!\n------------------')
+                elif y_player == paint[1] * TILE and x_player == paint[0] * TILE:
+                    self.task['paintPos'].pop(count)
             pygame.display.flip()
             clock.tick(FPS)
 
             # проверка на цель
-            if x_player == self.task['pointPos'][0] and y_player == self.task['pointPos'][1]:
+            if x_player == self.task['pointPos'][0] * TILE and y_player == self.task['pointPos'][1] * TILE:
                 print('Ты выиграл!')
                 exit()
 
