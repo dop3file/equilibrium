@@ -172,7 +172,8 @@ class Parser:
 
                         line_count += 1
 
-        except ValueError:
+        except ValueError as e:
+            print(e)
             exceptions.Value_Error('Ошибка значения')
         except TypeError as e:
             print(e)
@@ -190,7 +191,8 @@ class Parser:
             exceptions.OS_Error('Ошибка ОС')
         except ZeroDivisionError:
             exceptions.Zero_Error('Ай ай ай, на 0 делить нельзя')
-        except NameError:
+        except NameError as e:
+            print(e)
             exceptions.Name_Error('Переменной с таким именем не найдено')
         except Exception:
             exceptions.Parser_Error(f'Ошибка парсера\n{error}')

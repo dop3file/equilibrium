@@ -16,7 +16,8 @@ class Robot:
                 'countTiles' : (4,2),
                 'tilesSize': 200,
                 'bricksPos': [(2,1),[0,0]],
-                'playerPos': (0,200)
+                'playerPos': (0,200),
+                'paintPos': [(1,1),(1,0),(2,0)]
             }
         }
 
@@ -59,6 +60,9 @@ class Robot:
         x_player, y_player = self.task['playerPos']
         count_moves = 0
 
+        len_paints = len(self.task['paintPos'])
+
+
         while True:
             pressed_keys = pygame.key.get_pressed()
 
@@ -70,7 +74,17 @@ class Robot:
             pygame.draw.rect(screen, (255,0,0), pygame.Rect(*self.task['pointPos'],TILE, TILE), 0)
             # стены
             for brickPos in self.task['bricksPos']:
-                pygame.draw.rect(screen, (128, 128, 128), pygame.Rect(brickPos[0] * TILE, brickPos[1] * TILE, TILE, TILE), 0)
+                pygame.draw.rect(screen, (128, 128, 128),
+                                 pygame.Rect(brickPos[0] * TILE, brickPos[1] * TILE, TILE, TILE), 0)
+            # закраски
+            for count, paint in enumerate(self.task['paintPos']):
+                pygame.draw.rect(screen, (250, 0, 0),
+                                 pygame.Rect(paint[0] * TILE + TILE / 4, paint[1] * TILE + TILE / 4, TILE / 2, TILE / 2), 0)
+                if y_player == paint[1] * TILE and x_player == paint[0] * TILE and self.moves[count_moves] == 'p':
+                    self.task['paintPos'].pop(count)
+                    len_paints -= 1
+                    print(f'Осталось закрасить {len_paints} ячеек') if len_paints > 0 else print('Ты закрасил последнюю!')
+
 
             pygame.display.flip()
             clock.tick(FPS)
