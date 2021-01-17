@@ -1,6 +1,6 @@
 include robot
 
-robot => task1
+robot => task2
 robot => Right
 robot => Up
 robot => Paint

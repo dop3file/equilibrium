@@ -179,6 +179,7 @@ class Parser:
             print(e)
             exceptions.Type_Error('Ошибка типа данных')
         except IndexError as e:
+            print(e)
             exceptions.Index_Error('Ошибка индекса')
         except SyntaxError:
             exceptions.Syntax_Error('Ошибка синтаксиса')
