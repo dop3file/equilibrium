@@ -181,14 +181,16 @@ class Parser:
         except IndexError as e:
             print(e)
             exceptions.Index_Error('Ошибка индекса')
-        except SyntaxError:
+        except SyntaxError as e:
+            print(e)
             exceptions.Syntax_Error('Ошибка синтаксиса')
         except KeyError as e:
             print(e)
             exceptions.Key_Error('Ошибка key -> value')
         except FileExistsError or FileNotFoundError:
             exceptions.File_Exists('Ошибка отсуствия файла')
-        except OSError:
+        except OSError as e:
+            print(e)
             exceptions.OS_Error('Ошибка ОС')
         except ZeroDivisionError:
             exceptions.Zero_Error('Ай ай ай, на 0 делить нельзя')

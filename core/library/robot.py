@@ -3,13 +3,14 @@ import time
 
 
 class Task:
-    def __init__(self, pointPos, countTiles, tilesSize, bricksPos, playerPos, paintPos):
+    def __init__(self, pointPos, countTiles, tilesSize, bricksPos, playerPos, paintPos, pointImagePos):
         self.pointPos = pointPos
         self.countTiles = countTiles
         self.tilesSize = tilesSize
         self.bricksPos = bricksPos
         self.playerPos = playerPos
         self.paintPos = paintPos
+        self.pointImagePos = pointImagePos
 
 class Robot:
     def __init__(self):
@@ -26,13 +27,15 @@ class Robot:
                             tilesSize=200,
                             bricksPos=[(2,1),(0,0)],
                             playerPos=(0,1),
-                            paintPos=[(1,1),(1,0),(2,0)]),
-            'task2' : Task(pointPos=(0,0),
-                            countTiles=(7,4),
-                            tilesSize=100,
-                            bricksPos=[(0,1), (1,1), [2,1], [3,1], [4,1]],
-                            playerPos=(1, 2),
-                            paintPos=[(1,0), (2,0), (3,0), (4,0)])
+                            paintPos=[(1,1),(1,0),(2,0)],
+                            pointImagePos=(7,1)),
+            'task2': Task(pointPos=(0, 0),
+                          countTiles=(7, 4),
+                          tilesSize=200,
+                          bricksPos=[(0, 1), (1, 1), [2, 1], [3, 1], [4, 1]],
+                          playerPos=(1, 2),
+                          paintPos=[(1, 0), (2, 0), (3, 0), (4, 0)],
+                          pointImagePos=(1,1))
         }
 
         self.moves = []
@@ -75,11 +78,12 @@ class Robot:
         count_moves = 0
         # цвета
         player_color = (0,255,0)
-        aim_color = (255,0,0)
         grid_color = (40,40,40)
         paint_color = (255, 255, 0)
 
         len_paints = len(self.task.paintPos)
+
+        point_image = pygame.image.load('../core/library/static/point.png')
 
         while True:
             pressed_keys = pygame.key.get_pressed()
@@ -88,7 +92,8 @@ class Robot:
             # игрок
             pygame.draw.rect(screen,player_color, pygame.Rect(x_player,y_player,TILE, TILE), 0)
             # цель
-            pygame.draw.rect(screen, aim_color, pygame.Rect(self.task.pointPos[0] * TILE, self.task.pointPos[1] * TILE,TILE, TILE), 0)
+            point = point_image.get_rect(center=(self.task.pointImagePos[0] * (TILE / 2), self.task.pointImagePos[1] * (TILE / 2)))
+            screen.blit(point_image,point)
             # стены
             for brickPos in self.task.bricksPos:
                 pygame.draw.rect(screen, (128, 128, 128),
@@ -97,15 +102,19 @@ class Robot:
             for count, paint in enumerate(self.task.paintPos):
                 pygame.draw.rect(screen,paint_color,
                                  pygame.Rect(paint[0] * TILE + TILE / 4, paint[1] * TILE + TILE / 4, TILE / 2, TILE / 2), 0)
-                if y_player == paint[1] * TILE and x_player == paint[0] * TILE:
+                if y_player == paint[1] * TILE and x_player == paint[0] * TILE and self.moves[count_moves] == 'p':
                     self.task.paintPos.pop(count)
                     len_paints -= 1
                     print(f'Осталось закрасить {len_paints} ячеек') if len_paints > 0 else print('Ты закрасил последнюю!\n------------------')
+                elif y_player == paint[1] * TILE and x_player == paint[0] * TILE:
+                    print('Ты не закрасил!')
+                    self.task.paintPos.pop(count)
             pygame.display.flip()
             clock.tick(FPS)
 
             # проверка на цель
-            if x_player == self.task.pointPos[0] * TILE and y_player == self.task.pointPos[1] * TILE:
+            if x_player == self.task.pointPos[0] * TILE and y_player == self.task.pointPos[1] * TILE and not len_paints:
+                self.task.pointImagePos = []
                 print('Ты выиграл!')
                 exit()
 
