@@ -50,17 +50,19 @@ class Robot:
                           playerPos=(1,0),
                           paintPos=[(2,0),(3,0),(3,1),(3,2),(2,2),(1,2),(1,1)],
                           pointImagePos=(1,1)),
-            'task5': Task(pointPos=(7,0),
-                          countTiles=(7,2),
+            'task5': Task(pointPos=(7, 0),
+                          countTiles=(7, 2),
                           tilesSize=200,
-                          bricksPos=[(1,0),(3,1),(5,0)],
-                          playerPos=(0,0),
-                          paintPos=[(0,1),(2,1),(3,0),(4,1),(6,1)],
-                          pointImagePos=(13,1)
+                          bricksPos=[(1, 0), (3, 1), (5, 0)],
+                          playerPos=(0, 0),
+                          paintPos=[(0, 1), (2, 1), (3, 0), (4, 1), (6, 1)],
+                          pointImagePos=(13, 1)
                           )
         }
 
         self.moves = []
+
+        print('Привет!\nЭто EquilibriumRobot, и вот список команд для прохождения уровней:\n - task<number> - запустить определённый уровень\n - Right - идти направо\n - Left - идти налево\n - Top - идти вверх\n - Down - идти вниз\n - Paint - закрасить\n - end - для запуска уровня\n\nДля прохождения введите команды и нажимайте W\n------------------')
 
     def route_move(self, type_move):
         if type_move.startswith('task'):
@@ -68,7 +70,12 @@ class Robot:
         elif type_move == 'end':
             self.run_app()
         else:
-            self.moves.append(self.move_items[type_move.title()])
+            if '*' in type_move:
+                type_move = type_move.split('*')
+                for el in range(int(type_move[1])):
+                    self.moves.append(self.move_items[type_move[0].replace(' ','')])
+            else:
+                self.moves.append(self.move_items[type_move.title()])
 
     def is_out_border(self, x_player, y_player, x_move, y_move, game_res, tile_size):
         """
@@ -76,7 +83,7 @@ class Robot:
         """
         if x_player + x_move > game_res[0] or x_player + x_move < 0:
             return False
-        elif y_player + y_move > game_res[1] or y_player + y_move < 0:
+        elif y_player + y_move >= game_res[1] or y_player + y_move < 0:
             return False
         for brickPos in self.task.bricksPos:
             if y_player + y_move == brickPos[1] * tile_size and x_player + x_move == brickPos[0] * tile_size:
@@ -99,7 +106,6 @@ class Robot:
         x_player, y_player = self.task.playerPos[0] * TILE, self.task.playerPos[1] * TILE
         count_moves = 0
         # цвета
-        player_color = (0,255,0)
         grid_color = (40,40,40)
         paint_color = (255, 255, 0)
 
@@ -128,13 +134,18 @@ class Robot:
             for count, paint in enumerate(self.task.paintPos):
                 pygame.draw.rect(screen,paint_color,
                                  pygame.Rect(paint[0] * TILE + TILE / 4, paint[1] * TILE + TILE / 4, TILE / 2, TILE / 2), 0)
-                if y_player == paint[1] * TILE and x_player == paint[0] * TILE and self.moves[count_moves] == 'p':
-                    self.task.paintPos.pop(count)
-                    len_paints -= 1
-                    print(f'Осталось закрасить {len_paints} ячеек') if len_paints > 0 else print('Ты закрасил последнюю!\n------------------')
-                elif y_player == paint[1] * TILE and x_player == paint[0] * TILE:
+                try:
+                    if y_player == paint[1] * TILE and x_player == paint[0] * TILE and self.moves[count_moves] == 'p':
+                        self.task.paintPos.pop(count)
+                        len_paints -= 1
+                        print(f'Осталось закрасить {len_paints} ячеек') if len_paints > 0 else print('Ты закрасил последнюю!\n------------------')
+                    elif y_player == paint[1] * TILE and x_player == paint[0] * TILE:
+                        print('Ты не закрасил!')
+                        self.task.paintPos.pop(count)
+                except IndexError:
                     print('Ты не закрасил!')
                     self.task.paintPos.pop(count)
+
             pygame.display.flip()
             clock.tick(FPS)
 
