@@ -1,7 +1,5 @@
 include robot
 
-robot => task4
-robot => rIght
-robot => Paint
+robot => task5
 
 robot => end

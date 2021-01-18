@@ -49,7 +49,15 @@ class Robot:
                           bricksPos=[(0,2),(0,1),(2,1)],
                           playerPos=(1,0),
                           paintPos=[(2,0),(3,0),(3,1),(3,2),(2,2),(1,2),(1,1)],
-                          pointImagePos=(1,1))
+                          pointImagePos=(1,1)),
+            'task5': Task(pointPos=(7,0),
+                          countTiles=(7,2),
+                          tilesSize=200,
+                          bricksPos=[(1,0),(3,1),(5,0)],
+                          playerPos=(0,0),
+                          paintPos=[(0,1),(2,1),(3,0),(4,1),(6,1)],
+                          pointImagePos=(13,1)
+                          )
         }
 
         self.moves = []
