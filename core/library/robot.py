@@ -35,6 +35,13 @@ class Robot:
                           bricksPos=[(0, 1), (1, 1), [2, 1], [3, 1], [4, 1]],
                           playerPos=(1, 2),
                           paintPos=[(1, 0), (2, 0), (3, 0), (4, 0)],
+                          pointImagePos=(1,1)),
+            'task3': Task(pointPos=(0, 0),
+                          countTiles=(6,3),
+                          tilesSize=200,
+                          bricksPos=[(1,2),(3,2),(3,1),(5,1)],
+                          playerPos=(0,2),
+                          paintPos=[(1,0),(2,2),(2,1),(5,2),(4,2)],
                           pointImagePos=(1,1))
         }
 
@@ -84,6 +91,8 @@ class Robot:
         len_paints = len(self.task.paintPos)
 
         point_image = pygame.image.load('../core/library/static/point.png')
+        brick_image = pygame.image.load('../core/library/static/brick.png')
+        paint_image = pygame.image.load('../core/library/static/paint.png')
 
         while True:
             pressed_keys = pygame.key.get_pressed()
@@ -96,8 +105,8 @@ class Robot:
             screen.blit(point_image,point)
             # стены
             for brickPos in self.task.bricksPos:
-                pygame.draw.rect(screen, (128, 128, 128),
-                                 pygame.Rect(brickPos[0] * TILE, brickPos[1] * TILE, TILE, TILE), 0)
+                brick = brick_image.get_rect(center=(brickPos[0] * TILE + 100, brickPos[1] * TILE + 100))
+                screen.blit(brick_image,brick)
             # закраски
             for count, paint in enumerate(self.task.paintPos):
                 pygame.draw.rect(screen,paint_color,
@@ -114,8 +123,10 @@ class Robot:
 
             # проверка на цель
             if x_player == self.task.pointPos[0] * TILE and y_player == self.task.pointPos[1] * TILE and not len_paints:
-                self.task.pointImagePos = []
                 print('Ты выиграл!')
+                exit()
+            elif x_player == self.task.pointPos[0] * TILE and y_player == self.task.pointPos[1] * TILE:
+                print('Ты проиграл(')
                 exit()
 
             for event in pygame.event.get():
