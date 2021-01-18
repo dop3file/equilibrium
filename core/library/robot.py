@@ -93,13 +93,15 @@ class Robot:
         point_image = pygame.image.load('../core/library/static/point.png')
         brick_image = pygame.image.load('../core/library/static/brick.png')
         paint_image = pygame.image.load('../core/library/static/paint.png')
+        player_image = pygame.image.load('../core/library/static/player.png')
 
         while True:
             pressed_keys = pygame.key.get_pressed()
             # поля
             [pygame.draw.rect(screen, grid_color, i_rect, 1) for i_rect in grid]
             # игрок
-            pygame.draw.rect(screen,player_color, pygame.Rect(x_player,y_player,TILE, TILE), 0)
+            player = player_image.get_rect(center=(x_player + 100, y_player + 100))
+            screen.blit(player_image,player)
             # цель
             point = point_image.get_rect(center=(self.task.pointImagePos[0] * (TILE / 2), self.task.pointImagePos[1] * (TILE / 2)))
             screen.blit(point_image,point)
