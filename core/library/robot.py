@@ -42,6 +42,13 @@ class Robot:
                           bricksPos=[(1,2),(3,2),(3,1),(5,1)],
                           playerPos=(0,2),
                           paintPos=[(1,0),(2,2),(2,1),(5,2),(4,2)],
+                          pointImagePos=(1,1)),
+            'task4': Task(pointPos=(0,0),
+                          countTiles=(4,3),
+                          tilesSize=200,
+                          bricksPos=[(0,2),(0,1),(2,1)],
+                          playerPos=(1,0),
+                          paintPos=[(2,0),(3,0),(3,1),(3,2),(2,2),(1,2),(1,1)],
                           pointImagePos=(1,1))
         }
 
@@ -53,7 +60,7 @@ class Robot:
         elif type_move == 'end':
             self.run_app()
         else:
-            self.moves.append(self.move_items[type_move])
+            self.moves.append(self.move_items[type_move.title()])
 
     def is_out_border(self, x_player, y_player, x_move, y_move, game_res, tile_size):
         """
