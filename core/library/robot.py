@@ -99,6 +99,7 @@ class Robot:
         pygame.init()
         screen = pygame.display.set_mode(GAME_RES)
         pygame.display.set_caption('EquilibriumRobot')
+        pygame.display.set_icon(pygame.image.load("../core/library/static/icon.png"))
         # отрисовка фона
         grid = [pygame.Rect(x * TILE , y * TILE, TILE, TILE ) for x in range(WIDTH) for y in range(HEIGHT)]
         clock = pygame.time.Clock()

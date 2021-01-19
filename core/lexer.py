@@ -73,6 +73,9 @@ class Lexer:
                 elif line == 'quit':
                     self.stack += [{'quit' : 'quit'}]
 
+                elif line.startswith('while'):
+                    self.stack += [{f'while_{line[-3:-1]}': line[6:-3]}]
+
                 else:
                     excp.Lexer_Error('Строка не понятна интерпритатору',line)
 

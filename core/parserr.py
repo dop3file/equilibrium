@@ -50,7 +50,6 @@ class Parser:
             self.parser(lexemes[line_count: line_count + count_lines])
             self._variables[name_variable] += int(eval(step, self._variables))
 
-
     def parser(self, lexemes, tick=1):
         """
         Функция, где проходит основный цикл выполнения
@@ -115,6 +114,14 @@ class Parser:
 
                         if key.startswith('for'):  # циклы
                             self._for(lexemes, key, value, line_count)
+
+                        if key.startswith('while'):
+                            count_lines = int(key.split('_')[1].replace(' ', ''))
+                            if bool(eval(value, self._variables)):
+                                while bool(eval(value, self._variables)):
+                                    self.parser(lexemes[line_count: line_count + count_lines])
+                            else:
+                                del lexemes[line_count: line_count + count_lines]
 
                         if key == 'import': # импортирования файлов .eq
                             with open(f'{value}.eq', encoding='utf-8') as file:
