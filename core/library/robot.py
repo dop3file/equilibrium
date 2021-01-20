@@ -22,35 +22,35 @@ class Robot:
             'Paint': 'p'
         }
         self.tasks = {
-            'task1' : Task(pointPos=(3,0),
+            'Task1' : Task(pointPos=(3,0),
                             countTiles=(4,2),
                             tilesSize=200,
                             bricksPos=[(2,1),(0,0)],
                             playerPos=(0,1),
                             paintPos=[(1,1),(1,0),(2,0)],
                             pointImagePos=(7,1)),
-            'task2': Task(pointPos=(0, 0),
+            'Task2': Task(pointPos=(0, 0),
                           countTiles=(7, 4),
                           tilesSize=200,
                           bricksPos=[(0, 1), (1, 1), [2, 1], [3, 1], [4, 1]],
                           playerPos=(1, 2),
                           paintPos=[(1, 0), (2, 0), (3, 0), (4, 0)],
                           pointImagePos=(1,1)),
-            'task3': Task(pointPos=(0, 0),
+            'Task3': Task(pointPos=(0, 0),
                           countTiles=(6,3),
                           tilesSize=200,
                           bricksPos=[(1,2),(3,2),(3,1),(5,1)],
                           playerPos=(0,2),
                           paintPos=[(1,0),(2,2),(2,1),(5,2),(4,2)],
                           pointImagePos=(1,1)),
-            'task4': Task(pointPos=(0,0),
+            'Task4': Task(pointPos=(0,0),
                           countTiles=(4,3),
                           tilesSize=200,
                           bricksPos=[(0,2),(0,1),(2,1)],
                           playerPos=(1,0),
                           paintPos=[(2,0),(3,0),(3,1),(3,2),(2,2),(1,2),(1,1)],
                           pointImagePos=(1,1)),
-            'task5': Task(pointPos=(7, 0),
+            'Task5': Task(pointPos=(7, 0),
                           countTiles=(7, 2),
                           tilesSize=200,
                           bricksPos=[(1, 0), (3, 1), (5, 0)],
@@ -65,9 +65,10 @@ class Robot:
         print('Привет!\nЭто EquilibriumRobot, и вот список команд для прохождения уровней:\n - task<number> - запустить определённый уровень\n - Right - идти направо\n - Left - идти налево\n - Top - идти вверх\n - Down - идти вниз\n - Paint - закрасить\n - end - для запуска уровня\n\nДля прохождения введите команды и нажимайте W\n------------------')
 
     def route_move(self, type_move):
-        if type_move.startswith('task'):
+        type_move = type_move.title()
+        if type_move.startswith('Task'):
             self.task = self.tasks[type_move]
-        elif type_move == 'end':
+        elif type_move == 'End':
             self.run_app()
         else:
             if '*' in type_move:

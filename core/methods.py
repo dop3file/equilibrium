@@ -63,8 +63,6 @@ def import_library(name_library):
         global robot
         robot = Robot()
 
-
-
 def get_arguments_without_key(value):
     """
     :param value: функция
@@ -132,7 +130,6 @@ def choose_func(name_func, variables):
     except AttributeError as e:
         print(e)
         exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')
-
 
 def choose_methods(name_method, value, variables):
     """

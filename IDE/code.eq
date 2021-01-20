@@ -1,3 +1,10 @@
-for(i=1,i < 10,+1) 1{
-	write => f'{i}\n'
+include robot
+robot => tAsk3
+
+int count := scan()
+
+range count 1{
+	robot => Up
 }
+
+robot => end

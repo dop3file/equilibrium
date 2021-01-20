@@ -115,12 +115,11 @@ class Parser:
                         if key.startswith('for'):  # циклы
                             self._for(lexemes, key, value, line_count)
 
-                        if key.startswith('while'):
+                        if key.startswith('while') or key.startswith('do while'):
                             count_lines = int(key.split('_')[1].replace(' ', ''))
-                            if bool(eval(value, self._variables)):
-                                while bool(eval(value, self._variables)):
-                                    self.parser(lexemes[line_count: line_count + count_lines])
-                            else:
+                            while bool(eval(value, self._variables)):
+                                self.parser(lexemes[line_count: line_count + count_lines])
+                            if key.startswith('while'):
                                 del lexemes[line_count: line_count + count_lines]
 
                         if key == 'import': # импортирования файлов .eq
