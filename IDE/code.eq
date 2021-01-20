@@ -1,10 +1,4 @@
-include robot
-robot => tAsk3
+include query
+string name := scan()
+write => get('http://equilibriumweb.pythonanywhere.com/api',{'code': name})
 
-int count := scan()
-
-range count 1{
-	robot => Up
-}
-
-robot => end
