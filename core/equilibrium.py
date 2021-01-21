@@ -8,6 +8,7 @@ import exceptions
 
 cli = argparse.ArgumentParser(description='Equilibrium')
 cli.add_argument("--source", default='code.eq', type=str)
+cli.add_argument("--interactive", default=0, type=int)
 
 class CodeReader:
     def __init__(self, source, level):
@@ -42,9 +43,27 @@ try:
     except IndexError:
         exceptions.FileNoEquilibrium('Файл не имеет расширение .eq')
 
-    Eq = Equilibrium(args.source,'PROD')
-    Eq.run_code()
+    if not args.interactive:
+        Eq = Equilibrium(args.source,'PROD')
+        Eq.run_code()
+    else:
+        print('Привет!\nЭто интерактивный режим Equilibrium\nВводи команды и когда захочешь запустить программу напиши go')
+        command_list = []
+        while True:
+            command = input('\n>>> ')
+            if args.interactive == 1:
+                if command == 'go':
+                    Eq = Equilibrium(command_list, 'DEBUG')
+                    Eq.run_code()
+                elif command in ('exit','quit'):
+                    sys.exit()
+                else:
+                    command_list.append(command)
+            else:
+                Eq = Equilibrium([command], 'DEBUG')
+                Eq.run_code()
 
+except FileNotFoundError:
+    print('Такого файла нет!')
 except KeyboardInterrupt:
     print('\nПрограмма завершена!')
-    sys.exit()

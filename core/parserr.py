@@ -60,7 +60,7 @@ class Parser:
         :param tick: количество проходов по лексем, по дефолту 1(так как нет цикла for или range)
         :return: None
         """
-        print(lexemes) # FOR DEBUG
+        # print(lexemes) # FOR DEBUG
         line_count = 1
         lexemes = lexemes
         try:
