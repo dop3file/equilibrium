@@ -177,6 +177,32 @@
 
 Для того что бы получить ответ от сервера, нужно сделать get запрос на /api/ и в params указать JSON с ключём code и значением в виде твоего кода,сервер вернёт ответ в виде JSON
 
+# Equilibrium Robot
+
+![Eq](https://sun9-16.userapi.com/EgqdIUrtxYrZ2PZrHEXajHBpq3TjjByaYi5Ftw/Yz32yTKXYzM.jpg)
+
+Equilibrium Robot - это библиотека для детей / начинающий программистов.
+
+Для начала нужно её импортировать `include robot`
+
+Цель - дойти до яблока и закрасить все граффити(жёлтые поинты)
+
+Для этого нужно использовать специальные команды, все они начинаются с `robot =>`
+
+Список команд:
+  - task N - загрузить уровень под номером N
+  - Right - идти направо
+  - Left - идти налево
+  - Top - идти вверх
+  - Down - идти вниз
+  - Paint - закрасить
+  - end - запуск уровня
+  
+Пример программы:
+
+![Eq](https://sun9-15.userapi.com/HNsCO2qgNv-oLVdoaCYso3EmZxk23vAo-c9i4Q/NzE5JclLS9A.jpg)
+
+
 Пример :
 
 `params = {'code': "run 3 > 2",}`
