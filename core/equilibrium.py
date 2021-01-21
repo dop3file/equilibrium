@@ -22,21 +22,20 @@ class CodeReader:
     def get_code(self):
         return self.all_code
 
+class Equilibrium:
+    """ Основной класс """
+    def __init__(self, source, level):
+        self.source = source
+        self.level = level
+
+    def run_code(self):
+        """ Функция для запуска кода """
+        code_read = CodeReader(self.source, self.level).get_code()
+        lex = Lexer(code_read)
+        parser = parserr.Parser()
+        parser.parser(lex.lexer())
+
 try:
-    class Equilibrium:
-        """ Основной класс """
-        def __init__(self, source, level):
-            self.source = source
-            self.level = level
-
-        def run_code(self):
-            """ Функция для запуска кода """
-            code_read = CodeReader(self.source, self.level).get_code()
-            lex = Lexer(code_read)
-            pars = parserr.Parser()
-            pars.parser(lex.lexer())
-
-
     args = cli.parse_args()
     try:
         a = args.source.split('.')[1] != 'eq'
