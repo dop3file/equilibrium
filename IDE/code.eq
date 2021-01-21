@@ -1,4 +1,2 @@
-include query
-string name := scan()
-write => get('http://equilibriumweb.pythonanywhere.com/api',{'code': name})
-
+use shortLink
+shortLink => 'https://github.com/RenatYakublevich/url_shortener' 'xyi'

@@ -79,6 +79,9 @@ class Lexer:
                 elif line.startswith('do while'):
                     self.stack += [{f'do while_{line[-3:-1]}': line[9:-3]}]
 
+                elif line.startswith('use'):
+                    self.stack += [{'use': line[4:]}]
+
                 else:
                     excp.Lexer_Error('Строка не понятна интерпритатору',line)
 

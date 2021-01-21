@@ -7,8 +7,10 @@ import os
 import time as _time
 import typess
 import exceptions
+import microservices
 
 
+# библиотеки
 files = None
 parser = None
 sheet = None
@@ -18,6 +20,9 @@ db = None
 log = None
 math = None
 robot = None
+
+#микросервисы
+short_link = None
 
 
 def import_library(name_library):
@@ -62,6 +67,14 @@ def import_library(name_library):
         from library.robot import Robot
         global robot
         robot = Robot()
+
+def import_microservice(name_microservice):
+    if name_microservice == 'shortLink':
+        from microservices.short_link import ShortLink
+        global short_link
+        short_link = ShortLink()
+
+
 
 def get_arguments_without_key(value):
     """
@@ -188,6 +201,13 @@ def choose_methods(name_method, value, variables):
 
         elif name_method == 'robot':
             robot.route_move(value)
+
+        elif name_method == 'microservice':
+            microservices.route_microservice(value)
+
+        elif name_method == 'shortLink':
+            short_link.add_link(value)
+
 
     except AttributeError as e:
         print(e)

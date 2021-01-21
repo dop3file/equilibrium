@@ -7,6 +7,7 @@ import exceptions
 import methods
 import math
 from lexer import Lexer
+import microservices
 
 
 class Parser:
@@ -59,7 +60,7 @@ class Parser:
         :param tick: количество проходов по лексем, по дефолту 1(так как нет цикла for или range)
         :return: None
         """
-        # print(lexemes) # FOR DEBUG
+        print(lexemes) # FOR DEBUG
         line_count = 1
         lexemes = lexemes
         try:
@@ -130,6 +131,9 @@ class Parser:
                             for dict_el in all_code:
                                 all_d_code.update(dict_el)
                             lexemes.insert(line_count, all_d_code)
+
+                        if key == 'use':
+                            methods.import_microservice(value)
 
                         if key == 'def':  # функции
                             count_lines = int(value.split(' ')[1]) # поле видимости функции(сколько команд из лексем заключено в функции)
