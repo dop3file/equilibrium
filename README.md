@@ -5,6 +5,14 @@
 
 ![Equilibrium](https://sun9-76.userapi.com/58uslEXwTUlFP1BN7bzqR4QomO7rrRzvjKDPyg/Z9PPkEbGMlA.jpg "Equilibrium :)")
 
+# Установка
+
+- скачать репозиторий
+
+- установить python >=3.7
+
+- выполнить pip install requirements.txt
+
 # Переменные
 
 Есть 6 типов данных :
