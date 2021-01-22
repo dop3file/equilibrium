@@ -64,3 +64,6 @@ class FileNoEquilibrium(Excp):
 
 class LibraryClassNoImport(Excp):
 	pass
+
+class MicroserviceError(Excp):
+	pass

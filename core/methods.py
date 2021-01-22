@@ -7,7 +7,6 @@ import os
 import time as _time
 import typess
 import exceptions
-import microservices
 
 
 # библиотеки
@@ -23,6 +22,7 @@ robot = None
 
 #микросервисы
 short_link = None
+parser_bank = None
 
 
 def import_library(name_library):
@@ -73,6 +73,9 @@ def import_microservice(name_microservice):
         from microservices.short_link import ShortLink
         global short_link
         short_link = ShortLink()
+    elif name_microservice == 'parserBank':
+        global parser_bank
+        parser_bank = True
 
 
 
@@ -137,6 +140,18 @@ def choose_func(name_func, variables):
         elif name_func.startswith('module'):
             value = get_arguments_without_key(name_func[6:])
             name_func = math.math_module(str(eval(value[0], variables)))
+        elif name_func.startswith('parserBank'):
+            global parser_bank
+            if parser_bank:
+                from microservices.parser_bank import ParserBank
+                try:
+                    value = ParserBank(name_func[11:])
+                except Exception:
+                    exceptions.MicroserviceError('Ошибка микросервиса')
+
+                name_func = value.return_value
+            else:
+                pass
 
         return name_func
 
@@ -202,11 +217,9 @@ def choose_methods(name_method, value, variables):
         elif name_method == 'robot':
             robot.route_move(value)
 
-        elif name_method == 'microservice':
-            microservices.route_microservice(value)
-
         elif name_method == 'shortLink':
             short_link.add_link(value)
+
 
 
     except AttributeError as e:
