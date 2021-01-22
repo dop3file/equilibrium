@@ -1,16 +1,19 @@
 import requests
 from bs4 import BeautifulSoup as bs
+from fake_useragent import UserAgent
 
 
 class ParserBank:
 	def __init__(self, aim_parse):
+		ua = UserAgent()
+
 		category_items = {
 			'money': self.parse_money_course,
 			'weather': self.parse_weather
 		}
 		self.category = aim_parse.split('.')[0]
 		self.value = aim_parse.split('.')[1]
-		self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36'}
+		self.headers = {'User-Agent': ua.random}
 
 		self.return_value = category_items[self.category]()
 
