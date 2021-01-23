@@ -1,2 +1,2 @@
 use parserBank
-write => parserBank.money.usd_to_byn
+write => parserBank.weather.gomel.temp_max

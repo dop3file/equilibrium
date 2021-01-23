@@ -140,18 +140,16 @@ def choose_func(name_func, variables):
         elif name_func.startswith('module'):
             value = get_arguments_without_key(name_func[6:])
             name_func = math.math_module(str(eval(value[0], variables)))
-        elif name_func.startswith('parserBank'):
+        elif name_func.split('.')[0] == 'parserBank' and len(name_func.split('.')) >= 2:
             global parser_bank
-            if parser_bank:
-                from microservices.parser_bank import ParserBank
-                try:
-                    value = ParserBank(name_func[11:])
-                except Exception:
-                    exceptions.MicroserviceError('Ошибка микросервиса')
+            from microservices.parser_bank import ParserBank
+            try:
+                value = ParserBank(name_func[11:])
+            except Exception as e:
+                print(e)
+                exceptions.MicroserviceError('Ошибка микросервиса')
 
-                name_func = value.return_value
-            else:
-                pass
+            name_func = value.return_value
 
         return name_func
 

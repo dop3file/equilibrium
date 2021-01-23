@@ -6,11 +6,12 @@ from fake_useragent import UserAgent
 class ParserBank:
 	def __init__(self, aim_parse):
 		ua = UserAgent()
-
 		category_items = {
 			'money': self.parse_money_course,
 			'weather': self.parse_weather
 		}
+		self.aim_parse = aim_parse
+
 		self.category = aim_parse.split('.')[0]
 		self.value = aim_parse.split('.')[1]
 		self.headers = {'User-Agent': ua.random}
@@ -22,12 +23,12 @@ class ParserBank:
 		html_doc = requests.get(link,self.headers).content
 		soup = bs(html_doc,'html.parser')
 
-		convert = soup.findAll('div', {'class': 'converter-display__value'})[1].text
+		convert = soup.findAll('div', {'class': 'converter-display__value'})
 
-		return convert
+		return convert[1].text
 
 	def parse_weather(self):
-		link = f'http://api.openweathermap.org/data/2.5/weather?q={self.value}&appid=412efa8f683561e258840d1a03be4644'
+		link = f'http://api.openweathermap.org/data/2.5/weather?q={self.aim_parse.split(".")[-2]}&appid=412efa8f683561e258840d1a03be4644'
 		weather = requests.get(link, self.headers).json()
-		return float(weather['main']['temp']) - 273.15
+		return float(weather['main'][self.aim_parse.split(".")[-1]]) - 273.15
 
