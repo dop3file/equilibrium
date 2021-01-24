@@ -18,10 +18,7 @@ def index():
 
 		if parser.get_web_output():
 			return render_template('index.html',web_output='\n'.join(str(el) for el in parser.get_web_output()))
-		else:
-			return render_template('index.html')
-	else:
-		return render_template('index.html')
+	return render_template('index.html')
 
 @app.route('/api', methods=['GET'])
 def api():
@@ -31,8 +28,7 @@ def api():
 		parser.parser(lexer.lexer())
 
 		return jsonify([{'code' : parser.get_web_output()}])
-	else:
-		return render_template('api.html')
+	return render_template('api.html')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+	app.run(debug=True)

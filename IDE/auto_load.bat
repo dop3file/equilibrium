@@ -1,1 +1,1 @@
-python ../core/equilibrium.py --source code.eq
+py ../core/equilibrium.py --source code.eq

@@ -104,7 +104,7 @@ class Parser:
                         if key[0] == 'f':  # если функция
                             methods.choose_methods(key.split('_')[1], value, self._variables)
 
-                        if key == 'def_':  # вызов функций
+                        if key == 'def_':  # вызов пользовательской функций
                             self.parser(self._variables[value])
 
                         if key == 'run':
@@ -117,6 +117,11 @@ class Parser:
                             self._for(lexemes, key, value, line_count)
 
                         if key.startswith('while') or key.startswith('do while'):
+                            """
+                            count_lines - количество  команд в цикле
+                            do while - цикл проитерируется хотя бы один раз
+                            while - итерируется только если value - True
+                            """
                             count_lines = int(key.split('_')[1].replace(' ', ''))
                             while bool(eval(value, self._variables)):
                                 self.parser(lexemes[line_count: line_count + count_lines])
@@ -132,7 +137,7 @@ class Parser:
                                 all_d_code.update(dict_el)
                             lexemes.insert(line_count, all_d_code)
 
-                        if key == 'use':
+                        if key == 'use': # импортирования микросервиса
                             methods.import_microservice(value)
 
                         if key == 'def':  # функции
