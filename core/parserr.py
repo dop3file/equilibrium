@@ -132,7 +132,7 @@ class Parser:
                             with open(f'{value}.eq', encoding='utf-8') as file:
                                 all_code = [line.strip() for line in file]
                             all_code = Lexer(all_code).lexer()
-                            all_d_code = dict()
+                            all_d_code      = dict()
                             for dict_el in all_code:
                                 all_d_code.update(dict_el)
                             lexemes.insert(line_count, all_d_code)

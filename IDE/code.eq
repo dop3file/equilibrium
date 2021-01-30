@@ -1,2 +1,3 @@
-use parserBank
-write => parserBank.weather.gomel.temp_max
+include robot
+robot => Task1
+robot => end

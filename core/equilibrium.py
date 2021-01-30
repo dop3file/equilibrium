@@ -54,12 +54,14 @@ def route_args(args):
         command_list = []
         while True:
             command = input('\n>>> ')
+            
+            if command.lower() in ('exit','quit'):
+                sys.exit()
+
             if args.interactive == 1:
                 if command.lower() in ('run', 'go'):
                     Eq = Equilibrium(command_list, 'DEBUG')
                     Eq.run_code()
-                elif command.lower() in ('exit','quit'):
-                    sys.exit()
                 else:
                     command_list.append(command)
             else:
