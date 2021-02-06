@@ -4,12 +4,15 @@ import sys
 from lexer import Lexer
 import parserr
 import exceptions
+from datetime import datetime
+import time
 
 
 cli = argparse.ArgumentParser(description='Equilibrium')
 cli.add_argument("--source", default='code.eq', type=str)
 cli.add_argument("--interactive", default=0, type=int)
 cli.add_argument("--compile", default=False, type=bool)
+cli.add_argument("--speed", default=False, type=bool)
 
 class CodeReader:
     def __init__(self, source, level):
@@ -36,6 +39,17 @@ class Equilibrium:
         parser = parserr.Parser() # парсер, обрабатывающий логику
         parser.parser(lex.lexer())
 
+class AnalysisSpeed:
+    def __init__(self, source):
+        self.source = source
+
+    def analysis_speed(self):
+        before_start = time.time()
+        eq = Equilibrium(self.source, 'PROD')
+        eq.run_code()
+        after_start = time.time()
+        return datetime.utcfromtimestamp(after_start - before_start).strftime('%H часов %M минут %S секунд %f микросекунд')
+
 def route_args(args):
     """
     Функция отвечате за режимы сборки программы на Equilibrium
@@ -43,13 +57,23 @@ def route_args(args):
     --interactive 0 default/1/2 - интерактивный режим,1 - режим когда ты пишешь команды, а когда
     хочешь запустить их на выполения пишешь go/run.2 - каждая команда запускается на выполнения
     автоматически
+    --source - обычное выполнение программы, для запуска нужно указать путь к файлу с .eq
+    default значения - code.eq
+    --speed - если True, то выводит скорость выполнения программы из source
+    default значения - False
     """
+    if args.speed:
+        analysis_speed = AnalysisSpeed(args.source)
+        print(f'Программа отработала за {analysis_speed.analysis_speed()}')
+    elif args.source:
+        eq = Equilibrium(args.source,'PROD')
+        eq.run_code()
     if args.compile:
         print('Привет,это компилируемый режим Equilibrium')
         way_to_file = input('Введи путь к файлу: ')
-        Eq = Equilibrium(way_to_file, 'PROD')
-        Eq.run_code()
-    elif args.interactive:
+        eq = Equilibrium(way_to_file, 'PROD')
+        eq.run_code()
+    if args.interactive:
         print('Привет!\nЭто интерактивный режим Equilibrium\nВводи команды и когда захочешь запустить программу напиши go')
         command_list = []
         while True:
@@ -57,7 +81,6 @@ def route_args(args):
             
             if command.lower() in ('exit','quit'):
                 sys.exit()
-
             if args.interactive == 1:
                 if command.lower() in ('run', 'go'):
                     Eq = Equilibrium(command_list, 'DEBUG')
@@ -65,11 +88,10 @@ def route_args(args):
                 else:
                     command_list.append(command)
             else:
-                Eq = Equilibrium([command], 'DEBUG')
-                Eq.run_code()
-    else:
-        Eq = Equilibrium(args.source,'PROD')
-        Eq.run_code()
+                eq = Equilibrium([command], 'DEBUG')
+                eq.run_code()
+
+
 
 
 try:
@@ -84,5 +106,6 @@ except FileNotFoundError:
     print('Такого файла нет!')
 except KeyboardInterrupt:
     print('\nПрограмма завершена!')
-except Exception:
+except Exception as e:
+    print(e)
     print('Ошибка..')
