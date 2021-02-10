@@ -19,6 +19,7 @@ db = None
 log = None
 math = None
 robot = None
+app_creator = None
 
 #микросервисы
 short_link = None
@@ -67,6 +68,11 @@ def import_library(name_library):
         from library.robot import Robot
         global robot
         robot = Robot()
+    elif name_library == 'app':
+        from library.app_create import AppCreator
+        global app_creator
+        robot = AppCreator()
+        robot.start()
 
 def import_microservice(name_microservice):
     if name_microservice == 'shortLink':
@@ -146,16 +152,14 @@ def choose_func(name_func, variables):
             try:
                 value = ParserBank(name_func[11:])
             except Exception as e:
-                print(e)
-                exceptions.MicroserviceError('Ошибка микросервиса')
+                exceptions.Microservice_Error('Ошибка микросервиса')
 
             name_func = value.return_value
 
         return name_func
 
     except AttributeError as e:
-        print(e)
-        exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')
+        exceptions.Library_Class_No_Import('Класс библиотеки не импортирован')
 
 def choose_methods(name_method, value, variables):
     """
@@ -221,8 +225,7 @@ def choose_methods(name_method, value, variables):
 
 
     except AttributeError as e:
-        print(e)
-        exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')
+        exceptions.Library_Class_No_Import('Класс библиотеки не импортирован')
 
 
 def coin_flip():

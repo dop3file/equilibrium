@@ -39,7 +39,7 @@ class Equilibrium:
         parser = parserr.Parser() # парсер, обрабатывающий логику
         parser.parser(lex.lexer())
 
-class AnalysisSpeed:
+class SpeedTest:
     def __init__(self, source):
         self.source = source
 
@@ -47,8 +47,8 @@ class AnalysisSpeed:
         before_start = time.time()
         eq = Equilibrium(self.source, 'PROD')
         eq.run_code()
-        after_start = time.time()
-        return datetime.utcfromtimestamp(after_start - before_start).strftime('%H часов %M минут %S секунд %f микросекунд')
+        after_end = time.time()
+        return datetime.utcfromtimestamp(after_end - before_start).strftime('%H часов %M минут %S секунд %f микросекунд')
 
 def route_args(args):
     """
@@ -63,8 +63,8 @@ def route_args(args):
     default значения - False
     """
     if args.speed:
-        analysis_speed = AnalysisSpeed(args.source)
-        print(f'Программа отработала за {analysis_speed.analysis_speed()}')
+        speed_test = SpeedTest(args.source)
+        print(f'Программа отработала за {speed_test.analysis_speed()}')
     elif args.source:
         eq = Equilibrium(args.source,'PROD')
         eq.run_code()
@@ -87,12 +87,11 @@ def route_args(args):
                     Eq.run_code()
                 else:
                     command_list.append(command)
-            else:
+            elif args.interactive == 1:
                 eq = Equilibrium([command], 'DEBUG')
                 eq.run_code()
-
-
-
+            else:
+                exceptions.Build_Error('Ошибка сборки')
 
 try:
     args = cli.parse_args()

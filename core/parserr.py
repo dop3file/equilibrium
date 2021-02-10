@@ -7,7 +7,6 @@ import exceptions
 import methods
 import math
 from lexer import Lexer
-import microservices
 
 
 class Parser:

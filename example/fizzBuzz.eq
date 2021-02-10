@@ -1,11 +1,12 @@
 for (i=1, i<=100,+1) 9{
+	if i % 5 == 0 1{
+		write => f'Fizz'
+	}
 	if i % 3 == 0 1{
-		write => f'Fizz - {i}\n'
+		write => f'Buzz'
 	}
-	elif i % 5 == 0 1{
-		write => f'Buzz - {i}\n'
+	if i % 3 == 0 or i % 5 == 0 1{
+		write => f' - {i}\n'
 	}
-	elif i % 3 == 0 and i % 5 == 0 1{
-		write => f'FizzBuzz - {i}\n'
-	}
+	
 }

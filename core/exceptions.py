@@ -54,16 +54,17 @@ class Zero_Error(Excp):
 class File_Connection(Excp):
 	pass
 
-
 class Name_Error(Excp):
 	pass
-
 
 class FileNoEquilibrium(Excp):
 	pass
 
-class LibraryClassNoImport(Excp):
+class Library_Class_No_Import(Excp):
 	pass
 
-class MicroserviceError(Excp):
+class Microservice_Error(Excp):
+	pass
+
+class Build_Error(Excp):
 	pass
