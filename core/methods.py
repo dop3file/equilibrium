@@ -94,7 +94,7 @@ def get_arguments_without_key(value):
     value = value.rstrip(' ').lstrip(' ')[1:-1]
     return value.split(",")
 
-def choose_func(name_func, variables):
+def route_func(name_func, variables):
     """
     Функция агрегирует функции языка
     :param name_func: строка вызова
@@ -152,16 +152,17 @@ def choose_func(name_func, variables):
             try:
                 value = ParserBank(name_func[11:])
             except Exception as e:
-                exceptions.Microservice_Error('Ошибка микросервиса')
+                exceptions.MicroserviceError('Ошибка микросервиса')
 
             name_func = value.return_value
 
         return name_func
 
     except AttributeError as e:
-        exceptions.Library_Class_No_Import('Класс библиотеки не импортирован')
+        print(e)
+        exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')
 
-def choose_methods(name_method, value, variables):
+def route_methods(name_method, value, variables):
     """
     Функция агругирует методы
     Методы, это когда cfile => 'Hello,World'!, cfile - функция, а random нет
@@ -225,7 +226,8 @@ def choose_methods(name_method, value, variables):
 
 
     except AttributeError as e:
-        exceptions.Library_Class_No_Import('Класс библиотеки не импортирован')
+        print(e)
+        exceptions.LibraryClassNoImport('Класс библиотеки не импортирован')
 
 
 def coin_flip():

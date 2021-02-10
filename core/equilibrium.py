@@ -91,7 +91,7 @@ def route_args(args):
                 eq = Equilibrium([command], 'DEBUG')
                 eq.run_code()
             else:
-                exceptions.Build_Error('Ошибка сборки')
+                exceptions.BuildError('Ошибка сборки')
 
 try:
     args = cli.parse_args()

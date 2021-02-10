@@ -2,8 +2,10 @@
 Файл Exceptions
 Обработка ошибок
 """
+import sys
 
-class Lexer_Error():
+
+class Lexer_Error:
 	def __init__(self, msg, line_warning):
 		print(f'{msg}\n{line_warning}')
 		exit()
@@ -12,7 +14,7 @@ class Lexer_Error():
 class Excp:
 	def __init__(self, msg):
 		print(f'\nОшибка - {msg}')
-		exit()
+		sys.exit()
 
 
 class Value_Error(Excp):
@@ -60,11 +62,11 @@ class Name_Error(Excp):
 class FileNoEquilibrium(Excp):
 	pass
 
-class Library_Class_No_Import(Excp):
+class LibraryClassNoImport(Excp):
 	pass
 
-class Microservice_Error(Excp):
+class MicroserviceError(Excp):
 	pass
 
-class Build_Error(Excp):
+class BuildError(Excp):
 	pass

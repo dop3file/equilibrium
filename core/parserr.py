@@ -69,7 +69,7 @@ class Parser:
                         value = str(value)
                         key = str(key)
                         methods.variables = self._variables
-                        value = methods.choose_func(value, self._variables)
+                        value = methods.route_func(value, self._variables)
 
                         if key[0] == 'v':  # переменные
                             '''
@@ -101,7 +101,7 @@ class Parser:
                                 self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'bool')
 
                         if key[0] == 'f':  # если функция
-                            methods.choose_methods(key.split('_')[1], value, self._variables)
+                            methods.route_methods(key.split('_')[1], value, self._variables)
 
                         if key == 'def_':  # вызов пользовательской функций
                             self.parser(self._variables[value])
@@ -129,12 +129,10 @@ class Parser:
 
                         if key == 'import': # импортирования файлов .eq
                             with open(f'{value}.eq', encoding='utf-8') as file:
-                                all_code = [line.strip() for line in file]
-                            all_code = Lexer(all_code).lexer()
-                            all_d_code      = dict()
-                            for dict_el in all_code:
-                                all_d_code.update(dict_el)
-                            lexemes.insert(line_count, all_d_code)
+                                lexemes_code = [line.strip() for line in file]
+                            lexemes_code = dict(*Lexer(lexemes_code).lexer())
+
+                            lexemes.insert(line_count, lexemes_code)
 
                         if key == 'use': # импортирования микросервиса
                             methods.import_microservice(value)
