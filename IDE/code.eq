@@ -1,3 +1,2 @@
-import z
-
-import z
+int gg := 10
+write => gg

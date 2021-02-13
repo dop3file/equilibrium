@@ -15,77 +15,48 @@ class Lexer:
 
     def lexer(self):
         """ Разбиваем на лексемы """
-        for line in self.all_code:  # итерирование по строкам
+        for line in self.all_code:
             try:
                 line = line.lstrip(' ').rstrip(' ').lstrip('\t').rstrip('\t')
-                if line[0] == '>':  # комментарии
-                    continue
+                try:
+                    commands = {
+                        'delete': [{'delete' : line.split(' ')[1]}],
+                        'def_': [{'def_': line[4:].replace(' ','')}],
+                        'include': [{'include': line.split(' ')[1]}],
+                        'else': [{'else': line.split(' ')[1][:-1]}],
+                        '}': [{'end_if': 0}],
+                        'if': [{'if': line[3:-1]}],
+                        'run': [{'run' : line[4::]}],
+                        'elif': [{'elif': line[5:-1]}],
+                        'range': [{'range': line[6:-1]}],
+                        'for': [{'for_' + line.split('for')[1].split(',')[0].replace('(','').replace(' ','') + ' ' + line.split(',')[1] : line.split(',')[2].split(')')[0] + ' ' + line.split(')')[1][:-1].replace(' ','')}],
+                        'def': [{'def': line.split('(')[0].split(' ')[1] + ' ' + line.split(' ')[-1][:-1] + ' ' + line.split('(')[1].split(')')[0]}],
+                        'import': [{'import': line[7:]}],
+                        'quit': [{'quit' : 'quit'}],
+                        'while': [{f'while_{line[-3:-1]}': line[6:-3]}],
+                        'do': [{f'do while_{line[-3:-1]}': line[9:-3]}],
+                        'use': [{'use': line[4:]}],
+                        '>': []
+                    }
+                    if line.split(' ')[0] in commands:
+                        self.stack.extend(commands[line.split(' ')[0]])
+                except IndexError:
+                    pass
 
-                elif line.startswith('ufather?'):
+                if line.startswith('ufather?'):
                     print('Renat Yakublevich')
-
-                elif line.startswith('delete'):
-                    self.stack += [{'delete' : line.split(' ')[1]}]
-
-                elif line.startswith('def_'):
-                    self.stack += [{'def_': line[4:].replace(' ','')}]
-
-                elif line.startswith('include'):
-                    self.stack += [{'include': line.split(' ')[1]}]
-
-                elif line.startswith('else'):
-                    self.stack += [{'else': line.split(' ')[1][:-1]}]
-
-                elif line == '}':
-                    self.stack += [{'end_if': 0}]
-
                 elif re.findall(r'\S+ =>',line) or re.findall(r'\S+=>',line):  # функции
                     self.stack += [{'f_' + line.split('=>')[0].replace(' ',''): ''.join(line.split('=>')[1::])[1::]}]
-
-                elif line.startswith('if'):
-                    self.stack += [{'if': line[3:-1]}]
-
-                elif line.startswith('run'):
-                    self.stack += [{'run' : line[4::]}]
-
-                elif line.startswith('elif'):
-                    self.stack += [{'elif': line[5:-1]}]
-
-                elif line.startswith('range'):
-                    self.stack += [{'range': line[6:-1]}]
-
-                elif line.startswith('for'):
-                    self.stack += [{'for_' + line.split('for')[1].split(',')[0].replace('(','').replace(' ','') + ' ' + line.split(',')[1] : line.split(',')[2].split(')')[0] + ' ' + line.split(')')[1][:-1].replace(' ','')}]
-
-                elif line.startswith('def'):
-                    self.stack += [{'def': line.split('(')[0].split(' ')[1] + ' ' + line.split(' ')[-1][:-1] + ' ' + line.split('(')[1].split(')')[0]}]
-
                 elif re.findall('\S+ \S+ :=',line) or re.findall('\S+ \S+:=',line):  # переменные
                     if line.split(' ')[1].find('+') != -1:
                         self.stack += [
                             {'v_' + line.split(' ')[0] + '_' + line.split(' ')[1].split('+')[1]: ''.join(line.split(':=')[1::])[1::]}]
                     else:
                         self.stack += [{'v_' + line.split(' ')[0] + '_' + line.split(' ')[1]: ''.join(line.split(':=')[1::])[1::]}]
-
-                elif line.split(' ')[0] == 'import':
-                    self.stack += [{'import': line[7:]}]
-
-                elif line == 'quit':
-                    self.stack += [{'quit' : 'quit'}]
-
-                elif line.startswith('while'):
-                    self.stack += [{f'while_{line[-3:-1]}': line[6:-3]}]
-
-                elif line.startswith('do while'):
-                    self.stack += [{f'do while_{line[-3:-1]}': line[9:-3]}]
-
-                elif line.startswith('use'):
-                    self.stack += [{'use': line[4:]}]
-
                 else:
                     excp.Lexer_Error('Строка не понятна интерпритатору',line)
 
-            except IndexError:
-                pass
+            except IndexError as e:
+                print(e)
 
         return self.stack
