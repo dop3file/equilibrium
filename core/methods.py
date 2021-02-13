@@ -112,7 +112,7 @@ def route_func(name_func, variables):
             name_func = time.get_time_date()
         elif name_func == 'time_unix()':
             name_func = time.get_time_unix()
-        elif name_func.startswith('random'):  # рандом
+        elif name_func.startswith('random'):
             name_func = random_int(name_func, variables)
         elif name_func.startswith('rfile()'):
             name_func = typess.Array(files.read_file(), variables).return_value()

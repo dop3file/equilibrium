@@ -52,7 +52,7 @@ class Parser:
 
     def parser(self, lexemes, tick=1):
         """
-        Функция, где проходит основный цикл выполнения
+        Функция, где проходит основный цикл исполнения и трансляци
         key - ключ из лексемы
         value - значения из лексемы
         :param lexemes: лексемы, для выполнения
@@ -100,22 +100,22 @@ class Parser:
                             elif key.split('_')[1] == 'bool':
                                 self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'bool')
 
-                        if key[0] == 'f':  # если функция
+                        elif key.startswith('for'):  # циклы
+                            self._for(lexemes, key, value, line_count)
+
+                        elif key[0] == 'f':  # если функция
                             methods.route_methods(key.split('_')[1], value, self._variables)
 
-                        if key == 'def_':  # вызов пользовательской функций
+                        elif key == 'def_':  # вызов пользовательской функций
                             self.parser(self._variables[value])
 
-                        if key == 'run':
+                        elif key == 'run':
                             """
                             Команда отвечает за вывод информации в веб версии
                             """
                             self.web_output.append(methods.echo(value, self._variables))
 
-                        if key.startswith('for'):  # циклы
-                            self._for(lexemes, key, value, line_count)
-
-                        if key.startswith('while') or key.startswith('do while'):
+                        elif key.startswith('while') or key.startswith('do while'):
                             """
                             count_lines - количество  команд в цикле
                             do while - цикл проитерируется хотя бы один раз
@@ -127,17 +127,17 @@ class Parser:
                             if key.startswith('while'):
                                 del lexemes[line_count: line_count + count_lines]
 
-                        if key == 'import': # импортирования файлов .eq
+                        elif key == 'import': # импортирования файлов .eq
                             with open(f'{value}.eq', encoding='utf-8') as file:
                                 lexemes_code = [line.strip() for line in file]
                             lexemes_code = dict(*Lexer(lexemes_code).lexer())
 
                             lexemes.insert(line_count, lexemes_code)
 
-                        if key == 'use': # импортирования микросервиса
+                        elif key == 'use': # импортирования микросервиса
                             methods.import_microservice(value)
 
-                        if key == 'def':  # функции
+                        elif key == 'def':  # функции
                             count_lines = int(value.split(' ')[1]) # поле видимости функции(сколько команд из лексем заключено в функции)
                             name_def = value.split(' ')[0] # имя функции
 
@@ -145,13 +145,13 @@ class Parser:
                             self._variables[name_def] = list_executable_code
                             del lexemes[line_count - 1: line_count + count_lines] # удаляем строки функции
 
-                        if key.startswith('range'):
+                        elif key.startswith('range'):
                             count_execution = value.split(' ')[0] # количество выполнений кода(tick)
                             count_lines = int(value.split(' ')[1]) # поле видимости цикла(сколько команд из лексем заключено в цикле)
                             self.parser(lexemes=lexemes[line_count: count_lines + line_count + 1],
                                         tick=int(eval(count_execution, self._variables)) - 1)
 
-                        if key.startswith('if') or key.startswith('elif'):
+                        elif key.startswith('if') or key.startswith('elif'):
                             count_executions = int(value.split(' ')[-1]) # поле видимости ветвления(сколько команд из лексем заключено в ветвлении)
                             value = ' '.join(value.split(' ')[0:-1]) # значения
 
@@ -170,16 +170,16 @@ class Parser:
                             except IndexError:
                                 pass
 
-                        if key == 'include': # импортирования библиотек
+                        elif key == 'include': # импортирования библиотек
                             methods.import_library(value)
 
-                        if key == 'quit': # выход из программы
+                        elif key == 'quit': # выход из программы
                             exit()
 
-                        if key == 'delete': # удаление из области видимости(_variables)
+                        elif key == 'delete': # удаление из области видимости(_variables)
                             del self._variables[value]
 
-                        if key.startswith('else'):
+                        elif key.startswith('else'):
                             pass
 
                         line_count += 1
