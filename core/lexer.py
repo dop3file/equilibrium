@@ -38,8 +38,6 @@ class Lexer:
                 line = line.lstrip(' ').rstrip(' ').lstrip('\t').rstrip('\t')
                 if line.split(' ')[0] in self.lexemes_instructions:
                     self.stack.extend(self.lexemes_instructions[line.split(' ')[0]](line))
-                elif line.startswith('>'):
-                    continue
                 elif line.startswith('ufather?'):
                     print('Renat Yakublevich')
                 elif re.findall(r'\S+ =>',line) or re.findall(r'\S+=>',line):  # функции
@@ -47,10 +45,10 @@ class Lexer:
                 elif re.findall('\S+ \S+ :=',line) or re.findall('\S+ \S+:=',line):  # переменные
                     if line.split(' ')[1].find('+') != -1:
                         self.stack += [
-                            {'v_' + line.split(' ')[0] + '_' + line.split(' ')[1].split('+')[1]: ''.join(line.split(':=')[1::])[1::]}]
+                            {'variable_' + line.split(' ')[0] + '_' + line.split(' ')[1].split('+')[1]: ''.join(line.split(':=')[1::])[1::]}]
                     else:
-                        self.stack += [{'v_' + line.split(' ')[0] + '_' + line.split(' ')[1]: ''.join(line.split(':=')[1::])[1::]}]
-                elif not line:
+                        self.stack += [{'variable_' + line.split(' ')[0] + '_' + line.split(' ')[1]: ''.join(line.split(':=')[1::])[1::]}]
+                elif not line or line.startswith('>'):
                     continue
                 else:
                     excp.Lexer_Error('Строка не понятна интерпритатору',line)

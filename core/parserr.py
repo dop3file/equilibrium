@@ -18,10 +18,16 @@ class Parser:
             'pi' : math.pi,
             'e' : math.e
             }
-        self.web_output = [] 
+        self.web_output = []
+        self.parser_instructions = {
+            'variable': self.create_variable
+        }
 
     def get_web_output(self):
         return self.web_output
+
+    def create_variable(self, key, value):
+        self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, key.split('_')[1])
 
     def _for(self, lexemes, key, value, line_count):
         """
@@ -71,34 +77,8 @@ class Parser:
                         methods.variables = self._variables
                         value = methods.route_func(value, self._variables)
 
-                        if key[0] == 'v':  # переменные
-                            '''
-                            Типы данных
-                            Каждое из ветвлений записывает в переменную значения
-                            Тип значения определяет функция choose_type
-                            '''
-                            if key.split('_')[1] == 'string':  # тип данных
-                                if value[0] != "'" and value[-1] != "'":
-                                    value = "'" + str(value) + "'"
-                                self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'string')
-
-                            elif key.split('_')[1] == 'int':
-                                self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'int')
-
-                            elif key.split('_')[1] == 'array':
-                                self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'array')
-
-                            elif typess.choose_type(value, self._variables, 'array') == value:
-                                self._variables[key.split('_')[2]] = self._variables[value]
-
-                            elif key.split('_')[1] == 'float':
-                                self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'float')
-
-                            elif key.split('_')[1] == 'char':
-                                self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'char')
-
-                            elif key.split('_')[1] == 'bool':
-                                self._variables[key.split('_')[2]] = typess.choose_type(value, self._variables, 'bool')
+                        if key.split('_')[0] in self.parser_instructions:
+                            self.parser_instructions[key.split('_')[0]](key, value)
 
                         elif key.startswith('for'):  # циклы
                             self._for(lexemes, key, value, line_count)
