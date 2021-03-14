@@ -20,7 +20,8 @@ class Parser:
             }
         self.web_output = []
         self.parser_instructions = {
-            'variable': self.create_variable
+            'variable': self.create_variable,
+
         }
 
     def get_web_output(self):

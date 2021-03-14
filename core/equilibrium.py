@@ -13,6 +13,7 @@ cli.add_argument("--source", default='code.eq', type=str)
 cli.add_argument("--interactive", default=0, type=int)
 cli.add_argument("--compile", default=False, type=bool)
 cli.add_argument("--speed", default=False, type=bool)
+cli.add_argument("--support", default=False, type=bool)
 
 class CodeReader:
     def __init__(self, source, level):
@@ -62,18 +63,29 @@ def route_args(args):
     --speed - если True, то выводит скорость выполнения программы из source
     default значения - False
     """
+    if args.support:
+        help_string = """
+Привет, это справочная информация об языке Equilibrium
+------------------------------------------------------
+Методы:
+write - вывод информации в консоль
+sleep - ожидания определённое количество секунд
+cfile - создания файла
+wfile - запись файла
+        """
+        print(help_string)
     if args.speed:
         speed_test = SpeedTest(args.source)
         print(f'Программа отработала за {speed_test.analysis_speed()}')
-    elif args.source:
+    if args.source:
         eq = Equilibrium(args.source,'PROD')
         eq.run_code()
-    if args.compile:
+    elif args.compile:
         print('Привет,это компилируемый режим Equilibrium')
         way_to_file = input('Введи путь к файлу: ')
         eq = Equilibrium(way_to_file, 'PROD')
         eq.run_code()
-    if args.interactive:
+    elif args.interactive:
         print('Привет!\nЭто интерактивный режим Equilibrium\nВводи команды и когда захочешь запустить программу напиши go')
         command_list = []
         while True:
@@ -92,6 +104,7 @@ def route_args(args):
                 eq.run_code()
             else:
                 exceptions.BuildError('Ошибка сборки')
+
 
 try:
     args = cli.parse_args()

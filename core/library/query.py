@@ -13,7 +13,7 @@ class Query:
 			response = requests.get(url=eval(url, variables),params=eval(params, variables))
 		else:
 			response = requests.get(url=eval(url, variables))
-		return response.text
+		return eval(response.text)
 
 	@staticmethod
 	def post_request(url, params, variables):

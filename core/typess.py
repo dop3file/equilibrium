@@ -18,6 +18,8 @@ def choose_type(value, variables, types):
         return Char(value, variables).return_value()
     elif types == 'bool':
         return Bool(value,variables).return_value()
+    elif types == 'dict':
+        return Dictionary(value,variables).return_value()
     else:
         return value
 
@@ -90,6 +92,16 @@ class Bool:
                 self.value = eval(str(value), variables)
             else:
                 exceptions.Type_Error('Объект не является булевым значением')
+        except TypeError:
+            exceptions.Type_Error('Объект не является булевым значением')
+
+    def return_value(self):
+        return self.value
+
+class Dictionary:
+    def __init__(self, value, variables):
+        try:
+            self.value = eval(str(value), variables)
         except TypeError:
             exceptions.Type_Error('Объект не является булевым значением')
 

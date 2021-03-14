@@ -20,6 +20,7 @@ log = None
 math = None
 robot = None
 app_creator = None
+image = None
 
 #микросервисы
 short_link = None
@@ -73,6 +74,10 @@ def import_library(name_library):
         global app_creator
         robot = AppCreator()
         robot.start()
+    elif name_library == 'image':
+        from library.image import _Image
+        global image
+        image = _Image()
 
 def import_microservice(name_microservice):
     if name_microservice == 'shortLink':
@@ -103,7 +108,7 @@ def route_func(name_func, variables):
     """
     try:
         if name_func.startswith('scan'):  # ввод данных от пользователя
-            name_func = input()
+            name_func = "'" + input() + "'"
         elif name_func == 'coinflip()':
             name_func = coin_flip()
         elif name_func == 'time_day()':
@@ -215,13 +220,43 @@ def route_methods(name_method, value, variables):
             db.update_where(eval(arguments[0], variables),
                             eval(arguments[1], variables),
                             eval(arguments[2], variables),
-                            eval(arguments[3], variables))
+                            eval(arguments[3], variables),
+                            eval(arguments[4], variables)
+                            )
 
         elif name_method == 'robot':
             robot.route_move(value)
 
         elif name_method == 'shortLink':
             short_link.add_link(value)
+
+        elif name_method == 'drawText':
+            arguments = get_arguments_without_key(value)
+            print(arguments)
+            image.draw_picture_with_text(eval(arguments[0], variables),
+                                         eval(arguments[1], variables),
+                                         eval(arguments[2], variables),
+                                         eval(arguments[3], variables),
+                                         eval(arguments[4], variables)
+                                         )
+
+        elif name_method == 'drawCross':
+            arguments = get_arguments_without_key(value)
+            image.draw_cross_on_picture(eval(arguments[0], variables),
+                                        eval(arguments[1], variables),
+                                        eval(arguments[2], variables)
+                                        )
+
+        elif name_method == 'drawRect':
+            arguments = get_arguments_without_key(value)
+            image.draw_rect_on_picture(eval(arguments[0], variables),
+                                        eval(arguments[1], variables),
+                                        eval(arguments[2], variables),
+                                        eval(arguments[3], variables),
+                                        eval(arguments[4], variables),
+                                        eval(arguments[5], variables),
+                                        eval(arguments[6], variables),
+                                        )
 
 
 
