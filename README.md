@@ -1,6 +1,6 @@
 # equilibrium
 
-**Equilibrium** - это скриптовой строго типизированный язык программирования, написанный на Python
+**Equilibrium** - это скриптовый строго типизированный язык программирования, написанный на Python
 
 
 ![Equilibrium](https://sun9-76.userapi.com/58uslEXwTUlFP1BN7bzqR4QomO7rrRzvjKDPyg/Z9PPkEbGMlA.jpg "Equilibrium :)")
